@@ -62,13 +62,21 @@ Podemos listar los dispositivos disponibles para la ejecución:
 ```
 $ flutter devices
 Found 2 connected devices:
-  iPlay60 mini Pro (mobile) • XXXXXX • android-arm64 • Android 14 (API 34)
-  Linux (desktop)           • linux                • linux-x64     • Arch Linux XXXXXX
-
+  iPlay60 mini Pro (mobile) • T123 • android-arm64 • Android 14 (API 34)
+  Linux (desktop)           • linux                • linux-x64     • Arch Linux 6.16.8-arch1-1
 ...
 ```
 
-Y si todo está instalado correctamente, podemos ejecutarlo:
+Y si todo está instalado correctamente, podemos ejecutarlo. Para seleccionar un dispositivo en concreto podemos usar el parámetro `-d` con su `deviceID`. Por ejemplo, para la versión de escritorio:
+
+```
+# Para ejecutar en nuestro Linux:
+$ flutter run -d linux
+# Para ejecutar en nuestro dispositivo android:
+$ flutter run -d T123
+```
+
+Si no se especifica, se usará el por defecto:
 
 ```
 $ flutter run
