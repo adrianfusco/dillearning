@@ -1,0 +1,13 @@
+stages:
+  - linters
+
+run_linters:
+  stage: linters
+  image: ghcr.io/cirruslabs/flutter:latest
+  script:
+    - cd dillearning
+    - flutter pub get
+    - flutter analyze
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push"'
