@@ -1,43 +1,112 @@
-# PROXECTO FIN DE CICLO
+# Dillearning
 
-IMPORTANTE: [Información e documentos de axuda para a elaboración do proxecto ](informacion/)
+**Dillearning** (*dil del Turco idioma o lengua*) es una aplicación de aprendizaje de idiomas que busca ofrecer una experiencia amigable,
+transparente y enriquecedora para el usuario, añadiendo
+temas que son más orientados a un uso más realista del
+lenguaje con un enfoque pedagógico sin ser un modelo orientado a la monetización.
 
-## Sobre o autor
+## Autor
 
-> *TODO*: Realiza unha breve descrición de quen eres (perfil profesional), os teus puntos fortes, as tecnoloxías que máis dominas... e o porqué te decantaches por este proxecto. **Non máis de 200 palabras**. Indica unha forma fiable de contactar contigo no presente e no futuro.
+Soy Adrián y trabajo como Software Engineer en Red Hat desde hace 4 años con un enfoque bastante enfocado a DevOps. Comencé un rol en un equipo llamado Code Reliability Engineering y actualmente me encuentro en un equipo llamado CI Operations en Openstack.
+
+He trabajado en los últimos años principalmente con **Python**.
+
+He querido trabajar en este proyecto porque ya he podido abarcar el área web trabajando con aplicaciones internas hechas en **Fast API** - y en ocasiones **Flask** - para el backend y **React** con **Tailwindcss** para el frontend.
+
+Esta vez quería aprender sobre **Dart** y **Flutter** para realizar aplicaciones multiplataforma y al encantarme los idiomas quería aprovechar la ocasión para realizar una aplicación que ayude con el aprendizaje.
+
+Podéis encontrarme en [LinkedIn](https://www.linkedin.com/in/adrianfusco/).
 
 ## Uso
 
-> *TODO*: Nste apartado describe brevemente cómo se usará o software que proxectas. Si tin unha interface de terminal, describe aquí a súa sintaxe. Se ten unha interface gráfica de usuario, describe aquí **sólo o uso** (a modo de sumario) **dos aspectos máis relevantes do seu funcionamento** (máxima brevidade, como se fose un anuncio ou reclamo comercial).
-
-> Se o teu proxecto é documental, realiza unha especificación de cómo formulas estas interfaces, con exemplos incluso ou esquemas de deseño. Noutras palabras, realiza este apartado independientemente que non haxa implantación.
-
+El proyecto está desarrollado usando [Flutter](https://flutter.dev/).
 
 ## Índice: Estrutura do proxecto (plantillas de apoio)
 
-> *TODO*: Neste apartado describe con precisión a estructura de ficheiros e directorios do teu proxecto, co fin de facilitar a navegación polo mesmo.
+El código del proyecto se encuentra en [dillearning](./dillearning/).
 
-1. [Documentación](documentacion/)
-> *TODO*: Simplemente redacta a documentación do teu proxecto e os artefactos necesarios para o seu seguimento e defensa.
+## Instalación / Posta en marcha
 
-   - [Proposta inicial](documentacion/1_proposta)
-   - [Anteproxecto](documentacion/2_anteproxecto)
-   - [Seguimento/prototipos](documentacion/3_prototipos)
-   - [Documentación final](documentacion/4_documentacion_final)
-   - [Defensa](documentacion/5_defensa)
+He hecho el desarrollo en Arch por lo que usaré los comandos de la distribución pero cada distribución tiene sus packages:
 
+Instalamos jdk17:
 
-2. [Proxecto](/)
-> *TODO*: Simplemente indexa ordenadamente, e cunha estrutura de directorios lóxica, os ficheiros do teu proxecto no directorio raíz.
+```
+$ pacman -S jdk17-openjdk
+```
 
+Instalamos android-sdk y cada una de sus tools:
 
-## Instalación/Posta en marcha
+```
+$ yay -S android-sdk android-sdk-build-tools android-sdk-cmdline-tools-latest android-platform android-sdk-platform-tools
+```
 
-> *TODO*: Neste apartado describe con toda precisión e a poder ser coa maior simplicidade/facilidade posible, cómo poñer en marcha a túa aplicación para probala (nun contexto local). Valorarase moi positivamente que este proceso sexa o máis doado posible, como unha simple instrución (por exemplo un *script* de instalación).
+Exportamos las variables necesarias para la ejecución dependiendo de la carpeta de instalación. Añadimos en nuestro `.bashrc`:
 
+```
+export ANDROID_HOME=$HOME/android-sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+```
 
-## Licenza
+Configuramos flutter:
 
-> *TODO*: É un requisito INDISPENSABLE o licenciar explícitamente o proxecto software. Recoméndase licenciar con *GNU Free Documentation License Version 1.3*. Crar un fichero `LICENSE` na raíz do repositorio, co tue ficheiro de licenza. Recorda que si empregas unha licenza de *software* libre estás autorizando a derivación da túa obra baixo a misma licenza que elizas, podendo dar continuidade, por exemplo a outro alumno, para continuar o teu proxecto noutro curso.
+```
+$ flutter config --android-sdk ~/android-sdk
+$ flutter doctor --android-licenses
+```
 
-> Se o teu proxecto é documental, recomendamos os térmos de *GNU Free Documentation License Version 1.3*, crea igualmente o fichero `LICENSE`. Será especialmente valorado neste caso, a claridade da especificación para que o proxecto poida ser executado partindo do formulado.
+En mi caso he conectado un dispositivo android y he activado [las opciones para desarrolladores en el dispositivo](https://developer.android.com/studio/debug/dev-options?hl=es-419), lo he conectado y he aceptado permisos (podemos usar emuladores también si no tenemos un dispositivo físico).
+
+Podemos listar los dispositivos disponibles para la ejecución:
+
+```
+$ flutter devices
+Found 2 connected devices:
+  iPlay60 mini Pro (mobile) • XXXXXX • android-arm64 • Android 14 (API 34)
+  Linux (desktop)           • linux                • linux-x64     • Arch Linux XXXXXX
+
+...
+```
+
+Y si todo está instalado correctamente, podemos ejecutarlo:
+
+```
+$ flutter run
+Resolving dependencies...
+Downloading packages...
+  characters 1.4.0 (1.4.1 available)
+  flutter_lints 5.0.0 (6.0.0 available)
+  lints 5.1.1 (6.0.0 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.16.0 (1.17.0 available)
+  test_api 0.7.6 (0.7.7 available)
+Got dependencies!
+6 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Launching lib/main.dart on iPlay60 mini Pro in debug mode...
+Running Gradle task 'assembleDebug'...                              4.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           6.5s
+D/FlutterJNI(23513): Beginning load of flutter...
+D/FlutterJNI(23513): flutter (null) was loaded normally!
+I/flutter (23513): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+Syncing files to device iPlay60 mini Pro...                         44ms
+
+Flutter run key commands.
+r Hot reload. 🔥🔥🔥
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+```
+
+![Setup](./img/setup.jpeg)
+
+### Code
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
