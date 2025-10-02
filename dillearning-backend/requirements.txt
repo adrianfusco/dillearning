@@ -1,0 +1,9 @@
+uvicorn
+fastapi
+dotenv
+python-jose
+passlib
+sqlalchemy
+databases
+aiosqlite
+bcrypt==4.3.0
