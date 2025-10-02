@@ -1,10 +1,13 @@
+import 'package:dillearning/core/services/session_service.dart';
+import 'package:dillearning/features/auth/login_screen.dart';
 import 'package:dillearning/features/learn_language/english_from_spanish_screen.dart';
 import 'package:dillearning/features/learn_language/spanish_from_english_screen.dart';
 import 'package:dillearning/features/profile/profile_screen.dart';
 import 'package:dillearning/features/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MainApplication());
 }
 
@@ -51,6 +54,16 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              final navigator = Navigator.of(context);
+              await SessionService().clearSession();
+              navigator.pushReplacement(
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
           ),
