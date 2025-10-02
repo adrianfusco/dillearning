@@ -23,6 +23,9 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 async def root():
+    """
+    Redirect to /docs
+    """
     return RedirectResponse(url="/docs")
 
 

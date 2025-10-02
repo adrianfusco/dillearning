@@ -6,16 +6,29 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter()
 
 
-@router.post("/register/", response_model=schemas.User)
+@router.post(
+    "/register/",
+    response_model=schemas.User,
+    summary="Register a new user",
+    tags=["Users"],
+)
 async def register(user: schemas.UserCreate):
+    """
+    Creates a new user with the provided email and password.
+    If the email is already registered, it returns a 400 error.
+    """
     db_user = await get_user_by_email(database, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     return await create_user(db=database, user=user)
 
 
-@router.post("/login/")
+@router.post("/login/", summary="User login", tags=["Users"])
 async def login(user: schemas.UserCreate):
+    """
+    Auth an user and returns a JWT access token.
+    If the credentials are incorrect, it returns a 401.
+    """
     db_user = await get_user_by_email(database, email=user.email)
     if not db_user or not verify_password(user.password, db_user["hashed_password"]):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
