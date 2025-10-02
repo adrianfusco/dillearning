@@ -1,6 +1,9 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
+import 'package:dillearning/core/services/session_service.dart';
+import 'package:dillearning/features/auth/login_screen.dart';
 import 'package:dillearning/main.dart';
+import 'package:flutter/material.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -27,13 +30,26 @@ class _IntroScreenState extends State<IntroScreen>
 
     _controller.forward();
 
-    Timer(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const MyHomePage(title: 'Dillearning'),
-        ),
-      );
-    });
+    Timer(const Duration(seconds: 3), _checkSessionAndNavigate);
+  }
+
+  void _checkSessionAndNavigate() async {
+    final userId = await SessionService().getSession();
+    if (mounted) {
+      if (userId != null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const MyHomePage(title: 'Dillearning'),
+          ),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ),
+        );
+      }
+    }
   }
 
   @override
