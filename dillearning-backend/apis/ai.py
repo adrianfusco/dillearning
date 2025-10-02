@@ -46,8 +46,16 @@ async def chat_stream(question: str):
         yield chunk["message"]["content"]
 
 
-@router.post("/ai/chat")
+@router.post(
+    "/ai/chat",
+    summary="Chat with the AI",
+    tags=["AI"],
+)
 async def chat(request: ChatRequest):
+    """
+    Endpoint to receive an user question and return a response from the
+    language teacher AI.
+    """
     return StreamingResponse(
         chat_stream(request.question), media_type="text/event-stream"
     )
