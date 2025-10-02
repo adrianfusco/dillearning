@@ -4,6 +4,7 @@ from apis import ai, users
 from data import database, engine, metadata
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 
 load_dotenv()
 
@@ -18,6 +19,12 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+
+@app.get("/")
+async def root():
+    return RedirectResponse(url="/docs")
+
 
 app.include_router(users.router)
 app.include_router(ai.router)
