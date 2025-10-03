@@ -111,6 +111,22 @@ q Quit (terminate the application on the device).
 
 ![Setup](./img/setup.jpeg)
 
+## Backend
+
+El backend está desarrollado en Python usando FastAPI y se comunica con un servicio de Ollama para las funcionalidades de IA.
+
+Para levantarlo, es necesario tener `docker` y `docker-compose` instalados (o podman).
+
+Desde la carpeta `dillearning-backend` podemos levantar los servicios:
+
+```
+$ cd dillearning-backend && docker-compose up -d
+```
+
+Esto levantará dos servicios:
+- **api**: La aplicación de FastAPI disponible en el puerto `8000`.
+- **ollama**: El servicio de Ollama que descargará el modelo `granite3.3:2b` y estará disponible en el puerto `11434`.
+
 ### Code
 
 Licensed under the Apache License, Version 2.0 (the "License");
