@@ -14,3 +14,22 @@ class User(UserBase):
 
     class Config:
         from_attributes = True
+
+
+class TranslateRequest(BaseModel):
+    text: str
+    source_language: str
+    target_language: str
+
+
+class GrammarRequest(BaseModel):
+    sentence: str
+
+
+class ExampleRequest(BaseModel):
+    word: str
+    language: str
+
+
+class ChatRequest(BaseModel):
+    question: str
