@@ -1,0 +1,22 @@
+erDiagram
+    users {
+        Integer id PK
+        String email "Unique, Indexed"
+        String hashed_password
+    }
+
+    languages {
+        Integer id PK
+        String name "Unique"
+        String code "Unique"
+    }
+
+    user_languages {
+        Integer id PK
+        Integer user_id FK
+        Integer language_id FK
+        Integer progress "Percentage (0-100)"
+    }
+
+    users ||--o{ user_languages : "aprende"
+    languages ||--o{ user_languages : "es aprendido por"
