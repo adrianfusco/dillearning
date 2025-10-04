@@ -8,3 +8,5 @@ databases
 aiosqlite
 bcrypt==4.3.0
 ollama
+psycopg2-binary
+pydantic-settings
