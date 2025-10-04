@@ -20,7 +20,13 @@ async def register(user: schemas.UserCreate):
     db_user = await get_user_by_email(database, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return await create_user(db=database, user=user)
+
+    created_user = await create_user(db=database, user=user)
+
+    return {
+        "id": created_user["id"],
+        "email": created_user["email"],
+    }
 
 
 @router.post("/login/", summary="User login", tags=["Users"])

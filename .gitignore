@@ -1,0 +1,23 @@
+# IDEs and editors
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# OS-specific
+.DS_Store
+
+# General
+*.log
+*.swp
+.history
+
+# Python
+__pycache__/
+
+# Tox
+.tox/
+
+# Database
+dillearning.db

@@ -111,7 +111,21 @@ q Quit (terminate the application on the device).
 
 ![Setup](./img/setup.jpeg)
 
+Para ejecutar el debug en web necesitaremos Chrome o Chromium instalado. Una vez hecho:
+
+```
+$ CHROME_EXECUTABLE=/usr/bin/chromium flutter run -d chrome
+```
+
 ## Backend
+
+Para el desarrollo en local iniciaremos uvicorn via tox:
+
+```
+$ tox -e dev
+```
+
+Para ello necesitaremos ollama ejecutándose.
 
 El backend está desarrollado en Python usando FastAPI y se comunica con un servicio de Ollama para las funcionalidades de IA.
 
