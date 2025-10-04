@@ -1,7 +1,7 @@
 import os
 from contextlib import asynccontextmanager
 
-from apis import ai, users
+from apis import ai, health, users
 from data import database, engine, metadata
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -54,3 +54,4 @@ async def root():
 
 app.include_router(users.router)
 app.include_router(ai.router)
+app.include_router(health.router)
