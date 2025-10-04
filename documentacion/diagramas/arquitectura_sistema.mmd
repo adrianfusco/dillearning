@@ -1,0 +1,48 @@
+graph TD
+    subgraph "Aplicación Multiplataforma"
+        A[Aplicación Flutter]
+    end
+
+    subgraph "Backend"
+        B[FastAPI]
+        C[SQLAlchemy ORM]
+        D[SQLite Database]
+        E[Lógica de Autenticación]
+        B -- Gestiona Datos vía --> C
+        C -- Accede a --> D
+        B -- Implementa --> E
+    end
+
+    subgraph "Servicio de IA"
+        F[Ollama]
+        G[Modelo LLM]
+        F -- Sirve --> G
+    end
+
+    subgraph "CI / CD"
+        H["Repositorio en GitLab"]
+        I[GitLab CI/CD]
+        J["Tests y linters"]
+        K["Build y contenerizar"]
+        L["Desplegar"]
+        H --> I
+        I -- Trigger --> J
+        J -- Si SUCCESS --> K
+        K -- Si SUCCESS --> L
+    end
+
+    A -- "Llamadas API Autenticadas" --> B
+    B -- "Consulta al LLM" --> F
+    L -- "Despliega Backend en Servidor" --> B
+    L -- "Crea artifacts de la App" --> A
+    I -- "Actúa sobre el código de" --> H
+
+    classDef frontend fill:#f9f,stroke:#333,stroke-width:2px
+    classDef backend fill:#ccf,stroke:#333,stroke-width:2px
+    classDef ai fill:#cfc,stroke:#333,stroke-width:2px
+    classDef devops fill:#fcf,stroke:#333,stroke-width:2px
+
+    class A frontend
+    class B,C,D,E backend
+    class F,G ai
+    class H,I,J,K,L devops

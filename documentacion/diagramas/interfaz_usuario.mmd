@@ -1,0 +1,42 @@
+graph TD
+    subgraph "Autenticación"
+        A(Login / Registro)
+    end
+
+    subgraph "Flujo Principal de la Aplicación"
+        B(Pantalla Principal)
+        C(Selección de Idioma)
+        D(Explicación del Proceso de Aprendizaje)
+        E(Centro de Aprendizaje)
+        F(Configuración de Perfil)
+    end
+
+    subgraph "Herramientas de IA"
+        G[Chat con IA]
+        H[Traducción]
+        I[Explicación Gramatical]
+    end
+
+    A -- Login Exitoso --> B
+    B -- Elegir Idioma --> C
+    C -- Continuar --> D
+    D -- Empezar a Aprender --> E
+    B -- Ir a Perfil --> F
+    F -- Guardar Cambios --> B
+
+    E -- Iniciar Lección --> E
+    E -- Usar Herramientas de IA --> G
+    E -- Usar Herramientas de IA --> H
+    E -- Usar Herramientas de IA --> I
+    
+    G --> E
+    H --> E
+    I --> E
+
+    classDef auth fill:#f9f,stroke:#333,stroke-width:2px
+    classDef main fill:#ccf,stroke:#333,stroke-width:2px
+    classDef ai fill:#cfc,stroke:#333,stroke-width:2px
+
+    class A auth
+    class B,C,D,E,F main
+    class G,H,I ai
