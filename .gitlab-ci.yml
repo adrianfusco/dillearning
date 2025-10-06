@@ -1,5 +1,6 @@
 stages:
   - linters
+  - build
 
 flutter_linters:
   stage: linters
@@ -10,7 +11,6 @@ flutter_linters:
     - flutter analyze
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_PIPELINE_SOURCE == "push"'
 
 backend_linters:
   stage: linters
@@ -19,6 +19,18 @@ backend_linters:
     - pip install tox
   script:
     - tox
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+create_frontend_deb:
+  stage: build
+  image: ghcr.io/cirruslabs/flutter:latest
+  script:
+    - scripts/create_frontend_deb_package.sh
+  artifacts:
+    paths:
+      - dillearning/build/linux/x64/release/bundle/*.deb
+    expire_in: 1 week
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push"'
