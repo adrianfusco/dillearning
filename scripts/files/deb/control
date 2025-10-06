@@ -1,0 +1,6 @@
+Package: dillearning
+Version: %%VERSION%%
+Architecture: amd64
+Maintainer: Adrian Fusco Arnejo <adrianfuscoarnejo@gmail.com>
+Description: Dillearning (dil del Turco idioma o lengua) es una aplicación de aprendizaje de idiomas que busca ofrecer una experiencia amigable, transparente y enriquecedora para el usuario, añadiendo temas que son más orientados a un uso más realista del lenguaje con un enfoque pedagógico sin ser un modelo orientado a la monetización.
+Depends: libgtk-3-0, libblkid1, liblzma5
