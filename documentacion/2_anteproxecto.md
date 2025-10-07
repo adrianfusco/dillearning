@@ -167,7 +167,7 @@ En esta fase inicial, el diseño se conceptualiza para ser detallado más adelan
 
 ### 4.1. Diseño de la arquitectura del sistema
 
-![Diseño de la arquitectura del sistema](documentacion/diagramas/arquitectura_sistema.png)
+![Diseño de la arquitectura del sistema](diagramas/arquitectura_sistema.png)
 
 ### 4.2. Diseño de la persistencia de datos
 
@@ -175,10 +175,10 @@ He definido las tablas y sus columnas en Inglés al igual que el código pero en
 
 Puede que haya modificaciones en el esquema en un futuro.
 
-![Diseño de la persistencia de datos](documentacion/diagramas/persistencia_datos_esquema_bd.png)
+![Diseño de la persistencia de datos](diagramas/persistencia_datos_esquema_bd.png)
 
 ### 4.3. Diseño de la interfaz de usuario
 
-![Diseño de la interfaz de usuario](documentacion/diagramas/interfaz_usuario.png)
+![Diseño de la interfaz de usuario](diagramas/interfaz_usuario.png)
 
 Debemos recordar que, en teoría, estamos definiendo el proyecto antes de su ejecución. Esto quiere decir que a medida de que se avance pueden haber cambios para añadir nuevas funcionalidades o realizar modificaciones para mejorar lo que teníamos planteado. Por lo que puede que algunas cosas no coincidan al final del proyecto - como suele pasar en la mayoría de los casos sobre todo en proyectos grandes -.
