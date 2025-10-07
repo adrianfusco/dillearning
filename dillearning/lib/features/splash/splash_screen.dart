@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen>
       body: Center(
         child: FadeTransition(
           opacity: _animation,
-          child: Image.asset('assets/images/dillearning.jpg'),
+          child: Image.asset('assets/images/dillearning_logo_1280.png'),
         ),
       ),
     );
