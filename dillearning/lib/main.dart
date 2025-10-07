@@ -1,14 +1,21 @@
 import 'package:dillearning/core/services/session_service.dart';
+import 'package:dillearning/core/services/theme_service.dart';
 import 'package:dillearning/features/auth/login_screen.dart';
 import 'package:dillearning/features/learn_language/english_from_spanish_screen.dart';
 import 'package:dillearning/features/learn_language/spanish_from_english_screen.dart';
 import 'package:dillearning/features/profile/profile_screen.dart';
 import 'package:dillearning/features/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MainApplication());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeNotifier(),
+      child: const MainApplication(),
+    ),
+  );
 }
 
 class MainApplication extends StatelessWidget {
@@ -16,17 +23,30 @@ class MainApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dillearning - Aprendizaje de Idiomas',
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blueAccent,
-          brightness: Brightness.dark,
-        ),
-      ),
-      home: const IntroScreen(),
+    return Consumer<ThemeNotifier>(
+      builder: (context, themeNotifier, child) {
+        return MaterialApp(
+          title: 'Dillearning - Aprendizaje de Idiomas',
+          theme: ThemeData(
+            useMaterial3: true,
+            brightness: Brightness.light,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blueAccent,
+              brightness: Brightness.light,
+            ),
+          ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            brightness: Brightness.dark,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blueAccent,
+              brightness: Brightness.dark,
+            ),
+          ),
+          themeMode: themeNotifier.themeMode,
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }

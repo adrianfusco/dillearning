@@ -5,14 +5,14 @@ import 'package:dillearning/features/auth/login_screen.dart';
 import 'package:dillearning/main.dart';
 import 'package:flutter/material.dart';
 
-class IntroScreen extends StatefulWidget {
-  const IntroScreen({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<IntroScreen> createState() => _IntroScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _IntroScreenState extends State<IntroScreen>
+class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -30,10 +30,11 @@ class _IntroScreenState extends State<IntroScreen>
 
     _controller.forward();
 
-    Timer(const Duration(seconds: 3), _checkSessionAndNavigate);
+    _checkSessionAndNavigate();
   }
 
   void _checkSessionAndNavigate() async {
+    await Future.delayed(const Duration(seconds: 3));
     final userId = await SessionService().getSession();
     if (mounted) {
       if (userId != null) {
