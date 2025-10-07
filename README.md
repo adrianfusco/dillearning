@@ -5,6 +5,8 @@ transparente y enriquecedora para el usuario, añadiendo
 temas que son más orientados a un uso más realista del
 lenguaje con un enfoque pedagógico sin ser un modelo orientado a la monetización.
 
+![dillearning](./dillearning/assets/images/dillearning_logo_256.png)
+
 ## Autor
 
 Soy Adrián y trabajo como Software Engineer en Red Hat desde hace 4 años con un enfoque bastante enfocado a DevOps. Comencé un rol en un equipo llamado Code Reliability Engineering y actualmente me encuentro en un equipo llamado CI Operations en Openstack.
@@ -34,3 +36,14 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
+
+Ver [LICENSE](./LICENSE)
+
+
+### Logo
+
+El logo ha sido creado con:
+
+Logo: [Language 04 SVG Vector - Creative Commons Zero license](https://www.svgrepo.com/svg/339310/language-04)
+
+Y el texto con efecto bend lo añadido con Inkscape :D

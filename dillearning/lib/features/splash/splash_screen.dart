@@ -64,7 +64,7 @@ class _IntroScreenState extends State<IntroScreen>
       body: Center(
         child: FadeTransition(
           opacity: _animation,
-          child: Image.asset('assets/images/dillearning.jpg'),
+          child: Image.asset('assets/images/dillearning_logo_1280.png'),
         ),
       ),
     );
