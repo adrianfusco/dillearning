@@ -38,7 +38,7 @@ create_debian_package() {
 
     cp ./scripts/files/deb/app.desktop $STAGING_DIR/usr/share/applications/dillearning.desktop
     cp -r dillearning/build/linux/x64/release/bundle/* $STAGING_DIR/opt/dillearning/
-    cp dillearning/web/icons/Icon-512.png $STAGING_DIR/usr/share/icons/hicolor/512x512/apps/dillearning.png
+    cp dillearning/web/icons/dillearning_logo_512.png $STAGING_DIR/usr/share/icons/hicolor/512x512/apps/dillearning.png
 
     dpkg-deb --build $STAGING_DIR
     mv $DEB_DIR/dillearning.deb "dillearning/build/linux/x64/release/bundle/dillearning-$VERSION-amd64.deb"
