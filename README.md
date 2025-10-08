@@ -29,7 +29,13 @@ El backend está desarrollado en Python usando FastAPI y se comunica con un serv
 
 Para instrucciones detalladas sobre el backend debemos consultar [README.md dillearning-backend](./dillearning-backend/README.md).
 
-### Code
+## Otra documentación
+
+- [Propuesta de proyecto](./documentacion/1_proposta.md)
+- [Anteproyecto, justificación, finalidades, diseños y diagramas](./documentacion/2_anteproxecto.md)
+- [Prototipos, seguimiento, problemas encontrados y soluciones adoptadas](./documentacion/3_prototipos.md)
+
+## Code
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -40,7 +46,7 @@ You may obtain a copy of the License at
 Ver [LICENSE](./LICENSE)
 
 
-### Logo
+## Logo
 
 El logo ha sido creado con:
 
