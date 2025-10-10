@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         if (mounted) {
-          await SessionService().saveSession(response['user_id']);
+          await SessionService().saveSession(response['user_id'], response['name']);
           if (!mounted) return;
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
