@@ -23,14 +23,13 @@ async def register(user: schemas.UserCreate):
 
     created_user = await create_user(db=database, user=user)
 
-    return {
-        "id": created_user["id"],
-        "email": created_user["email"],
-    }
+    return schemas.User(
+        id=created_user["id"], email=created_user["email"], name=created_user["name"]
+    )
 
 
 @router.post("/login/", summary="User login", tags=["Users"])
-async def login(user: schemas.UserCreate):
+async def login(user: schemas.UserLogin):
     """
     Auth an user and returns a JWT access token.
     If the credentials are incorrect, it returns a 401.
@@ -40,8 +39,11 @@ async def login(user: schemas.UserCreate):
         raise HTTPException(status_code=401, detail="Incorrect email or password")
 
     access_token = create_access_token(data={"sub": user.email})
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
         "user_id": db_user["id"],
+        "email": db_user["email"],
+        "name": db_user["name"],
     }

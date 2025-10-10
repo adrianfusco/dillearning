@@ -6,13 +6,14 @@ class ApiService {
   // más adelantee lo cambiaremos a una variable de entorno
   final String _baseUrl = 'http://127.0.0.1:8000';
 
-  Future<Map<String, dynamic>> register(String email, String password) async {
+  Future<Map<String, dynamic>> register(String name, String email, String password) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/register/'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
+        'name': name,
         'email': email,
         'password': password,
       }),
