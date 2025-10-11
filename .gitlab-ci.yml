@@ -2,6 +2,10 @@ stages:
   - linters
   - build
 
+cache:
+  paths:
+    - $CI_PROJECT_DIR/.pub-cache/
+
 flutter_linters:
   stage: linters
   image: ghcr.io/cirruslabs/flutter:latest
@@ -22,7 +26,7 @@ backend_linters:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
-create_frontend_deb:
+build_deb:
   stage: build
   image: ghcr.io/cirruslabs/flutter:latest
   script:
@@ -35,7 +39,7 @@ create_frontend_deb:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push"'
 
-apk_build:
+build_apk:
   stage: build
   image: ghcr.io/cirruslabs/flutter:latest
   script:
@@ -47,4 +51,19 @@ apk_build:
       - dillearning/build/app/outputs/flutter-apk/*.apk
     expire_in: 1 week
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+
+build_web:
+  stage: build
+  image: ghcr.io/cirruslabs/flutter:latest
+  script:
+    - cd dillearning
+    - flutter pub get
+    - flutter build web
+  artifacts:
+    paths:
+      - dillearning/build/web
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push"'
