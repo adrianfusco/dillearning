@@ -38,3 +38,4 @@ class ExampleRequest(BaseModel):
 
 class ChatRequest(BaseModel):
     question: str
+    user_id: str

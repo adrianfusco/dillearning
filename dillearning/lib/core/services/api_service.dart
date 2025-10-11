@@ -44,4 +44,23 @@ class ApiService {
       throw Exception('Failed to login: ${response.body}');
     }
   }
+
+  Future<String> chat(String question, String userId) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/ai/chat'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'question': question,
+        'user_id': userId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed: ${response.body}');
+    }
+  }
 }

@@ -2,6 +2,7 @@ import 'package:dillearning/core/env_config.dart';
 import 'package:dillearning/core/services/session_service.dart';
 import 'package:dillearning/core/services/theme_service.dart';
 import 'package:dillearning/features/auth/login_screen.dart';
+import 'package:dillearning/features/learn_language/chat_screen.dart';
 import 'package:dillearning/features/learn_language/english_from_spanish_screen.dart';
 import 'package:dillearning/features/learn_language/spanish_from_english_screen.dart';
 import 'package:dillearning/features/profile/profile_screen.dart';
@@ -104,8 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     'Welcome to Dillearning!',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                          fontWeight: FontWeight.bold,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 40),
@@ -150,6 +151,27 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       child: const Text('Spanish from English'),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChatScreen(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text('Chat with AI for practicing Languages'),
                     ),
                   ),
                 ],
