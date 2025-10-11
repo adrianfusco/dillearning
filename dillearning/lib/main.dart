@@ -1,3 +1,4 @@
+import 'package:dillearning/core/env_config.dart';
 import 'package:dillearning/core/services/session_service.dart';
 import 'package:dillearning/core/services/theme_service.dart';
 import 'package:dillearning/features/auth/login_screen.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  AppConfig.initialize();
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeNotifier(),

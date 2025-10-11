@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'package:dillearning/core/env_config.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // Por ahora nuestra FastAPI la ejecutaremos en local
-  // más adelantee lo cambiaremos a una variable de entorno
-  final String _baseUrl = 'http://127.0.0.1:8000';
+  // La URL base de la API se obtiene de la configuración de la aplicación
+  final String _baseUrl = AppConfig.config.apiBaseUrl;
 
   Future<Map<String, dynamic>> register(String name, String email, String password) async {
     final response = await http.post(

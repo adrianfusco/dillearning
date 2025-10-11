@@ -19,6 +19,26 @@ Esta vez quería aprender sobre **Dart** y **Flutter** para realizar aplicacione
 
 Podéis encontrarme en [LinkedIn](https://www.linkedin.com/in/adrianfusco/).
 
+## Setup
+
+La forma más sencilla de levantar todo el entorno es usando [docker-compose.yml](./docker-compose.yml) que se encuentra en la raíz del proyecto.
+
+Ejecutamos:
+
+```bash
+docker compose up --build
+```
+
+Esto levantará todos los servicios necesarios:
+
+- **frontend**: La aplicación Flutter después del build para web y servida con nginx en el puerto `8080`.
+- **backend**: La API de FastAPI que se ejecuta en el puerto `8000`.
+- **ollama**: El servicio de IA que se ejecuta en el puerto `11434`.
+
+Una vez que todo esté en funcionamiento, puedes acceder a la aplicación en [http://localhost:8080](http://localhost:8080).
+
+Luego si queremos ejecutar para desarrollo tenemos en las siguientes secciones READMEs propios para frontend y backend.
+
 ## Frontend
 
 El frontend está desarrollado con [Flutter](https://flutter.dev/). Para instrucciones debemos consultar [README de dillearning](./dillearning/README.md).
