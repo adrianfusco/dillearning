@@ -13,17 +13,26 @@ services:
       - "11434:11434"
     restart: unless-stopped
 
-  api:
-    build: .
-    ports:
-      - "8000:8000"
+  backend:
+    build:
+      context: ./dillearning-backend
+      dockerfile: Dockerfile
     volumes:
-      - .:/app:rw
+      - ./dillearning-backend:/app:rw
     depends_on:
       - ollama
     environment:
       - OLLAMA_HOST=http://ollama:11434
     restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./dillearning
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
 
 volumes:
   ollama-storage:

@@ -62,33 +62,17 @@ Si no se especifica, se usará el por defecto:
 ```
 $ flutter run
 Resolving dependencies...
-Downloading packages...
-  characters 1.4.0 (1.4.1 available)
-  flutter_lints 5.0.0 (6.0.0 available)
-  lints 5.1.1 (6.0.0 available)
-  material_color_utilities 0.11.1 (0.13.0 available)
-  meta 1.16.0 (1.17.0 available)
-  test_api 0.7.6 (0.7.7 available)
-Got dependencies!
-6 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-Launching lib/main.dart on iPlay60 mini Pro in debug mode...
-Running Gradle task 'assembleDebug'...                              4.0s
-✓ Built build/app/outputs/flutter-apk/app-debug.apk
-Installing build/app/outputs/flutter-apk/app-debug.apk...           6.5s
-D/FlutterJNI(23513): Beginning load of flutter...
-D/FlutterJNI(23513): flutter (null) was loaded normally!
-I/flutter (23513): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
-Syncing files to device iPlay60 mini Pro...                         44ms
-
-Flutter run key commands.
-r Hot reload. 🔥🔥🔥
-R Hot restart.
-h List all available interactive commands.
-d Detach (terminate "flutter run" but leave application running).
-c Clear the screen
-q Quit (terminate the application on the device).
+...
 ```
+
+### Configuración del entorno (producción, dev)
+
+Haremos uso del parámetro `--dart-define=APP_ENV=<entorno>`. para configurar el entorno donde se ejecutará la aplicación.
+
+Los entornos disponibles son:
+- `dev` (por defecto): Para desarrollo local, apunta a `http://127.0.0.1:8000`. En caso de ejecutar la aplicación en local con `flatter run` es lo que usará. Así en caso de ejecutar por ejemplo con `linux` podemos hacer pruebas.
+- `docker`: Usado por el `Dockerfile` para construir la aplicación web, apunta a `/api` para que nginx actúe como proxy ya que necesitamos un servidor web luego de hacer el build. Esto es útil para cuando hacemos el build web para hacer pruebas.
+- `prod`: En caso de tener nuestro backend desplegado en producción, necesitaremos sea en Android o Linux indicarle donde se encuentra nuestra API. En este caso colocamos por defecto `https://dillearning.com/api` 
 
 ![Setup](../img/setup.jpeg)
 
