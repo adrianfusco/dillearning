@@ -33,8 +33,13 @@ de forma clara.
 
 router = APIRouter()
 
+# A nivel de este proyecto, lo almacenaremos en memoria
+# Si hay tiempo esto se puede almacenar en BD
+conversation_history = {}
+
 
 async def _stream_ai_response(messages: list):
+    print(messages)
     stream = ollama.chat(
         model="granite3.3:2b",
         messages=messages,
@@ -50,18 +55,29 @@ async def _stream_ai_response(messages: list):
     tags=["AI"],
 )
 async def chat(request: schemas.ChatRequest):
-    """
-    Endpoint to receive an user question and return a response from the
-    language teacher AI.
-    """
+    user_id = request.user_id
     question = request.question
 
-    messages = [
-        {"role": "system", "content": CHAT_PROMPT},
-        {"role": "user", "content": question},
-    ]
+    if user_id not in conversation_history:
+        conversation_history[user_id] = [
+            {"role": "system", "content": CHAT_PROMPT},
+        ]
+
+    conversation_history[user_id].append({"role": "user", "content": question})
+
+    async def _stream_and_update_history():
+        full_response = ""
+
+        async for message_chunk in _stream_ai_response(conversation_history[user_id]):
+            full_response += message_chunk
+            yield message_chunk
+
+        conversation_history[user_id].append(
+            {"role": "assistant", "content": full_response}
+        )
+
     return StreamingResponse(
-        _stream_ai_response(messages), media_type="text/event-stream"
+        _stream_and_update_history(), media_type="text/event-stream"
     )
 
 
