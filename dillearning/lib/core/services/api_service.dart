@@ -6,7 +6,8 @@ class ApiService {
   // La URL base de la API se obtiene de la configuración de la aplicación
   final String _baseUrl = AppConfig.config.apiBaseUrl;
 
-  Future<Map<String, dynamic>> register(String name, String email, String password) async {
+  Future<Map<String, dynamic>> register(
+      String name, String email, String password) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/register/'),
       headers: <String, String>{
@@ -76,6 +77,40 @@ class ApiService {
         'target_language': targetLanguage,
         'text': text,
       }),
+    );
+
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed: ${response.body}');
+    }
+  }
+
+  Future<String> explainGrammar(String sentence) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/ai/explain-grammar'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'sentence': sentence,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed: ${response.body}');
+    }
+  }
+
+  Future<String> createExamples(String word, String language) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/ai/create-examples'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{'word': word, 'language': language}),
     );
 
     if (response.statusCode == 200) {
