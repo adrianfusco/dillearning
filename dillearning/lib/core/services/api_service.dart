@@ -63,4 +63,25 @@ class ApiService {
       throw Exception('Failed: ${response.body}');
     }
   }
+
+  Future<String> translate(
+      String sourceLanguage, String targetLanguage, String text) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/ai/translate'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'source_language': sourceLanguage,
+        'target_language': targetLanguage,
+        'text': text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed: ${response.body}');
+    }
+  }
 }
