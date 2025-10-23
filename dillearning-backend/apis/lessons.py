@@ -9,4 +9,9 @@ router = APIRouter()
     tags=["Lessons"],
 )
 async def get_available_languages():
-    return {"available_languages": ["es-en", "en-es"]}
+    return {
+        "available_languages": [
+            {"code": "es-en", "name": "Inglés desde Español"},
+            {"code": "en-es", "name": "Spanish from English"},
+        ]
+    }

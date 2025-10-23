@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   // La URL base de la API se obtiene de la configuración de la aplicación
-  final String _baseUrl = AppConfig.config.apiBaseUrl;
+  static final String _baseUrl = AppConfig.config.apiBaseUrl;
 
   Future<Map<String, dynamic>> register(
       String name, String email, String password) async {
@@ -117,6 +117,24 @@ class ApiService {
       return response.body;
     } else {
       throw Exception('Failed: ${response.body}');
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> fetchAvailableLanguages() async {
+    final response = await http.get(Uri.parse('$_baseUrl/available-languages'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      List<dynamic> languages = data['available_languages'];
+
+      return languages.map((language) {
+        return {
+          'code': language['code'],
+          'name': language['name'],
+        };
+      }).toList();
+    } else {
+      throw Exception('Failed to load languages: ${response.body}');
     }
   }
 }
