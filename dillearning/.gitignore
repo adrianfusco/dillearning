@@ -8,6 +8,7 @@
 /build/
 /coverage/
 .build/
+.dart_tool
 
 # Symbolication related
 app.*.symbols

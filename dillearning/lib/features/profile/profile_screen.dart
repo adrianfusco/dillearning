@@ -1,5 +1,7 @@
+import 'package:dillearning/core/services/language_service.dart';
 import 'package:dillearning/core/services/session_service.dart';
 import 'package:dillearning/core/services/theme_service.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,16 +31,17 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    final languageNotifier = Provider.of<LanguageNotifier>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Profile')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
             Text(
-              'Welcome, $_userName',
+              '${AppLocalizations.of(context)!.welcome}, $_userName',
               style: Theme.of(
                 context,
               ).textTheme.headlineMedium,
@@ -52,6 +55,25 @@ class ProfileScreenState extends State<ProfileScreen> {
             ElevatedButton(
               onPressed: () => themeNotifier.setTheme(ThemeMode.dark),
               child: const Text('Dark theme'),
+            ),
+            const SizedBox(height: 40),
+            DropdownButton<Locale>(
+              value: languageNotifier.locale,
+              onChanged: (Locale? newLocale) {
+                if (newLocale != null) {
+                  languageNotifier.setLocale(newLocale);
+                }
+              },
+              items: const [
+                DropdownMenuItem(
+                  value: Locale('en'),
+                  child: Text('English'),
+                ),
+                DropdownMenuItem(
+                  value: Locale('es'),
+                  child: Text('Español'),
+                ),
+              ],
             ),
           ],
         ),
