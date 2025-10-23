@@ -1,6 +1,7 @@
 import 'package:dillearning/features/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dillearning/core/services/api_service.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 class TranslatorScreen extends StatefulWidget {
   const TranslatorScreen({super.key});
@@ -27,7 +28,7 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
 
     if (_sourceLanguage == _targetLanguage) {
       setState(() {
-        _translatedText = 'El idioma origen y destino no puedenn ser iguales';
+        _translatedText = AppLocalizations.of(context)!.sameLanguageError;
       });
       return;
     }
@@ -43,7 +44,7 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
       });
     } catch (e) {
       setState(() {
-        _translatedText = 'Error traduciendo texto';
+        _translatedText = AppLocalizations.of(context)!.translationError;
       });
     }
   }
@@ -64,7 +65,7 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      title: const Text('Traductor'),
+      title: Text(AppLocalizations.of(context)!.translatorTitle),
       actions: [
         IconButton(
           icon: const Icon(Icons.person),
@@ -89,7 +90,9 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildLanguageSelector('De', _sourceLanguage, (val) {
+                _buildLanguageSelector(
+                    AppLocalizations.of(context)!.fromLabel, _sourceLanguage,
+                    (val) {
                   setState(() {
                     _sourceLanguage = val;
                   });
@@ -104,7 +107,9 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
                     });
                   },
                 ),
-                _buildLanguageSelector('A', _targetLanguage, (val) {
+                _buildLanguageSelector(
+                    AppLocalizations.of(context)!.toLabel, _targetLanguage,
+                    (val) {
                   setState(() {
                     _targetLanguage = val;
                   });
@@ -114,9 +119,9 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
             const SizedBox(height: 20),
             TextField(
               controller: _textController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Introduce el texto que quieres traducir',
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: AppLocalizations.of(context)!.textToTranslateLabel,
               ),
               minLines: 3,
               maxLines: 5,
@@ -124,7 +129,7 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _handleTranslation,
-              child: const Text('Traducir texto'),
+              child: Text(AppLocalizations.of(context)!.translateButton),
             ),
             const SizedBox(height: 20),
             if (_translatedText.isNotEmpty)
@@ -138,7 +143,7 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Traducción:',
+                      AppLocalizations.of(context)!.translationResultLabel,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 8),

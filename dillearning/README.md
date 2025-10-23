@@ -65,6 +65,16 @@ Resolving dependencies...
 ...
 ```
 
+### Internacionalización (i18n)
+
+El proyecto utiliza el sistema de localización integrado de Flutter para soportar múltiples idiomas. Las traducciones se gestionan en los ficheros `.arb` que se encuentran en `lib/l10n`.
+
+Cada vez que se modifique o añada un fichero `.arb`, es necesario regenerar las localizaciones. Para ello, ejecuta el siguiente comando:
+
+```
+$ flutter gen-l10n
+```
+
 ### Configuración del entorno (producción, dev)
 
 Haremos uso del parámetro `--dart-define=APP_ENV=<entorno>`. para configurar el entorno donde se ejecutará la aplicación.

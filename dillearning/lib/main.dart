@@ -1,4 +1,5 @@
 import 'package:dillearning/core/env_config.dart';
+import 'package:dillearning/core/services/language_service.dart';
 import 'package:dillearning/core/services/session_service.dart';
 import 'package:dillearning/core/services/theme_service.dart';
 import 'package:dillearning/features/auth/login_screen.dart';
@@ -9,14 +10,20 @@ import 'package:dillearning/features/profile/profile_screen.dart';
 import 'package:dillearning/features/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppConfig.initialize();
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(),
-      child: const MainApplication(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+        ChangeNotifierProvider(
+            create: (_) => LanguageNotifier()),
+      ],
+      child:
+          const MainApplication(),
     ),
   );
 }
@@ -26,10 +33,14 @@ class MainApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeNotifier>(
-      builder: (context, themeNotifier, child) {
+    return Consumer2<ThemeNotifier, LanguageNotifier>(
+      builder: (context, themeNotifier, languageNotifier, child) {
         return MaterialApp(
-          title: 'Dillearning - Aprendizaje de Idiomas',
+          onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale:
+              languageNotifier.locale,
           theme: ThemeData(
             useMaterial3: true,
             brightness: Brightness.light,
@@ -103,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    'Welcome to Dillearning!',
+                    AppLocalizations.of(context)!.welcome,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -128,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text('Start Learning Language'),
+                      child: Text(AppLocalizations.of(context)!.startLearningLanguage),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -150,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       child:
-                          const Text('Chat with AI for practicing Languages'),
+                          Text(AppLocalizations.of(context)!.chatWithAI),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -171,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text('Traductor'),
+                      child: Text(AppLocalizations.of(context)!.translator),
                     ),
                   ),
                 ],

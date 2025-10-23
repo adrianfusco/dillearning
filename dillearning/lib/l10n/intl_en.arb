@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "appTitle": "Dillearning - Languages Learning",
+  "@appTitle": {
+    "description": "Dillearning - Languages Learning"
+  },
+  "welcome": "Welcome to Dillearning!",
+  "startLearningLanguage": "Start Learning Language",
+  "chatWithAI": "Chat with AI for practicing",
+  "translator": "Translator",
+  "translatorTitle": "Translator",
+  "fromLabel": "From",
+  "toLabel": "To",
+  "textToTranslateLabel": "Enter text to translate",
+  "sameLanguageError": "Source and target languages cannot be the same",
+  "translationError": "Error translating text",
+  "translationResultLabel": "Translation:",
+  "translateButton": "Translate"
+}
