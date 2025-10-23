@@ -31,10 +31,10 @@ class LanguageSelectionBody extends StatefulWidget {
   const LanguageSelectionBody({super.key});
 
   @override
-  _LanguageSelectionBodyState createState() => _LanguageSelectionBodyState();
+  LanguageSelectionBodyState createState() => LanguageSelectionBodyState();
 }
 
-class _LanguageSelectionBodyState extends State<LanguageSelectionBody> {
+class LanguageSelectionBodyState extends State<LanguageSelectionBody> {
   late Future<List<Map<String, dynamic>>> _languages;
   String selectedLanguageCode = '';
   
