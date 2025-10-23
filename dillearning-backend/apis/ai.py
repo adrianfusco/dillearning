@@ -1,7 +1,7 @@
 import ollama
-import schemas
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
+from schemas.ai import ChatRequest, ExampleRequest, GrammarRequest, TranslateRequest
 
 CHAT_PROMPT = """
 Eres una IA experta en la enseñanza de idiomas llamada 'Dil'.
@@ -39,7 +39,6 @@ conversation_history = {}
 
 
 async def _stream_ai_response(messages: list):
-    print(messages)
     stream = ollama.chat(
         model="granite3.3:2b",
         messages=messages,
@@ -54,7 +53,7 @@ async def _stream_ai_response(messages: list):
     summary="Chat with the AI Language Teacher",
     tags=["AI"],
 )
-async def chat(request: schemas.ChatRequest):
+async def chat(request: ChatRequest):
     user_id = request.user_id
     question = request.question
 
@@ -86,7 +85,7 @@ async def chat(request: schemas.ChatRequest):
     summary="Translate text between languages",
     tags=["AI"],
 )
-async def translate(request: schemas.TranslateRequest):
+async def translate(request: TranslateRequest):
     """
     Translates a piece of text from a source language to a target language using AI.
     """
@@ -112,7 +111,7 @@ async def translate(request: schemas.TranslateRequest):
     summary="Explain the grammar of a sentence",
     tags=["AI"],
 )
-async def explain_grammar(request: schemas.GrammarRequest):
+async def explain_grammar(request: GrammarRequest):
     """
     Provides a grammatical explanation of a sentence or word using AI.
     """
@@ -132,7 +131,7 @@ async def explain_grammar(request: schemas.GrammarRequest):
     summary="Create example sentences for a word",
     tags=["AI"],
 )
-async def create_examples(request: schemas.ExampleRequest):
+async def create_examples(request: ExampleRequest):
     """
     Generates example sentences for a word or sentence using AI.
     """
