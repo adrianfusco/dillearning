@@ -3,8 +3,7 @@ import 'package:dillearning/core/services/session_service.dart';
 import 'package:dillearning/core/services/theme_service.dart';
 import 'package:dillearning/features/auth/login_screen.dart';
 import 'package:dillearning/features/learn_language/chat_screen.dart';
-import 'package:dillearning/features/learn_language/english_from_spanish_screen.dart';
-import 'package:dillearning/features/learn_language/spanish_from_english_screen.dart';
+import 'features/learn_language/language_learning_screen.dart';
 import 'package:dillearning/features/learn_language/translator_screen.dart';
 import 'package:dillearning/features/profile/profile_screen.dart';
 import 'package:dillearning/features/splash/splash_screen.dart';
@@ -119,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                const EnglishFromSpanishScreen(),
+                                const LanguageLearningScreen(),
                           ),
                         );
                       },
@@ -129,29 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text('Inglés desde Español'),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const SpanishFromEnglishScreen(),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text('Spanish from English'),
+                      child: const Text('Start Learning Language'),
                     ),
                   ),
                   const SizedBox(height: 20),
