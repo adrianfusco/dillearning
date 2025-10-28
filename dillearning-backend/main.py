@@ -1,12 +1,16 @@
 import os
 from contextlib import asynccontextmanager
 
+import models.course  # noqa: F401
+import models.exercise  # noqa: F401
 import models.language  # noqa: F401
 import models.language_pair  # noqa: F401
+import models.lesson  # noqa: F401
+import models.unit  # noqa: F401
 import models.user  # noqa: F401
 import models.user_language  # noqa: F401
-from apis import ai, health, lessons, users
-from database import Base, database, engine
+from apis import ai, courses, health, lessons, users
+from database import Base, engine
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,10 +21,8 @@ load_dotenv()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await database.connect()
     Base.metadata.create_all(bind=engine)
     yield
-    await database.disconnect()
 
 
 app = FastAPI(lifespan=lifespan)
@@ -59,3 +61,4 @@ app.include_router(ai.router)
 app.include_router(health.router)
 app.include_router(lessons.router)
 app.include_router(users.router)
+app.include_router(courses.router)
