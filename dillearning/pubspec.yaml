@@ -30,4 +30,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/images/flags/
     - assets/images/dillearning_logo_1280.png
