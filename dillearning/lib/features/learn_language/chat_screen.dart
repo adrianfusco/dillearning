@@ -29,21 +29,23 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _loadUser() async {
     final session = await SessionService().getSession();
-    final loadedUser = User(
-      id: session['userId'] ?? '0',
-      name: session['userName'] ?? 'User',
-    );
+    if (session != null) {
+      final loadedUser = User(
+        id: session.id.toString(),
+        name: session.name,
+      );
 
-    setState(() {
-      _user = loadedUser;
-    });
+      setState(() {
+        _user = loadedUser;
+      });
 
-    _addMessage(
-      'Hola ${loadedUser.name}, bienvenidoo. Soy tu compañero de práctica de idiomas, Dil. '
-      'Puedes pedirme traducciones, explicaciones de gramática o simplemente tener una conversación en inglés o español. '
-      '¿Con qué te gustaría empezar?',
-      author: _ai,
-    );
+      _addMessage(
+        'Hola ${loadedUser.name}, bienvenidoo. Soy tu compañero de práctica de idiomas, Dil. '
+        'Puedes pedirme traducciones, explicaciones de gramática o simplemente tener una conversación en inglés o español. '
+        '¿Con qué te gustaría empezar?',
+        author: _ai,
+      );
+    }
   }
 
   Future<void> _handleMessageSend(String text) async {

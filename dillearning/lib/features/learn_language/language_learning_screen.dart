@@ -1,4 +1,4 @@
-import 'package:dillearning/features/learn_language/screens/course_selection_screen.dart';
+import 'package:dillearning/features/learn_language/screens/language_selection_screen.dart';
 import 'package:flutter/material.dart';
 
 class LanguageLearningScreen extends StatelessWidget {
@@ -6,6 +6,6 @@ class LanguageLearningScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CourseSelectionScreen();
+    return const LanguageSelectionScreen();
   }
 }

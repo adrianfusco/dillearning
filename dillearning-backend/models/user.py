@@ -10,4 +10,4 @@ class User(Base):
     name = sqlalchemy.Column(String)
     email = sqlalchemy.Column(String, unique=True, index=True)
     hashed_password = sqlalchemy.Column(String)
-    languages = relationship("UserLanguage", back_populates="user")
+    courses = relationship("UserCourse", back_populates="user")

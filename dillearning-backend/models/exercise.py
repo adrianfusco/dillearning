@@ -1,6 +1,7 @@
 from database import Base
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+from sqlalchemy.types import JSON
 
 
 class Exercise(Base):
@@ -12,6 +13,6 @@ class Exercise(Base):
     type = Column(String)
     prompt = Column(String)
     answer = Column(String)
-    options = Column(String, nullable=True)
+    options = Column(JSON, nullable=True)
     lesson_id = Column(Integer, ForeignKey("lessons.id"))
     lesson = relationship("Lesson", back_populates="exercises")

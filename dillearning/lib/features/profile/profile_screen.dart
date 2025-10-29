@@ -23,9 +23,11 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   void _loadUserName() async {
     final session = await SessionService().getSession();
-    setState(() {
-      _userName = session['userName'] ?? '';
-    });
+    if (session != null) {
+      setState(() {
+        _userName = session.name;
+      });
+    }
   }
 
   @override

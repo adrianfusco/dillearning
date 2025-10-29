@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -7,7 +7,7 @@ class ExerciseBase(BaseModel):
     type: str
     prompt: str
     answer: str
-    options: Optional[str] = None
+    options: Optional[List[str]] = None
 
 
 class ExerciseCreate(ExerciseBase):

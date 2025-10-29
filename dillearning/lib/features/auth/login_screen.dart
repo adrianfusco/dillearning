@@ -1,5 +1,6 @@
 import 'package:dillearning/core/services/api_service.dart';
 import 'package:dillearning/core/services/session_service.dart';
+import 'package:dillearning/features/auth/models/user.dart';
 import 'package:dillearning/features/auth/registration_screen.dart';
 import 'package:dillearning/main.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
         if (mounted) {
-          await SessionService().saveSession(response['user_id'], response['name']);
+          final user = User.fromJson(response);
+          await SessionService().saveSession(user);
           if (!mounted) return;
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(

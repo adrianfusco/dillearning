@@ -7,9 +7,10 @@ class Course(Base):
     __tablename__ = "courses"
     id = Column(Integer, primary_key=True, index=True)
     code = Column(String, unique=True, index=True)  # e.g. "es-en"
-    source_language_id = Column(Integer, ForeignKey("languages.id"))
-    target_language_id = Column(Integer, ForeignKey("languages.id"))
+    from_language_id = Column(Integer, ForeignKey("languages.id"))
+    learning_language_id = Column(Integer, ForeignKey("languages.id"))
     title = Column(String)
     description = Column(String)
 
     units = relationship("Unit", back_populates="course")
+    users = relationship("UserCourse", back_populates="course")

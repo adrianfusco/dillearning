@@ -1,6 +1,4 @@
 
-import 'dart:convert';
-
 class Exercise {
   final int id;
   final String type;
@@ -18,11 +16,8 @@ class Exercise {
 
   factory Exercise.fromJson(Map<String, dynamic> json) {
     List<String> optionsList = [];
-    if (json['options'] != null) {
-      final decodedOptions = jsonDecode(json['options']);
-      if (decodedOptions is List) {
-        optionsList = decodedOptions.map((item) => item.toString()).toList();
-      }
+    if (json['options'] != null && json['options'] is List) {
+      optionsList = List<String>.from(json['options']);
     }
 
     return Exercise(

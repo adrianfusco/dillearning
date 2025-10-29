@@ -1,4 +1,8 @@
+from typing import List
+
 from pydantic import BaseModel
+
+from .exercise import Exercise
 
 
 class LessonBase(BaseModel):
@@ -13,6 +17,7 @@ class LessonCreate(LessonBase):
 class Lesson(LessonBase):
     id: int
     unit_id: int
+    exercises: List[Exercise] = []
 
     class Config:
         orm_mode = True
