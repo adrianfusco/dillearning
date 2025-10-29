@@ -1,5 +1,9 @@
 import 'dart:convert';
 import 'package:dillearning/core/env_config.dart';
+import 'package:dillearning/features/learn_language/models/course.dart';
+import 'package:dillearning/features/learn_language/models/unit.dart';
+import 'package:dillearning/features/learn_language/models/lesson.dart';
+import 'package:dillearning/features/learn_language/models/exercise.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -117,6 +121,65 @@ class ApiService {
       return response.body;
     } else {
       throw Exception('Failed: ${response.body}');
+    }
+  }
+
+  Future<List<Course>> getCourses() async {
+    final response = await http.get(Uri.parse('$_baseUrl/courses'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((course) => Course.fromJson(course)).toList();
+    } else {
+      throw Exception('Failed to load courses: ${response.body}');
+    }
+  }
+
+  Future<Course> getCourse(int courseId) async {
+    final response = await http.get(Uri.parse('$_baseUrl/courses/$courseId'));
+
+    if (response.statusCode == 200) {
+      return Course.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load course: ${response.body}');
+    }
+  }
+
+  Future<List<Unit>> getUnits(int courseId) async {
+    final response =
+        await http.get(Uri.parse('$_baseUrl/courses/$courseId/units'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((unit) => Unit.fromJson(unit)).toList();
+    } else {
+      throw Exception('Failed to load units');
+    }
+  }
+
+  Future<List<Lesson>> getLessons(int unitId) async {
+    final response =
+        await http.get(Uri.parse('$_baseUrl/units/$unitId/lessons'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((lesson) => Lesson.fromJson(lesson)).toList();
+    } else {
+      throw Exception('Failed to load lessons');
+    }
+  }
+
+  Future<List<Exercise>> getExercises(int lessonId) async {
+    final response =
+        await http.get(Uri.parse('$_baseUrl/lessons/$lessonId/exercises'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse
+          .map((exercise) => Exercise.fromJson(exercise))
+          .toList();
+    } else {
+      throw Exception('Failed to load exercises');
     }
   }
 
