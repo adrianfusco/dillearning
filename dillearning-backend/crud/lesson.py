@@ -1,14 +1,24 @@
 from models.lesson import Lesson
 from schemas.lesson import LessonCreate
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 
 def get_lesson(db: Session, lesson_id: int):
-    return db.query(Lesson).filter(Lesson.id == lesson_id).first()
+    return (
+        db.query(Lesson)
+        .options(joinedload(Lesson.exercises))
+        .filter(Lesson.id == lesson_id)
+        .first()
+    )
 
 
 def get_lessons_by_unit(db: Session, unit_id: int):
-    return db.query(Lesson).filter(Lesson.unit_id == unit_id).all()
+    return (
+        db.query(Lesson)
+        .options(joinedload(Lesson.exercises))
+        .filter(Lesson.unit_id == unit_id)
+        .all()
+    )
 
 
 def create_lesson(db: Session, unit_id: int, lesson: LessonCreate):

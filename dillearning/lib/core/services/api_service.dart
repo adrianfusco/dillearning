@@ -7,13 +7,23 @@ import 'package:dillearning/features/learn_language/models/exercise.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // La URL base de la API se obtiene de la configuración de la aplicación
   static final String _baseUrl = AppConfig.config.apiBaseUrl;
+
+  static const Map<String, String> _endpoints = {
+    'register': '/register/',
+    'login': '/login/',
+    'chat': '/ai/chat',
+    'translate': '/ai/translate',
+    'explain-grammar': '/ai/explain-grammar',
+    'create-examples': '/ai/create-examples',
+    'courses': '/courses',
+    'available-languages': '/available-languages',
+  };
 
   Future<Map<String, dynamic>> register(
       String name, String email, String password) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/register/'),
+      Uri.parse('$_baseUrl${_endpoints['register']}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -33,7 +43,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/login/'),
+      Uri.parse('$_baseUrl${_endpoints['login']}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -52,7 +62,7 @@ class ApiService {
 
   Future<String> chat(String question, String userId) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/ai/chat'),
+      Uri.parse('$_baseUrl${_endpoints['chat']}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -72,7 +82,7 @@ class ApiService {
   Future<String> translate(
       String sourceLanguage, String targetLanguage, String text) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/ai/translate'),
+      Uri.parse('$_baseUrl${_endpoints['translate']}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -92,7 +102,7 @@ class ApiService {
 
   Future<String> explainGrammar(String sentence) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/ai/explain-grammar'),
+      Uri.parse('$_baseUrl${_endpoints['explain-grammar']}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -110,7 +120,7 @@ class ApiService {
 
   Future<String> createExamples(String word, String language) async {
     final response = await http.post(
-      Uri.parse('$_baseUrl/ai/create-examples'),
+      Uri.parse('$_baseUrl${_endpoints['create-examples']}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -119,13 +129,14 @@ class ApiService {
 
     if (response.statusCode == 200) {
       return response.body;
-    } else {
+    }
+    else {
       throw Exception('Failed: ${response.body}');
     }
   }
 
   Future<List<Course>> getCourses() async {
-    final response = await http.get(Uri.parse('$_baseUrl/courses'));
+    final response = await http.get(Uri.parse('$_baseUrl${_endpoints['courses']}'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -183,19 +194,12 @@ class ApiService {
     }
   }
 
-  static Future<List<Map<String, dynamic>>> fetchAvailableLanguages() async {
-    final response = await http.get(Uri.parse('$_baseUrl/available-languages'));
+  Future<List<Course>> getAvailableCourses() async {
+    final response = await http.get(Uri.parse('$_baseUrl${_endpoints['available-languages']}'));
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      List<dynamic> languages = data['available_languages'];
-
-      return languages.map((language) {
-        return {
-          'code': language['code'],
-          'name': language['name'],
-        };
-      }).toList();
+      final data = jsonDecode(response.body) as List;
+      return data.map((course) => Course.fromJson(course)).toList();
     } else {
       throw Exception('Failed to load languages: ${response.body}');
     }

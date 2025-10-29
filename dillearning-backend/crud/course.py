@@ -1,14 +1,33 @@
 from models.course import Course
+from models.lesson import Lesson
+from models.unit import Unit
 from schemas.course import CourseCreate
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 
 def get_courses(db: Session):
-    return db.query(Course).all()
+    return (
+        db.query(Course)
+        .options(
+            joinedload(Course.units)
+            .joinedload(Unit.lessons)
+            .joinedload(Lesson.exercises)
+        )
+        .all()
+    )
 
 
 def get_course(db: Session, course_id: int):
-    return db.query(Course).filter(Course.id == course_id).first()
+    return (
+        db.query(Course)
+        .options(
+            joinedload(Course.units)
+            .joinedload(Unit.lessons)
+            .joinedload(Lesson.exercises)
+        )
+        .filter(Course.id == course_id)
+        .first()
+    )
 
 
 def get_course_by_code(db: Session, code: str):
@@ -20,8 +39,8 @@ def create_course(db: Session, course: CourseCreate):
         code=course.code,
         title=course.title,
         description=course.description,
-        source_language_id=course.source_language_id,
-        target_language_id=course.target_language_id,
+        from_language_id=course.from_language_id,
+        learning_language_id=course.learning_language_id,
     )
     db.add(db_course)
     db.commit()

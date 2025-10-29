@@ -1,7 +1,10 @@
+from typing import List
+
 from auth import create_access_token, verify_password
-from crud.user import create_user, get_user_by_email
+from crud.user import create_user, get_user_by_email, get_user_courses
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
+from schemas.course import Course
 from schemas.user import User, UserCreate, UserLogin
 from sqlalchemy.orm import Session
 
@@ -45,3 +48,16 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         "email": db_user.email,
         "name": db_user.name,
     }
+
+
+@router.get(
+    "/users/{user_id}/courses",
+    response_model=List[Course],
+    summary="Get user courses",
+    tags=["Users"],
+)
+def read_user_courses(user_id: int, db: Session = Depends(get_db)):
+    """
+    Returns a list of courses the user is enrolled in.
+    """
+    return get_user_courses(db=db, user_id=user_id)

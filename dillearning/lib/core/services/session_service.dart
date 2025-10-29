@@ -1,25 +1,31 @@
+import 'dart:convert';
+import 'package:dillearning/features/auth/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionService {
-  static const _keyUserId = 'userId';
-  static const _keyUserName = 'userName';
+  static const _keyUser = 'user';
 
-  Future<void> saveSession(int userId, String userName) async {
+  Future<void> saveSession(User user) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_keyUserId, userId);
-    await prefs.setString(_keyUserName, userName);
+    await prefs.setString(_keyUser, jsonEncode(user.toJson()));
   }
 
-  Future<Map<String, String?>> getSession() async {
+  Future<User?> getSession() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getInt(_keyUserId);
-    final userName = prefs.getString(_keyUserName);
-    return {'userId': userId?.toString(), 'userName': userName};
+    final userString = prefs.getString(_keyUser);
+    if (userString != null) {
+      return User.fromJson(jsonDecode(userString));
+    }
+    return null;
   }
 
   Future<void> clearSession() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_keyUserId);
-    await prefs.remove(_keyUserName);
+    await prefs.remove(_keyUser);
+  }
+
+  Future<bool> isLoggedIn() async {
+    final user = await getSession();
+    return user != null;
   }
 }
