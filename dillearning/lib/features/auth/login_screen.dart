@@ -2,7 +2,7 @@ import 'package:dillearning/core/services/api_service.dart';
 import 'package:dillearning/core/services/session_service.dart';
 import 'package:dillearning/features/auth/models/user.dart';
 import 'package:dillearning/features/auth/registration_screen.dart';
-import 'package:dillearning/main.dart';
+import 'package:dillearning/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (!mounted) return;
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const MyHomePage(title: 'Dillearning'),
+              builder: (context) => const HomeScreen(),
             ),
           );
         }

@@ -1,4 +1,3 @@
-import 'package:dillearning/features/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dillearning/core/services/api_service.dart';
 import 'package:dillearning/l10n/app_localizations.dart';
@@ -13,16 +12,24 @@ class TranslatorScreen extends StatefulWidget {
 class _TranslatorScreenState extends State<TranslatorScreen> {
   final _apiService = ApiService();
   final _textController = TextEditingController();
-  // Los colocamos por defecto
   String? _sourceLanguage = 'English';
   String? _targetLanguage = 'Español';
   String _translatedText = '';
-  // Aunque el modelo entiende más idiomas, coloco estos por defecto:
+  bool _isLoading = false;
   final List<String> _languages = <String>['English', 'Español', 'Italiano'];
 
   Future<void> _handleTranslation() async {
     final text = _textController.text;
-    if (_sourceLanguage == null || _targetLanguage == null || text.isEmpty) {
+    if (text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.emptyTextFieldError),
+        ),
+      );
+      return;
+    }
+
+    if (_sourceLanguage == null || _targetLanguage == null) {
       return;
     }
 
@@ -32,6 +39,10 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
       });
       return;
     }
+
+    setState(() {
+      _isLoading = true;
+    });
 
     try {
       final response = await _apiService.translate(
@@ -46,6 +57,10 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
       setState(() {
         _translatedText = AppLocalizations.of(context)!.translationError;
       });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -58,110 +73,128 @@ class _TranslatorScreenState extends State<TranslatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildTranslatorBody(),
-    );
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      title: Text(AppLocalizations.of(context)!.translatorTitle),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.person),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfileScreen()),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTranslatorBody() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildLanguageSelector(
-                    AppLocalizations.of(context)!.fromLabel, _sourceLanguage,
-                    (val) {
-                  setState(() {
-                    _sourceLanguage = val;
-                  });
-                }),
-                IconButton(
-                  icon: const Icon(Icons.swap_horiz),
-                  onPressed: () {
-                    setState(() {
-                      final temp = _sourceLanguage;
-                      _sourceLanguage = _targetLanguage;
-                      _targetLanguage = temp;
-                    });
-                  },
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.translatorTitle),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Card(
+                elevation: 4.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
-                _buildLanguageSelector(
-                    AppLocalizations.of(context)!.toLabel, _targetLanguage,
-                    (val) {
-                  setState(() {
-                    _targetLanguage = val;
-                  });
-                }),
-              ],
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _textController,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: AppLocalizations.of(context)!.textToTranslateLabel,
-              ),
-              minLines: 3,
-              maxLines: 5,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _handleTranslation,
-              child: Text(AppLocalizations.of(context)!.translateButton),
-            ),
-            const SizedBox(height: 20),
-            if (_translatedText.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.translationResultLabel,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      _translatedText,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildLanguageSelector(
+                            AppLocalizations.of(context)!.fromLabel,
+                            _sourceLanguage,
+                            (val) {
+                              setState(() {
+                                _sourceLanguage = val;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.swap_horiz),
+                            onPressed: () {
+                              setState(() {
+                                final temp = _sourceLanguage;
+                                _sourceLanguage = _targetLanguage;
+                                _targetLanguage = temp;
+                              });
+                            },
+                          ),
+                          _buildLanguageSelector(
+                            AppLocalizations.of(context)!.toLabel,
+                            _targetLanguage,
+                            (val) {
+                              setState(() {
+                                _targetLanguage = val;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: _textController,
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: AppLocalizations.of(context)!
+                              .textToTranslateLabel,
+                        ),
+                        minLines: 3,
+                        maxLines: 5,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-          ],
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 50,
+                child: ElevatedButton.icon(
+                  onPressed: _isLoading ? null : _handleTranslation,
+                  icon: _isLoading
+                      ? const SizedBox.shrink()
+                      : const Icon(Icons.translate),
+                  label: _isLoading
+                      ? const CircularProgressIndicator()
+                      : Text(AppLocalizations.of(context)!.translateButton),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              if (_translatedText.isNotEmpty)
+                Card(
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.translationResultLabel,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _translatedText,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildLanguageSelector(
-      String label, String? value, ValueChanged<String?> onChanged) {
+    String label,
+    String? value,
+    ValueChanged<String?> onChanged,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

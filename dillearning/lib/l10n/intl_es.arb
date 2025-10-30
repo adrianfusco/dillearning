@@ -12,5 +12,6 @@
   "sameLanguageError": "El idioma origen y destino no pueden ser iguales",
   "translationError": "Error traduciendo texto",
   "translationResultLabel": "Traducción:",
-  "translateButton": "Traducir"
+  "translateButton": "Traducir",
+  "emptyTextFieldError": "Por favor, introduce texto para traducir"
 }

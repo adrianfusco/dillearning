@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dillearning/core/services/session_service.dart';
 import 'package:dillearning/features/auth/login_screen.dart';
-import 'package:dillearning/main.dart';
+import 'package:dillearning/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
       if (session != null) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const MyHomePage(title: 'Dillearning'),
+            builder: (context) => const HomeScreen(),
           ),
         );
       } else {

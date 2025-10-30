@@ -42,26 +42,37 @@ class LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
             itemCount: courses.length,
             itemBuilder: (context, index) {
               final course = courses[index];
-              final languageCode = course.code.split('-').last;
               return Card(
-                  margin: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    leading: Image.asset(
-                      'assets/images/flags/$languageCode.png',
-                      width: 40,
-                      height: 40,
-                    ),
-                    title: Text(course.title),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              CourseUnitsScreen(courseId: course.id),
-                        ),
-                      );
-                    },
-                  ));
+                margin: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  leading: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        'assets/images/flags/${course.fromLanguageCode}.png',
+                        width: 40,
+                        height: 40,
+                      ),
+                      const SizedBox(width: 8),
+                      Image.asset(
+                        'assets/images/flags/${course.learningLanguageCode}.png',
+                        width: 40,
+                        height: 40,
+                      ),
+                    ],
+                  ),
+                  title: Text(course.title),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            CourseUnitsScreen(courseId: course.id),
+                      ),
+                    );
+                  },
+                ),
+              );
             },
           );
         },
