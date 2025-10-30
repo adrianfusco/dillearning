@@ -47,4 +47,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get translateButton => 'Translate';
+
+  @override
+  String get emptyTextFieldError => 'Please enter some text to translate';
 }

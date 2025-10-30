@@ -175,6 +175,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Translate'**
   String get translateButton;
+
+  /// No description provided for @emptyTextFieldError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter some text to translate'**
+  String get emptyTextFieldError;
 }
 
 class _AppLocalizationsDelegate

@@ -1,6 +1,5 @@
 import 'package:dillearning/core/services/api_service.dart';
 import 'package:dillearning/core/services/session_service.dart';
-import 'package:dillearning/features/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -79,18 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      title: const Text('Chat con IA - Puedes tener una conversación con la IA y hacer preguntas de gramática, generar ejemplos y aprender :)'),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.person),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfileScreen()),
-            );
-          },
-        ),
-      ],
+      title: const Text('Chat con IA'),
     );
   }
 
