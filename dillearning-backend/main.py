@@ -1,6 +1,7 @@
 import os
 from contextlib import asynccontextmanager
 
+import models.conversation  # noqa: F401
 import models.course  # noqa: F401
 import models.exercise  # noqa: F401
 import models.language  # noqa: F401
