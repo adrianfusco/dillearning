@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS user_courses;
 DROP TABLE IF EXISTS exercises;
 DROP TABLE IF EXISTS lessons;
+DROP TABLE IF EXISTS concepts;
 DROP TABLE IF EXISTS units;
 DROP TABLE IF EXISTS courses;
 DROP TABLE IF EXISTS languages;
@@ -31,6 +32,14 @@ CREATE TABLE units (
     course_id INTEGER REFERENCES courses(id)
 );
 
+-- Create concepts table
+CREATE TABLE concepts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    explanation TEXT NOT NULL,
+    lesson_id INTEGER REFERENCES lessons(id)
+);
+
 -- Create lessons table
 CREATE TABLE lessons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,7 +56,7 @@ CREATE TABLE exercises (
     prompt TEXT NOT NULL,
     answer TEXT NOT NULL,
     options TEXT, -- Storing JSON as TEXT
-    lesson_id INTEGER REFERENCES lessons(id)
+    concept_id INTEGER REFERENCES concepts(id)
 );
 
 -- Create users table
@@ -84,8 +93,18 @@ INSERT INTO lessons (title, description, "order", unit_id) VALUES
 ('Lección 1: Saludos', 'Aprende saludos comunes', 1, 3),
 ('Lección 2: Números', 'Aprende los números del 1 al 10', 2, 3);
 
-INSERT INTO exercises (type, prompt, answer, options, lesson_id) VALUES
+INSERT INTO concepts (title, explanation, lesson_id) VALUES
+('Basic Greetings', 'In Spanish, you can say "Hola" to greet someone. To say goodbye, you can say "Adiós".', 1),
+('Formal and Informal Greetings', 'In Spanish, "Hola" is a general greeting. For formal situations, you might use "Buenos días" (good morning), "Buenas tardes" (good afternoon), or "Buenas noches" (good evening/night). For informal situations, you can use "¿Qué tal?" (How are you?) or "¿Cómo estás?" (How are you? - informal).', 1),
+('Essential Phrases', 'Some essential phrases in Spanish are "Por favor" (Please), "Gracias" (Thank you), and "De nada" (You''re welcome).', 2),
+('Asking for Directions', 'To ask for directions, you can say "¿Dónde está...?" (Where is...?). For example, "¿Dónde está el baño?" (Where is the bathroom?). To ask for help, you can say "¿Me puede ayudar?" (Can you help me?).', 2);
+
+INSERT INTO exercises (type, prompt, answer, options, concept_id) VALUES
 ('multiple_choice', 'How do you say "Hello" in Spanish?', 'Hola', '["Hola", "Adiós", "Gracias", "Por favor"]', 1),
-('translation', 'Translate "Good morning" to Spanish.', 'Buenos días', NULL, 1),
-('multiple_choice', '¿Cómo se dice "Goodbye" en Inglés?', 'Goodbye', '["Hello", "Goodbye", "Thank you", "Please"]', 3),
-('translation', 'Traduce "Buenas noches" al Inglés.', 'Good night', NULL, 3);
+('multiple_choice', 'How do you say "Good evening" in Spanish?', 'Buenas noches', '["Buenos días", "Buenas tardes", "Buenas noches", "Hola"]', 1),
+('translation', 'Translate "Good morning" to Spanish.', 'Buenos días', NULL, 2),
+('translation', 'Translate "Please" to Spanish.', 'Por favor', NULL, 2),
+('multiple_choice', 'How do you say "five" in Spanish?', 'cinco', '["uno", "dos", "tres", "cinco"]', 3),
+('translation', 'Translate "eight" to Spanish.', 'ocho', NULL, 3),
+('multiple_choice', '¿Cómo se dice "Goodbye" en Inglés?', 'Goodbye', '["Hello", "Goodbye", "Thank you", "Please"]', 4),
+('translation', 'Traduce "Buenas noches" al Inglés.', 'Good night', NULL, 4);

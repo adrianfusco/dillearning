@@ -16,7 +16,7 @@ class ExerciseCreate(ExerciseBase):
 
 class Exercise(ExerciseBase):
     id: int
-    lesson_id: int
+    concept_id: int
 
     class Config:
         orm_mode = True

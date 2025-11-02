@@ -5,6 +5,7 @@ class Exercise {
   final String prompt;
   final String answer;
   final List<String> options;
+  final int conceptId;
 
   Exercise({
     required this.id,
@@ -12,6 +13,7 @@ class Exercise {
     required this.prompt,
     required this.answer,
     required this.options,
+    required this.conceptId,
   });
 
   factory Exercise.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class Exercise {
       prompt: json['prompt'] ?? '',
       answer: json['answer'] ?? '',
       options: optionsList,
+      conceptId: json['concept_id'],
     );
   }
 }

@@ -14,5 +14,5 @@ class Exercise(Base):
     prompt = Column(String)
     answer = Column(String)
     options = Column(JSON, nullable=True)
-    lesson_id = Column(Integer, ForeignKey("lessons.id"))
-    lesson = relationship("Lesson", back_populates="exercises")
+    concept_id = Column(Integer, ForeignKey("concepts.id"))
+    concept = relationship("Concept", back_populates="exercises")

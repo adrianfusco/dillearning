@@ -180,9 +180,19 @@ class ApiService {
     }
   }
 
-  Future<List<Exercise>> getExercises(int lessonId) async {
+  Future<Lesson> getLesson(int lessonId) async {
+    final response = await http.get(Uri.parse('$_baseUrl/lessons/$lessonId'));
+
+    if (response.statusCode == 200) {
+      return Lesson.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load lesson');
+    }
+  }
+
+  Future<List<Exercise>> getExercises(int conceptId) async {
     final response =
-        await http.get(Uri.parse('$_baseUrl/lessons/$lessonId/exercises'));
+        await http.get(Uri.parse('$_baseUrl/concepts/$conceptId/exercises'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);

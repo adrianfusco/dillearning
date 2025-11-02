@@ -12,4 +12,4 @@ class Lesson(Base):
     order = Column(Integer)
     unit_id = Column(Integer, ForeignKey("units.id"))
     unit = relationship("Unit", back_populates="lessons")
-    exercises = relationship("Exercise", back_populates="lesson")
+    concepts = relationship("Concept", back_populates="lesson")
