@@ -1,11 +1,13 @@
 from typing import List
 
+from crud import concept as concept_crud
 from crud import course as course_crud
 from crud import exercise as exercise_crud
 from crud import lesson as lesson_crud
 from crud import unit as unit_crud
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
+from schemas.concept import Concept
 from schemas.course import Course
 from schemas.exercise import Exercise
 from schemas.lesson import Lesson
@@ -60,12 +62,20 @@ def read_lesson(lesson_id: int, db: Session = Depends(get_db)):
     return db_lesson
 
 
-@router.get("/lessons/{lesson_id}/exercises", response_model=List[Exercise])
-def read_exercises_for_lesson(lesson_id: int, db: Session = Depends(get_db)):
+@router.get("/lessons/{lesson_id}/concepts", response_model=List[Concept])
+def read_concepts_for_lesson(lesson_id: int, db: Session = Depends(get_db)):
     db_lesson = lesson_crud.get_lesson(db, lesson_id=lesson_id)
     if db_lesson is None:
         raise HTTPException(status_code=404, detail="Lesson not found")
-    return exercise_crud.get_exercises_by_lesson(db, lesson_id=lesson_id)
+    return concept_crud.get_concepts_by_lesson(db, lesson_id=lesson_id)
+
+
+@router.get("/concepts/{concept_id}/exercises", response_model=List[Exercise])
+def read_exercises_for_concept(concept_id: int, db: Session = Depends(get_db)):
+    db_concept = concept_crud.get_concept(db, concept_id=concept_id)
+    if db_concept is None:
+        raise HTTPException(status_code=404, detail="Concept not found")
+    return exercise_crud.get_exercises_by_concept(db, concept_id=concept_id)
 
 
 @router.get("/exercises/{exercise_id}", response_model=Exercise)

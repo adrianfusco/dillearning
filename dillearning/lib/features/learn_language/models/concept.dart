@@ -1,0 +1,32 @@
+
+import 'package:dillearning/features/learn_language/models/exercise.dart';
+
+class Concept {
+  final int id;
+  final String title;
+  final String explanation;
+  final int lessonId;
+  final List<Exercise> exercises;
+
+  Concept({
+    required this.id,
+    required this.title,
+    required this.explanation,
+    required this.lessonId,
+    required this.exercises,
+  });
+
+  factory Concept.fromJson(Map<String, dynamic> json) {
+    var exercisesList = json['exercises'] as List? ?? [];
+    List<Exercise> exercises =
+        exercisesList.map((i) => Exercise.fromJson(i)).toList();
+
+    return Concept(
+      id: json['id'],
+      title: json['title'],
+      explanation: json['explanation'],
+      lessonId: json['lesson_id'],
+      exercises: exercises,
+    );
+  }
+}
