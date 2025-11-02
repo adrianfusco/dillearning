@@ -1,22 +1,76 @@
 erDiagram
     users {
         Integer id PK
-        String email "Unique, Indexed"
+        String email "Único, Indexado"
         String hashed_password
     }
 
     languages {
         Integer id PK
-        String name "Unique"
-        String code "Unique"
+        String name "Único"
+        String code "Único"
     }
 
     user_languages {
         Integer id PK
         Integer user_id FK
         Integer language_id FK
-        Integer progress "Percentage (0-100)"
+        Integer progress "Porcentaje (0-100)"
     }
 
-    users ||--o{ user_languages : "aprende"
-    languages ||--o{ user_languages : "es aprendido por"
+    courses {
+        Integer id PK
+        String code "Único"
+        Integer from_language_id FK
+        Integer learning_language_id FK
+        String title
+        String description
+    }
+
+    units {
+        Integer id PK
+        Integer course_id FK
+        String title
+        Integer order
+    }
+
+    lessons {
+        Integer id PK
+        String title
+        String description
+        Integer order
+        Integer unit_id FK
+    }
+
+    exercises {
+        Integer id PK
+        String type
+        String prompt
+        String answer
+        JSON options
+        Integer lesson_id FK
+    }
+
+    conversations {
+        Integer id PK
+        Integer user_id FK
+        String role
+        String content
+        DateTime created_at
+    }
+
+    user_courses {
+        Integer user_id FK
+        Integer course_id FK
+    }
+
+    user_courses ||--o{ users : "está inscrito en"
+    user_courses ||--o{ courses : "contiene"
+    user_languages ||--o{ users : "aprende"
+    user_languages ||--o{ languages : "es aprendido por"
+    courses ||--o{ units : "contiene"
+    units ||--o{ lessons : "contiene"
+    lessons ||--o{ exercises : "tiene"
+    courses ||--o{ user_courses : "es inscrito en"
+    users ||--o{ conversations : "tiene"
+    exercises ||--o{ lessons : "es parte de"
