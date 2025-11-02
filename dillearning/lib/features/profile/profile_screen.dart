@@ -39,6 +39,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.appTitle),
+        elevation: 0,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -46,89 +47,111 @@ class ProfileScreenState extends State<ProfileScreen> {
           Center(
             child: Column(
               children: [
-                CircleAvatar(
-                  radius: 50,
-                  child: Text(
-                    _userName.isNotEmpty ? _userName[0].toUpperCase() : '',
-                    style: const TextStyle(fontSize: 40),
+                ClipOval(
+                  child: CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Colors.grey.shade300,
+                    child: Text(
+                      _userName.isNotEmpty ? _userName[0].toUpperCase() : '',
+                      style: const TextStyle(
+                          fontSize: 40, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   _userName,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'User Profile',
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             ),
           ),
           const SizedBox(height: 32),
           Card(
+            elevation: 4,
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             child: Column(
               children: [
                 ListTile(
                   leading: const Icon(Icons.brightness_6),
                   title: const Text('Theme'),
-                  trailing: DropdownButton<ThemeMode>(
-                    value: themeNotifier.themeMode,
-                    onChanged: (ThemeMode? newThemeMode) {
-                      if (newThemeMode != null) {
-                        themeNotifier.setTheme(newThemeMode);
-                      }
+                  trailing: Switch(
+                    value: themeNotifier.themeMode == ThemeMode.dark,
+                    onChanged: (bool value) {
+                      themeNotifier
+                          .setTheme(value ? ThemeMode.dark : ThemeMode.light);
                     },
-                    items: const [
-                      DropdownMenuItem(
-                        value: ThemeMode.light,
-                        child: Text('Light'),
-                      ),
-                      DropdownMenuItem(
-                        value: ThemeMode.dark,
-                        child: Text('Dark'),
-                      ),
-                      DropdownMenuItem(
-                        value: ThemeMode.system,
-                        child: Text('System'),
-                      ),
-                    ],
                   ),
                 ),
                 ListTile(
                   leading: const Icon(Icons.language),
                   title: const Text('Language'),
-                  trailing: DropdownButton<Locale>(
-                    value: languageNotifier.locale,
-                    onChanged: (Locale? newLocale) {
-                      if (newLocale != null) {
-                        languageNotifier.setLocale(newLocale);
-                      }
+                  trailing: IconButton(
+                    icon: const Icon(Icons.arrow_forward_ios),
+                    onPressed: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Select Language'),
+                            content: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: const Text('English'),
+                                    onTap: () {
+                                      languageNotifier.setLocale(Locale('en'));
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: const Text('Español'),
+                                    onTap: () {
+                                      languageNotifier.setLocale(Locale('es'));
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     },
-                    items: const [
-                      DropdownMenuItem(
-                        value: Locale('en'),
-                        child: Text('English'),
-                      ),
-                      DropdownMenuItem(
-                        value: Locale('es'),
-                        child: Text('Español'),
-                      ),
-                    ],
                   ),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 16),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text('Logout', style: TextStyle(color: Colors.red)),
-              onTap: () async {
-                final navigator = Navigator.of(context);
-                await SessionService().clearSession();
-                navigator.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  (route) => false,
-                );
-              },
+          ElevatedButton.icon(
+            onPressed: () async {
+              final navigator = Navigator.of(context);
+              await SessionService().clearSession();
+              navigator.pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false,
+              );
+            },
+            icon: const Icon(Icons.logout, color: Colors.white),
+            label: const Text('Logout'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 224, 218, 217),
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              textStyle:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
         ],
