@@ -98,7 +98,7 @@ abstract class AppLocalizations {
     Locale('es')
   ];
 
-  /// Dillearning - Languages Learning
+  /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
   /// **'Dillearning - Languages Learning'**
@@ -109,6 +109,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome to Dillearning!'**
   String get welcome;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @selectLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get selectLanguage;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
 
   /// No description provided for @startLearningLanguage.
   ///
