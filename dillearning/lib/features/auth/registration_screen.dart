@@ -99,8 +99,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
+                // Full Name
                 TextFormField(
                   controller: _nameController,
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Full Name',
                     labelStyle: const TextStyle(color: Colors.white),
@@ -123,9 +125,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
+                // Email
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Email',
                     labelStyle: const TextStyle(color: Colors.white),
@@ -151,10 +155,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
+                // Password
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
+                    labelText: 'Password',
+                    labelStyle: const TextStyle(color: Colors.white),
+                    hintText: 'Enter your password',
+                    hintStyle: const TextStyle(color: Colors.white70),
+                    filled: true,
                     fillColor: const Color.fromRGBO(255, 255, 255, 0.1),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -174,9 +185,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
+                // Confirm Password
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: true,
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     labelText: 'Confirm Password',
                     labelStyle: const TextStyle(color: Colors.white),

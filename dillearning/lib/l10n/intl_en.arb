@@ -1,10 +1,11 @@
 {
   "@@locale": "en",
   "appTitle": "Dillearning - Languages Learning",
-  "@appTitle": {
-    "description": "Dillearning - Languages Learning"
-  },
   "welcome": "Welcome to Dillearning!",
+  "theme": "Theme",
+  "language": "Language",
+  "selectLanguage": "Select Language",
+  "logout": "Logout",
   "startLearningLanguage": "Start Learning Language",
   "chatWithAI": "Chat with AI for practicing",
   "translator": "Translator",

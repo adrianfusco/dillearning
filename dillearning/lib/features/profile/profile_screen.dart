@@ -68,7 +68,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'User Profile',
+                  AppLocalizations.of(context)!.welcome,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
@@ -84,7 +84,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               children: [
                 ListTile(
                   leading: const Icon(Icons.brightness_6),
-                  title: const Text('Theme'),
+                  title: Text(AppLocalizations.of(context)!.theme),
                   trailing: Switch(
                     value: themeNotifier.themeMode == ThemeMode.dark,
                     onChanged: (bool value) {
@@ -95,7 +95,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.language),
-                  title: const Text('Language'),
+                  title: Text(AppLocalizations.of(context)!.language),
                   trailing: IconButton(
                     icon: const Icon(Icons.arrow_forward_ios),
                     onPressed: () async {
@@ -103,7 +103,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: const Text('Select Language'),
+                            title: Text(AppLocalizations.of(context)!.selectLanguage),
                             content: SingleChildScrollView(
                               child: Column(
                                 children: [
@@ -144,7 +144,7 @@ class ProfileScreenState extends State<ProfileScreen> {
               );
             },
             icon: const Icon(Icons.logout, color: Colors.white),
-            label: const Text('Logout'),
+            label: Text(AppLocalizations.of(context)!.logout),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 224, 218, 217),
               padding: const EdgeInsets.symmetric(vertical: 15),

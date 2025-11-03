@@ -15,6 +15,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcome => 'Welcome to Dillearning!';
 
   @override
+  String get theme => 'Theme';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get selectLanguage => 'Select Language';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
   String get startLearningLanguage => 'Start Learning Language';
 
   @override
