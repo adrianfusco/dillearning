@@ -3,14 +3,12 @@ from typing import List
 from crud import concept as concept_crud
 from crud import course as course_crud
 from crud import exercise as exercise_crud
-from crud import lesson as lesson_crud
 from crud import unit as unit_crud
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
 from schemas.concept import Concept
 from schemas.course import Course
 from schemas.exercise import Exercise
-from schemas.lesson import Lesson
 from schemas.unit import Unit
 from sqlalchemy.orm import Session
 
@@ -46,28 +44,12 @@ def read_unit(unit_id: int, db: Session = Depends(get_db)):
     return db_unit
 
 
-@router.get("/units/{unit_id}/lessons", response_model=List[Lesson])
-def read_lessons_for_unit(unit_id: int, db: Session = Depends(get_db)):
+@router.get("/units/{unit_id}/concepts", response_model=List[Concept])
+def read_concepts_for_unit(unit_id: int, db: Session = Depends(get_db)):
     db_unit = unit_crud.get_unit(db, unit_id=unit_id)
     if db_unit is None:
         raise HTTPException(status_code=404, detail="Unit not found")
-    return lesson_crud.get_lessons_by_unit(db, unit_id=unit_id)
-
-
-@router.get("/lessons/{lesson_id}", response_model=Lesson)
-def read_lesson(lesson_id: int, db: Session = Depends(get_db)):
-    db_lesson = lesson_crud.get_lesson(db, lesson_id=lesson_id)
-    if db_lesson is None:
-        raise HTTPException(status_code=404, detail="Lesson not found")
-    return db_lesson
-
-
-@router.get("/lessons/{lesson_id}/concepts", response_model=List[Concept])
-def read_concepts_for_lesson(lesson_id: int, db: Session = Depends(get_db)):
-    db_lesson = lesson_crud.get_lesson(db, lesson_id=lesson_id)
-    if db_lesson is None:
-        raise HTTPException(status_code=404, detail="Lesson not found")
-    return concept_crud.get_concepts_by_lesson(db, lesson_id=lesson_id)
+    return concept_crud.get_concepts_by_unit(db, unit_id=unit_id)
 
 
 @router.get("/concepts/{concept_id}/exercises", response_model=List[Exercise])
@@ -82,5 +64,5 @@ def read_exercises_for_concept(concept_id: int, db: Session = Depends(get_db)):
 def read_exercise(exercise_id: int, db: Session = Depends(get_db)):
     db_exercise = exercise_crud.get_exercise(db, exercise_id=exercise_id)
     if db_exercise is None:
-        raise HTTPException(status_code=404, detail="Exercise not found")
+        raise HTTPException(status_code=44, detail="Exercise not found")
     return db_exercise

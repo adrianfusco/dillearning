@@ -1,7 +1,6 @@
 -- Drop tables if they exist
 DROP TABLE IF EXISTS user_courses;
 DROP TABLE IF EXISTS exercises;
-DROP TABLE IF EXISTS lessons;
 DROP TABLE IF EXISTS concepts;
 DROP TABLE IF EXISTS units;
 DROP TABLE IF EXISTS courses;
@@ -37,15 +36,6 @@ CREATE TABLE concepts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     explanation TEXT NOT NULL,
-    lesson_id INTEGER REFERENCES lessons(id)
-);
-
--- Create lessons table
-CREATE TABLE lessons (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    description TEXT,
-    "order" INTEGER NOT NULL,
     unit_id INTEGER REFERENCES units(id)
 );
 
@@ -87,13 +77,7 @@ INSERT INTO units (title, "order", course_id) VALUES
 ('Unidad 1: Lo Básico', 1, 2),
 ('Unidad 2: Frases Comunes', 2, 2);
 
-INSERT INTO lessons (title, description, "order", unit_id) VALUES
-('Lesson 1: Greetings', 'Learn common greetings', 1, 1),
-('Lesson 2: Numbers', 'Learn numbers from 1 to 10', 2, 1),
-('Lección 1: Saludos', 'Aprende saludos comunes', 1, 3),
-('Lección 2: Números', 'Aprende los números del 1 al 10', 2, 3);
-
-INSERT INTO concepts (title, explanation, lesson_id) VALUES
+INSERT INTO concepts (title, explanation, unit_id) VALUES
 ('Basic Greetings', 'In Spanish, you can say "Hola" to greet someone. To say goodbye, you can say "Adiós".', 1),
 ('Formal and Informal Greetings', 'In Spanish, "Hola" is a general greeting. For formal situations, you might use "Buenos días" (good morning), "Buenas tardes" (good afternoon), or "Buenas noches" (good evening/night). For informal situations, you can use "¿Qué tal?" (How are you?) or "¿Cómo estás?" (How are you? - informal).', 1),
 ('Essential Phrases', 'Some essential phrases in Spanish are "Por favor" (Please), "Gracias" (Thank you), and "De nada" (You''re welcome).', 2),

@@ -6,5 +6,5 @@ def get_concept(db: Session, concept_id: int):
     return db.query(Concept).filter(Concept.id == concept_id).first()
 
 
-def get_concepts_by_lesson(db: Session, lesson_id: int):
-    return db.query(Concept).filter(Concept.lesson_id == lesson_id).all()
+def get_concepts_by_unit(db: Session, unit_id: int):
+    return db.query(Concept).filter(Concept.unit_id == unit_id).all()

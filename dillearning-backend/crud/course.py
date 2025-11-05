@@ -1,6 +1,5 @@
 from models.concept import Concept
 from models.course import Course
-from models.lesson import Lesson
 from models.unit import Unit
 from schemas.course import CourseCreate
 from sqlalchemy.orm import Session, joinedload
@@ -11,8 +10,7 @@ def get_courses(db: Session):
         db.query(Course)
         .options(
             joinedload(Course.units)
-            .joinedload(Unit.lessons)
-            .joinedload(Lesson.concepts)
+            .joinedload(Unit.concepts)
             .joinedload(Concept.exercises)
         )
         .all()
@@ -24,8 +22,7 @@ def get_course(db: Session, course_id: int):
         db.query(Course)
         .options(
             joinedload(Course.units)
-            .joinedload(Unit.lessons)
-            .joinedload(Lesson.concepts)
+            .joinedload(Unit.concepts)
             .joinedload(Concept.exercises)
         )
         .filter(Course.id == course_id)
