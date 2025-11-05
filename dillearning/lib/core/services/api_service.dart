@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:dillearning/core/env_config.dart';
 import 'package:dillearning/features/learn_language/models/course.dart';
 import 'package:dillearning/features/learn_language/models/unit.dart';
-import 'package:dillearning/features/learn_language/models/lesson.dart';
 import 'package:dillearning/features/learn_language/models/exercise.dart';
 import 'package:http/http.dart' as http;
 
@@ -168,25 +167,13 @@ class ApiService {
     }
   }
 
-  Future<List<Lesson>> getLessons(int unitId) async {
-    final response =
-        await http.get(Uri.parse('$_baseUrl/units/$unitId/lessons'));
+  Future<Unit> getUnit(int unitId) async {
+    final response = await http.get(Uri.parse('$_baseUrl/units/$unitId'));
 
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((lesson) => Lesson.fromJson(lesson)).toList();
+      return Unit.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to load lessons');
-    }
-  }
-
-  Future<Lesson> getLesson(int lessonId) async {
-    final response = await http.get(Uri.parse('$_baseUrl/lessons/$lessonId'));
-
-    if (response.statusCode == 200) {
-      return Lesson.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load lesson');
+      throw Exception('Failed to load unit');
     }
   }
 

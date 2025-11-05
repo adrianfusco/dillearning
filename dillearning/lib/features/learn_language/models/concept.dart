@@ -5,14 +5,14 @@ class Concept {
   final int id;
   final String title;
   final String explanation;
-  final int lessonId;
+  final int unitId;
   final List<Exercise> exercises;
 
   Concept({
     required this.id,
     required this.title,
     required this.explanation,
-    required this.lessonId,
+    required this.unitId,
     required this.exercises,
   });
 
@@ -25,7 +25,7 @@ class Concept {
       id: json['id'],
       title: json['title'],
       explanation: json['explanation'],
-      lessonId: json['lesson_id'],
+      unitId: json['unit_id'],
       exercises: exercises,
     );
   }
