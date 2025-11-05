@@ -11,4 +11,4 @@ class Unit(Base):
     order = Column(Integer)
     course_id = Column(Integer, ForeignKey("courses.id"))
     course = relationship("Course", back_populates="units")
-    lessons = relationship("Lesson", back_populates="unit")
+    concepts = relationship("Concept", back_populates="unit")

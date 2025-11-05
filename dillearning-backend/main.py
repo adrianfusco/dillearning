@@ -5,7 +5,6 @@ import models.conversation  # noqa: F401
 import models.course  # noqa: F401
 import models.exercise  # noqa: F401
 import models.language  # noqa: F401
-import models.lesson  # noqa: F401
 import models.unit  # noqa: F401
 import models.user  # noqa: F401
 import models.user_course  # noqa: F401

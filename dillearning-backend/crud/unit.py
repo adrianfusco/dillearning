@@ -1,5 +1,4 @@
 from models.concept import Concept
-from models.lesson import Lesson
 from models.unit import Unit
 from schemas.unit import UnitCreate
 from sqlalchemy.orm import Session, joinedload
@@ -8,11 +7,7 @@ from sqlalchemy.orm import Session, joinedload
 def get_unit(db: Session, unit_id: int):
     return (
         db.query(Unit)
-        .options(
-            joinedload(Unit.lessons)
-            .joinedload(Lesson.concepts)
-            .joinedload(Concept.exercises)
-        )
+        .options(joinedload(Unit.concepts).joinedload(Concept.exercises))
         .filter(Unit.id == unit_id)
         .first()
     )
@@ -21,11 +16,7 @@ def get_unit(db: Session, unit_id: int):
 def get_units_by_course(db: Session, course_id: int):
     return (
         db.query(Unit)
-        .options(
-            joinedload(Unit.lessons)
-            .joinedload(Lesson.concepts)
-            .joinedload(Concept.exercises)
-        )
+        .options(joinedload(Unit.concepts).joinedload(Concept.exercises))
         .filter(Unit.course_id == course_id)
         .all()
     )

@@ -16,7 +16,7 @@ class ConceptCreate(ConceptBase):
 
 class Concept(ConceptBase):
     id: int
-    lesson_id: int
+    unit_id: int
     exercises: List[Exercise] = []
 
     class Config:
