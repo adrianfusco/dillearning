@@ -36,11 +36,10 @@ def can_access_unit(db, user_id: int, unit_id: int) -> bool:
     if not unit:
         return False
 
-    # First unit of a course is always accessible
+    # Siempre estará desbloqueada la primeraa unidad
     if unit.order == 1:
         return True
 
-    # Check if the previous unit is completed
     previous_unit = (
         db.query(Unit)
         .filter(Unit.course_id == unit.course_id, Unit.order == unit.order - 1)
@@ -48,7 +47,7 @@ def can_access_unit(db, user_id: int, unit_id: int) -> bool:
     )
 
     if not previous_unit:
-        return True  # in case order numbers are inconsistent
+        return True
 
     previous_progress = (
         db.query(UserUnitProgress)
