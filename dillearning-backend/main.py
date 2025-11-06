@@ -8,6 +8,8 @@ import models.language  # noqa: F401
 import models.unit  # noqa: F401
 import models.user  # noqa: F401
 import models.user_course  # noqa: F401
+import models.user_exercise_progress  # noqa: F401
+import models.user_unit_progress  # noqa: F401
 from apis import ai, courses, health, languages, users
 from database import Base, engine
 from dotenv import load_dotenv

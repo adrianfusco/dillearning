@@ -1,4 +1,6 @@
 -- Drop tables if they exist
+DROP TABLE IF EXISTS user_exercise_progress;
+DROP TABLE IF EXISTS user_unit_progress;
 DROP TABLE IF EXISTS user_courses;
 DROP TABLE IF EXISTS exercises;
 DROP TABLE IF EXISTS concepts;
@@ -62,6 +64,22 @@ CREATE TABLE user_courses (
     user_id INTEGER REFERENCES users(id),
     course_id INTEGER REFERENCES courses(id),
     PRIMARY KEY (user_id, course_id)
+);
+
+-- Create user_unit_progress table
+CREATE TABLE user_unit_progress (
+    user_id INTEGER REFERENCES users(id),
+    unit_id INTEGER REFERENCES units(id),
+    completed BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (user_id, unit_id)
+);
+
+-- Create user_exercise_progress table
+CREATE TABLE user_exercise_progress (
+    user_id INTEGER REFERENCES users(id),
+    exercise_id INTEGER REFERENCES exercises(id),
+    completed BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (user_id, exercise_id)
 );
 
 -- Insert sample data
