@@ -1,6 +1,9 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:dillearning/core/services/api_service.dart';
-import 'package:dillearning/features/learn_language/models/course.dart';
+import 'package:dillearning/features/learn_language/models/course_with_progress.dart';
 import 'package:dillearning/features/learn_language/screens/course_units_screen.dart';
 
 class LanguageLearningScreen extends StatefulWidget {
@@ -10,113 +13,173 @@ class LanguageLearningScreen extends StatefulWidget {
   State<LanguageLearningScreen> createState() => _LanguageLearningScreenState();
 }
 
-class _LanguageLearningScreenState extends State<LanguageLearningScreen> {
-  late Future<List<Course>> _courses;
+class _LanguageLearningScreenState extends State<LanguageLearningScreen>
+    with SingleTickerProviderStateMixin {
+  late Future<List<CourseWithProgress>> _coursesWithProgress;
   final ApiService _apiService = ApiService();
+
+  late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _courses = _apiService.getAvailableCourses();
+    _coursesWithProgress = _getCoursesWithProgress();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    )..repeat(reverse: true);
+  }
+
+  Future<List<CourseWithProgress>> _getCoursesWithProgress() async {
+    final courses = await _apiService.getAvailableCourses();
+    final coursesWithProgress = <CourseWithProgress>[];
+    for (final course in courses) {
+      final progress = await _apiService.getCourseProgress(course.id);
+      coursesWithProgress
+          .add(CourseWithProgress(course: course, progress: progress));
+    }
+    return coursesWithProgress;
+  }
+
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good Morning';
+    if (hour < 18) return 'Good Afternoon';
+    return 'Good Evening';
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Welcome to dillearning!'),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.black,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: FutureBuilder<List<Course>>(
-            future: _courses,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return _buildLoadingState();
-              } else if (snapshot.hasError) {
-                return _buildErrorState();
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return _buildNoCoursesState();
-              }
-
-              final courses = snapshot.data!;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildWelcomeMessage(),
-                  const SizedBox(height: 24),
-                  _buildAppFeatures(),
-                  const SizedBox(height: 24),
-                  Text(
-                    'Cursos disponibles',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildCourseGrid(courses),
-                ],
-              );
-            },
+        title: Text(
+          'Welcome to dillearning!',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.white,
+      ),
+      body: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          return Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF0F2027), // dark navy
+                  Color(0xFF203A43), // deep teal-blue
+                  Color(0xFF2C5364), // cyan-gray accent
+                ],
+              ),
+            ),
+            child: FutureBuilder<List<CourseWithProgress>>(
+              future: _coursesWithProgress,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return _buildLoadingState();
+                } else if (snapshot.hasError) {
+                  return _buildErrorState();
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return _buildNoCoursesState();
+                }
+
+                final coursesWithProgress = snapshot.data!;
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(16, 100, 16, 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildGreeting(),
+                      const SizedBox(height: 8),
+                      _buildWelcomeMessage(),
+                      const SizedBox(height: 24),
+                      _buildAppFeatures(),
+                      const SizedBox(height: 32),
+                      Text(
+                        'Available Courses',
+                        style: GoogleFonts.poppins(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          shadows: const [
+                            Shadow(
+                                blurRadius: 10,
+                                color: Colors.black26,
+                                offset: Offset(2, 2)),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _buildCourseGrid(coursesWithProgress),
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildWelcomeMessage() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Con dillearning puedes:',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.teal.shade800,
-              ),
+  Widget _buildGreeting() => Text(
+        _getGreeting(),
+        style: GoogleFonts.poppins(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
         ),
-        const SizedBox(height: 8),
-      ],
-    );
-  }
+      );
+
+  Widget _buildWelcomeMessage() => Text(
+        'Con dillearning puedes:',
+        style: GoogleFonts.poppins(
+          fontSize: 26,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          shadows: const [
+            Shadow(blurRadius: 10, color: Colors.black26, offset: Offset(2, 2)),
+          ],
+        ),
+      );
 
   Widget _buildAppFeatures() {
     return SizedBox(
-      height: 150,
+      height: 180,
       child: ListView(
         scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
         children: [
           _buildFeatureCard(
-            Icons.language,
-            'Aprende Idiomas',
-            'Expande tus horizontes aprendiendo y practicando varios idiomas a tu propio ritmo.',
-            Colors.orange,
-          ),
+              Icons.language,
+              'Aprende Idiomas',
+              'Expande tus horizontes aprendiendo varios idiomas.',
+              Colors.orange),
+          const SizedBox(width: 16),
+          _buildFeatureCard(Icons.translate, 'Traduce Textos',
+              'Traducciones precisas con IA avanzada.', Colors.blue),
+          const SizedBox(width: 16),
+          _buildFeatureCard(Icons.chat_bubble, 'Práctica con un Chat',
+              'Habla con Dillarning y mejora tu fluidez.', Colors.green),
           const SizedBox(width: 16),
           _buildFeatureCard(
-            Icons.translate,
-            'Traduce Textos',
-            'Utiliza IA avanzada para traducir textos de diferentes idiomas de manera precisa y rápida.',
-            Colors.blue,
-          ),
-          const SizedBox(width: 16),
-          _buildFeatureCard(
-            Icons.chat_bubble,
-            'Práctica con un Chat',
-            'Habla con Dillarning, un chat inteligente que corrige tus errores y te ayuda a mejorar en tiempo real.',
-            Colors.green,
-          ),
-          const SizedBox(width: 16),
-          _buildFeatureCard(
-            Icons.assistant,
-            'Asistente de aprendizaje',
-            'Mejora tus conocimientos haciendo uso del asistente IA que te resolverá dudas en todo momento.',
-            Colors.purple,
-          ),
+              Icons.assistant,
+              'Asistente IA',
+              'Aprende con ayuda de nuestro asistente inteligente.',
+              Colors.purple),
         ],
       ),
     );
@@ -124,80 +187,57 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen> {
 
   Widget _buildFeatureCard(
       IconData icon, String title, String description, Color color) {
-    return Container(
-      width: 300,
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: color.withAlpha((255 * 0.1).round()),
-        borderRadius: BorderRadius.circular(16.0),
-        border: Border.all(color: color.withAlpha((255 * 0.3).round())),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, size: 32, color: color),
-          const Spacer(),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          width: 280,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: 0.3),
+                blurRadius: 12,
+                offset: const Offset(2, 6),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, size: 36, color: color),
+              const Spacer(),
+              Text(
+                title,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                description,
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  color: Colors.white70,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
-          Text(
-            description,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildLoadingState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircularProgressIndicator(),
-          const SizedBox(height: 16),
-          Text('We are getting your courses ready...',
-              style: Theme.of(context).textTheme.titleMedium),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildErrorState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.error_outline, size: 50, color: Colors.red),
-          const SizedBox(height: 16),
-          const Text('Something went wrong. Please try again.',
-              style: TextStyle(fontSize: 18, color: Colors.red)),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                _courses = _apiService.getAvailableCourses();
-              });
-            },
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNoCoursesState() {
-    return const Center(child: Text('No courses available.'));
-  }
-
-  Widget _buildCourseGrid(List<Course> courses) {
+  Widget _buildCourseGrid(List<CourseWithProgress> coursesWithProgress) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount = (constraints.maxWidth / 200).floor().clamp(1, 4);
+        final crossAxisCount = (constraints.maxWidth / 220).floor().clamp(1, 4);
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -206,84 +246,30 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen> {
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: 16.0,
             mainAxisSpacing: 16.0,
-            childAspectRatio: 0.9,
+            childAspectRatio: 0.95,
           ),
-          itemCount: courses.length,
+          itemCount: coursesWithProgress.length,
           itemBuilder: (context, index) {
-            final course = courses[index];
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        CourseUnitsScreen(courseId: course.id),
-                  ),
-                );
-              },
-              child: Card(
-                elevation: 4.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.teal.shade50, Colors.teal.shade200],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/flags/${course.fromLanguageCode}.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                          const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward, size: 18),
-                          const SizedBox(width: 8),
-                          Image.asset(
-                            'assets/images/flags/${course.learningLanguageCode}.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          course.title,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.teal.shade900,
-                                  ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          course.description,
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.teal.shade700,
-                                  ),
-                        ),
-                      ),
-                    ],
+            final courseWithProgress = coursesWithProgress[index];
+            final course = courseWithProgress.course;
+            final progress = courseWithProgress.progress;
+
+            return _AnimatedCourseCard(
+              courseTitle: course.title,
+              courseDescription: course.description,
+              fromLanguage: course.fromLanguageCode,
+              toLanguage: course.learningLanguageCode,
+              progress: progress,
+              onTap: () => Navigator.push(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: const Duration(milliseconds: 400),
+                  pageBuilder: (_, __, ___) =>
+                      CourseUnitsScreen(courseId: course.id),
+                  transitionsBuilder: (_, anim, __, child) => FadeTransition(
+                    opacity: CurvedAnimation(
+                        parent: anim, curve: Curves.easeInOutCubic),
+                    child: child,
                   ),
                 ),
               ),
@@ -291,6 +277,134 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen> {
           },
         );
       },
+    );
+  }
+
+  Widget _buildLoadingState() => const Center(
+        child: CircularProgressIndicator(color: Colors.tealAccent),
+      );
+
+  Widget _buildErrorState() => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 50, color: Colors.red),
+            const SizedBox(height: 16),
+            const Text('Something went wrong. Please try again.',
+                style: TextStyle(fontSize: 18, color: Colors.red)),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => setState(() {
+                _coursesWithProgress = _getCoursesWithProgress();
+              }),
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildNoCoursesState() =>
+      const Center(child: Text('No courses available.'));
+}
+
+class _AnimatedCourseCard extends StatefulWidget {
+  final String courseTitle;
+  final String courseDescription;
+  final String fromLanguage;
+  final String toLanguage;
+  final double progress;
+  final VoidCallback onTap;
+
+  const _AnimatedCourseCard({
+    required this.courseTitle,
+    required this.courseDescription,
+    required this.fromLanguage,
+    required this.toLanguage,
+    required this.progress,
+    required this.onTap,
+  });
+
+  @override
+  State<_AnimatedCourseCard> createState() => _AnimatedCourseCardState();
+}
+
+class _AnimatedCourseCardState extends State<_AnimatedCourseCard> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOutCubic,
+          transform: Matrix4.translationValues(0, _hovered ? -6 : 0, 0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              colors: [Colors.white, Colors.teal.shade50],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.teal.withValues(alpha: _hovered ? 0.4 : 0.2),
+                blurRadius: _hovered ? 16 : 8,
+                offset: const Offset(3, 5),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CircularPercentIndicator(
+                  radius: 36.0,
+                  lineWidth: 6.0,
+                  percent: widget.progress / 100,
+                  center: Image.asset(
+                    'assets/images/flags/${widget.toLanguage}.png',
+                    width: 40,
+                  ),
+                  progressColor: Colors.teal,
+                  backgroundColor: Colors.teal.shade100,
+                ),
+                Text(
+                  widget.courseTitle,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.teal.shade900,
+                  ),
+                ),
+                Text(
+                  widget.courseDescription,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.inter(
+                    fontSize: 13,
+                    color: Colors.black54,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '${widget.progress.toStringAsFixed(0)}%',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.teal.shade800,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

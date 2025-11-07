@@ -16,6 +16,8 @@ dependencies:
   flutter_chat_ui: ^2.9.1
   flutter_chat_core: ^2.8.0
   uuid: ^4.4.0
+  google_fonts: ^6.2.1
+  percent_indicator: ^4.2.3
   flutter_localizations:
     sdk: flutter
   intl: any

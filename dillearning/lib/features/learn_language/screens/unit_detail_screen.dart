@@ -105,6 +105,7 @@ class ExerciseDialog extends StatefulWidget {
 }
 
 class ExerciseDialogState extends State<ExerciseDialog> {
+  final ApiService _apiService = ApiService();
   String? _feedback;
   Color? _feedbackColor;
   bool _answered = false;
@@ -118,10 +119,14 @@ class ExerciseDialogState extends State<ExerciseDialog> {
       if (isCorrect) {
         _feedback = 'Correct!';
         _feedbackColor = Colors.green;
-        Future.delayed(const Duration(milliseconds: 1200), () {
-          if (mounted) {
-            Navigator.of(context).pop();
-          }
+        _apiService.completeExercise(widget.exercise.id).then((_) {
+          Future.delayed(const Duration(milliseconds: 1200), () {
+            if (mounted) {
+              Navigator.of(context).pop();
+            }
+          });
+        }).catchError((error) {
+          // TODO: Gestionar error
         });
       } else {
         _feedback = 'Incorrect. Try again!';
