@@ -1,11 +1,13 @@
 from typing import List
 
+from auth import get_current_user
 from crud import concept as concept_crud
 from crud import course as course_crud
 from crud import exercise as exercise_crud
 from crud import unit as unit_crud
 from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
+from models.user import User
 from schemas.concept import Concept
 from schemas.course import Course
 from schemas.exercise import Exercise
@@ -66,3 +68,52 @@ def read_exercise(exercise_id: int, db: Session = Depends(get_db)):
     if db_exercise is None:
         raise HTTPException(status_code=44, detail="Exercise not found")
     return db_exercise
+
+
+@router.get("/courses/{course_id}/progress", response_model=float)
+def get_course_progress(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    db_course = course_crud.get_course(db, course_id=course_id)
+    if db_course is None:
+        raise HTTPException(status_code=404, detail="Course not found")
+    return course_crud.get_course_progress(db, current_user.id, course_id)
+
+
+@router.get("/units/{unit_id}/access", response_model=bool)
+def can_access_unit_api(
+    unit_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return unit_crud.can_access_unit(db, current_user.id, unit_id)
+
+
+@router.post("/units/{unit_id}/complete", response_model=dict)
+def complete_unit_api(
+    unit_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    db_unit = unit_crud.get_unit(db, unit_id=unit_id)
+    if db_unit is None:
+        raise HTTPException(status_code=404, detail="Unit not found")
+    unit_crud.complete_unit(db, current_user.id, unit_id)
+    return {"message": "Unit marked as completed"}
+
+
+@router.post("/exercises/{exercise_id}/complete", response_model=dict)
+def complete_exercise_api(
+    exercise_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    db_exercise = exercise_crud.get_exercise(db, exercise_id=exercise_id)
+    if db_exercise is None:
+        raise HTTPException(status_code=404, detail="Exercise not found")
+    _, unit_completed = exercise_crud.complete_exercise(
+        db, current_user.id, exercise_id
+    )
+    return {"message": "Exercise marked as completed", "unit_completed": unit_completed}

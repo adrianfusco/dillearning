@@ -1,6 +1,7 @@
 from models.concept import Concept
 from models.course import Course
 from models.unit import Unit
+from models.user_unit_progress import UserUnitProgress
 from schemas.course import CourseCreate
 from sqlalchemy.orm import Session, joinedload
 
@@ -46,3 +47,18 @@ def create_course(db: Session, course: CourseCreate):
     db.commit()
     db.refresh(db_course)
     return db_course
+
+
+def get_course_progress(db, user_id: int, course_id: int):
+    total_units = db.query(Unit).filter_by(course_id=course_id).count()
+    completed_units = (
+        db.query(UserUnitProgress)
+        .join(Unit)
+        .filter(
+            Unit.course_id == course_id,
+            UserUnitProgress.user_id == user_id,
+            UserUnitProgress.completed,
+        )
+        .count()
+    )
+    return (completed_units / total_units) * 100 if total_units > 0 else 0

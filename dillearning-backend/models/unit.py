@@ -10,5 +10,7 @@ class Unit(Base):
     title = Column(String)
     order = Column(Integer)
     course_id = Column(Integer, ForeignKey("courses.id"))
+
     course = relationship("Course", back_populates="units")
     concepts = relationship("Concept", back_populates="unit")
+    user_progress = relationship("UserUnitProgress", back_populates="unit")
