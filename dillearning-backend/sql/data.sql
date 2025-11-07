@@ -1,7 +1,6 @@
 -- Drop tables if they exist
 DROP TABLE IF EXISTS user_exercise_progress;
 DROP TABLE IF EXISTS user_unit_progress;
-DROP TABLE IF EXISTS user_courses;
 DROP TABLE IF EXISTS exercises;
 DROP TABLE IF EXISTS concepts;
 DROP TABLE IF EXISTS units;
@@ -57,13 +56,6 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     hashed_password TEXT NOT NULL
-);
-
--- Create user_courses table
-CREATE TABLE user_courses (
-    user_id INTEGER REFERENCES users(id),
-    course_id INTEGER REFERENCES courses(id),
-    PRIMARY KEY (user_id, course_id)
 );
 
 -- Create user_unit_progress table

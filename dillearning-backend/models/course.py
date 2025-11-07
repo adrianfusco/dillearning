@@ -13,4 +13,3 @@ class Course(Base):
     description = Column(String)
 
     units = relationship("Unit", back_populates="course")
-    users = relationship("UserCourse", back_populates="course")

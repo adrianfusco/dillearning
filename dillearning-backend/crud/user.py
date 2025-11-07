@@ -15,10 +15,3 @@ def create_user(db: Session, user: UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
-
-
-def get_user_courses(db: Session, user_id: int):
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        return []
-    return [user_course.course for user_course in user.courses]

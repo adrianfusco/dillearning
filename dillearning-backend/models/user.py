@@ -10,6 +10,5 @@ class User(Base):
     name = sqlalchemy.Column(String)
     email = sqlalchemy.Column(String, unique=True, index=True)
     hashed_password = sqlalchemy.Column(String)
-    courses = relationship("UserCourse", back_populates="user")
     unit_progress = relationship("UserUnitProgress", back_populates="user")
     exercise_progress = relationship("UserExerciseProgress", back_populates="user")
