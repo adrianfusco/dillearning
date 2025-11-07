@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:dillearning/core/env_config.dart';
+import 'package:dillearning/features/auth/models/user.dart';
 import 'package:dillearning/features/learn_language/models/course.dart';
 import 'package:dillearning/features/learn_language/models/unit.dart';
 import 'package:dillearning/features/learn_language/models/exercise.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   static final String _baseUrl = AppConfig.config.apiBaseUrl;
@@ -19,13 +21,26 @@ class ApiService {
     'available-languages': '/available-languages',
   };
 
+  Future<Map<String, String>> _getHeaders() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userString = prefs.getString('user');
+    if (userString != null) {
+      final user = User.fromJson(jsonDecode(userString));
+      return {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${user.tokenType} ${user.accessToken}',
+      };
+    }
+    return {
+      'Content-Type': 'application/json; charset=UTF-8',
+    };
+  }
+
   Future<Map<String, dynamic>> register(
       String name, String email, String password) async {
     final response = await http.post(
       Uri.parse('$_baseUrl${_endpoints['register']}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: await _getHeaders(),
       body: jsonEncode(<String, String>{
         'name': name,
         'email': email,
@@ -43,9 +58,7 @@ class ApiService {
   Future<Map<String, dynamic>> login(String email, String password) async {
     final response = await http.post(
       Uri.parse('$_baseUrl${_endpoints['login']}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: await _getHeaders(),
       body: jsonEncode(<String, String>{
         'email': email,
         'password': password,
@@ -62,9 +75,7 @@ class ApiService {
   Future<String> chat(String question, String userId) async {
     final response = await http.post(
       Uri.parse('$_baseUrl${_endpoints['chat']}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: await _getHeaders(),
       body: jsonEncode(<String, String>{
         'question': question,
         'user_id': userId,
@@ -82,9 +93,7 @@ class ApiService {
       String sourceLanguage, String targetLanguage, String text) async {
     final response = await http.post(
       Uri.parse('$_baseUrl${_endpoints['translate']}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: await _getHeaders(),
       body: jsonEncode(<String, String>{
         'source_language': sourceLanguage,
         'target_language': targetLanguage,
@@ -102,9 +111,7 @@ class ApiService {
   Future<String> explainGrammar(String sentence) async {
     final response = await http.post(
       Uri.parse('$_baseUrl${_endpoints['explain-grammar']}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: await _getHeaders(),
       body: jsonEncode(<String, String>{
         'sentence': sentence,
       }),
@@ -120,9 +127,7 @@ class ApiService {
   Future<String> createExamples(String word, String language) async {
     final response = await http.post(
       Uri.parse('$_baseUrl${_endpoints['create-examples']}'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: await _getHeaders(),
       body: jsonEncode(<String, String>{'word': word, 'language': language}),
     );
 
@@ -135,7 +140,7 @@ class ApiService {
   }
 
   Future<List<Course>> getCourses() async {
-    final response = await http.get(Uri.parse('$_baseUrl${_endpoints['courses']}'));
+    final response = await http.get(Uri.parse('$_baseUrl${_endpoints['courses']}'), headers: await _getHeaders());
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -146,7 +151,7 @@ class ApiService {
   }
 
   Future<Course> getCourse(int courseId) async {
-    final response = await http.get(Uri.parse('$_baseUrl/courses/$courseId'));
+    final response = await http.get(Uri.parse('$_baseUrl/courses/$courseId'), headers: await _getHeaders());
 
     if (response.statusCode == 200) {
       return Course.fromJson(jsonDecode(response.body));
@@ -157,7 +162,7 @@ class ApiService {
 
   Future<List<Unit>> getUnits(int courseId) async {
     final response =
-        await http.get(Uri.parse('$_baseUrl/courses/$courseId/units'));
+        await http.get(Uri.parse('$_baseUrl/courses/$courseId/units'), headers: await _getHeaders());
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -168,7 +173,7 @@ class ApiService {
   }
 
   Future<Unit> getUnit(int unitId) async {
-    final response = await http.get(Uri.parse('$_baseUrl/units/$unitId'));
+    final response = await http.get(Uri.parse('$_baseUrl/units/$unitId'), headers: await _getHeaders());
 
     if (response.statusCode == 200) {
       return Unit.fromJson(jsonDecode(response.body));
@@ -179,7 +184,7 @@ class ApiService {
 
   Future<List<Exercise>> getExercises(int conceptId) async {
     final response =
-        await http.get(Uri.parse('$_baseUrl/concepts/$conceptId/exercises'));
+        await http.get(Uri.parse('$_baseUrl/concepts/$conceptId/exercises'), headers: await _getHeaders());
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -192,13 +197,53 @@ class ApiService {
   }
 
   Future<List<Course>> getAvailableCourses() async {
-    final response = await http.get(Uri.parse('$_baseUrl${_endpoints['available-languages']}'));
+    final response = await http.get(Uri.parse('$_baseUrl${_endpoints['courses']}'), headers: await _getHeaders());
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as List;
       return data.map((course) => Course.fromJson(course)).toList();
     } else {
       throw Exception('Failed to load languages: ${response.body}');
+    }
+  }
+
+  Future<double> getCourseProgress(int courseId) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/courses/$courseId/progress'),
+      headers: await _getHeaders(),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load course progress: ${response.body}');
+    }
+  }
+
+  Future<bool> canAccessUnit(int unitId) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/units/$unitId/access'),
+      headers: await _getHeaders(),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to check unit access: ${response.body}');
+    }
+  }
+
+  Future<bool> completeExercise(int exerciseId) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/exercises/$exerciseId/complete'),
+      headers: await _getHeaders(),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['unit_completed'] ?? false;
+    } else {
+      throw Exception('Failed to complete exercise: ${response.body}');
     }
   }
 }
