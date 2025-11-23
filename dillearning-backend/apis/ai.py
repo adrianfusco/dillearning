@@ -3,7 +3,13 @@ from crud import conversation as crud_conversation
 from database import get_db
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
-from schemas.ai import ChatRequest, ExampleRequest, GrammarRequest, TranslateRequest
+from schemas.ai import (
+    ChatRequest,
+    ExampleRequest,
+    GenerateExerciseRequest,
+    GrammarRequest,
+    TranslateRequest,
+)
 from schemas.conversation import ConversationCreate
 from services.ai_service import AIService, get_ai_service
 from sqlalchemy.orm import Session
@@ -99,4 +105,20 @@ async def create_examples(
     """
     return StreamingResponse(
         ai_service.get_examples(request), media_type="text/event-stream"
+    )
+
+
+@router.post(
+    "/ai/generate-exercise",
+    summary="Generate an exercise for a concept",
+    tags=["AI"],
+)
+async def generate_exercise(
+    request: GenerateExerciseRequest, ai_service: AIService = Depends(get_ai_service)
+):
+    """
+    Generates an exercise for a given concept using AI.
+    """
+    return StreamingResponse(
+        ai_service.generate_exercise(request), media_type="application/json"
     )
