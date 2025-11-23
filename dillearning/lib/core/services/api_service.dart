@@ -17,9 +17,53 @@ class ApiService {
     'translate': '/ai/translate',
     'explain-grammar': '/ai/explain-grammar',
     'create-examples': '/ai/create-examples',
+    'generate-exercise': '/ai/generate-exercise',
     'courses': '/courses',
     'available-languages': '/available-languages',
   };
+
+  Stream<String> streamExamples(String word, String language) async* {
+    final request = http.Request(
+      'POST',
+      Uri.parse('$_baseUrl${_endpoints['create-examples']}'),
+    );
+    request.headers.addAll(await _getHeaders());
+    request.body = jsonEncode(<String, String>{
+      'word': word,
+      'language': language,
+    });
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      await for (var chunk in response.stream.transform(utf8.decoder)) {
+        yield chunk;
+      }
+    } else {
+      throw Exception('Failed to stream examples: ${response.reasonPhrase}');
+    }
+  }
+
+  Stream<String> streamExercise(String concept) async* {
+    final request = http.Request(
+      'POST',
+      Uri.parse('$_baseUrl${_endpoints['generate-exercise']}'),
+    );
+    request.headers.addAll(await _getHeaders());
+    request.body = jsonEncode(<String, String>{
+      'concept': concept,
+    });
+
+    final response = await request.send();
+
+    if (response.statusCode == 200) {
+      await for (var chunk in response.stream.transform(utf8.decoder)) {
+        yield chunk;
+      }
+    } else {
+      throw Exception('Failed to stream exercise: ${response.reasonPhrase}');
+    }
+  }
 
   Future<Map<String, String>> _getHeaders() async {
     final prefs = await SharedPreferences.getInstance();

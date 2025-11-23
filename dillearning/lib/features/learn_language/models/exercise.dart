@@ -23,12 +23,12 @@ class Exercise {
     }
 
     return Exercise(
-      id: json['id'],
+      id: json['id'] ?? 0,
       type: json['type'] ?? 'unknown',
       prompt: json['prompt'] ?? '',
       answer: json['answer'] ?? '',
       options: optionsList,
-      conceptId: json['concept_id'],
+      conceptId: json['concept_id'] ?? 0,
     );
   }
 }

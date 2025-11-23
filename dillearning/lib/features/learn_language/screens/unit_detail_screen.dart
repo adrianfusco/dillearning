@@ -1,8 +1,9 @@
-
 import 'package:dillearning/features/learn_language/models/unit.dart';
 import 'package:flutter/material.dart';
 import 'package:dillearning/core/services/api_service.dart';
 import 'package:dillearning/features/learn_language/models/exercise.dart';
+import 'dart:convert';
+import 'package:reorderables/reorderables.dart';
 
 class UnitDetailScreen extends StatefulWidget {
   final int unitId;
@@ -55,6 +56,28 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: Text(concept.explanation),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 4.0),
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.auto_awesome),
+                        label: const Text('Generate AI Examples'),
+                        onPressed: () {
+                          _showAIExamplesDialog(concept.title);
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 4.0),
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.psychology),
+                        label: const Text('Generate AI Exercise'),
+                        onPressed: () {
+                          _showAIGeneratedExerciseDialog(concept.title);
+                        },
+                      ),
+                    ),
                     if (concept.exercises.isNotEmpty)
                       ...concept.exercises.map((exercise) {
                         return Padding(
@@ -71,8 +94,7 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
                     else
                       const Padding(
                         padding: EdgeInsets.all(16.0),
-                        child:
-                            Text('No exercises available for this concept.'),
+                        child: Text('No exercises available for this concept.'),
                       ),
                   ],
                 ),
@@ -93,18 +115,194 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
       },
     );
   }
+
+  void _showAIExamplesDialog(String word) {
+    showDialog(
+      context: context,
+      builder: (context) => AIExamplesDialog(word: word),
+    );
+  }
+
+  void _showAIGeneratedExerciseDialog(String concept) {
+    showDialog(
+      context: context,
+      builder: (context) => AIGeneratedExerciseDialog(concept: concept),
+    );
+  }
 }
 
-class ExerciseDialog extends StatefulWidget {
+class AIGeneratedExerciseDialog extends StatefulWidget {
+  final String concept;
+
+  const AIGeneratedExerciseDialog({super.key, required this.concept});
+
+  @override
+  State<AIGeneratedExerciseDialog> createState() =>
+      _AIGeneratedExerciseDialogState();
+}
+
+class _AIGeneratedExerciseDialogState extends State<AIGeneratedExerciseDialog> {
+  final ApiService _apiService = ApiService();
+  String _exerciseData = '';
+  bool _loading = true;
+  String _error = '';
+  Exercise? _exercise;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadExercise();
+  }
+
+  Future<void> _loadExercise() async {
+    try {
+      await for (var chunk in _apiService.streamExercise(widget.concept)) {
+        setState(() => _exerciseData += chunk);
+      }
+      _exerciseData =
+          _exerciseData.replaceAll('```json', '').replaceAll('```', '').trim();
+      final exerciseJson = jsonDecode(_exerciseData);
+      setState(() {
+        _exercise = Exercise.fromJson(exerciseJson);
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load or parse exercise: $e';
+        _loading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('AI Generated Exercise for "${widget.concept}"'),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: _loading
+            ? const SizedBox(
+                height: 80, child: Center(child: CircularProgressIndicator()))
+            : _error.isNotEmpty
+                ? Text('Error: $_error')
+                : _exercise != null
+                    ? ExerciseView(
+                        exercise: _exercise!,
+                        isAiGenerated: true,
+                      )
+                    : const Text('No exercise generated.'),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Close'),
+        ),
+      ],
+    );
+  }
+}
+
+class AIExamplesDialog extends StatefulWidget {
+  final String word;
+
+  const AIExamplesDialog({super.key, required this.word});
+
+  @override
+  State<AIExamplesDialog> createState() => _AIExamplesDialogState();
+}
+
+class _AIExamplesDialogState extends State<AIExamplesDialog> {
+  final ApiService _apiService = ApiService();
+  String _examples = '';
+  bool _loading = true;
+  String _error = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadExamples();
+  }
+
+  Future<void> _loadExamples() async {
+    try {
+      await for (var chunk in _apiService.streamExamples(widget.word, 'es')) {
+        setState(() => _examples += chunk);
+      }
+      setState(() => _loading = false);
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _loading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('AI Examples for "${widget.word}"'),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: _loading
+            ? const SizedBox(
+                height: 80, child: Center(child: CircularProgressIndicator()))
+            : _error.isNotEmpty
+                ? Text('Error: $_error')
+                : SingleChildScrollView(
+                    child: Text(
+                      _examples.trim().isEmpty
+                          ? 'No examples generated.'
+                          : _examples,
+                      style: const TextStyle(fontSize: 16, height: 1.5),
+                    ),
+                  ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Close'),
+        ),
+      ],
+    );
+  }
+}
+
+class ExerciseDialog extends StatelessWidget {
   final Exercise exercise;
 
   const ExerciseDialog({super.key, required this.exercise});
 
   @override
-  ExerciseDialogState createState() => ExerciseDialogState();
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(exercise.prompt),
+      content: SingleChildScrollView(
+        child: ExerciseView(exercise: exercise),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Close'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
 }
 
-class ExerciseDialogState extends State<ExerciseDialog> {
+class ExerciseView extends StatefulWidget {
+  final Exercise exercise;
+  final bool isAiGenerated;
+
+  const ExerciseView(
+      {super.key, required this.exercise, this.isAiGenerated = false});
+
+  @override
+  ExerciseViewState createState() => ExerciseViewState();
+}
+
+class ExerciseViewState extends State<ExerciseView> {
   final ApiService _apiService = ApiService();
   String? _feedback;
   Color? _feedbackColor;
@@ -119,15 +317,13 @@ class ExerciseDialogState extends State<ExerciseDialog> {
       if (isCorrect) {
         _feedback = 'Correct!';
         _feedbackColor = Colors.green;
-        _apiService.completeExercise(widget.exercise.id).then((_) {
-          Future.delayed(const Duration(milliseconds: 1200), () {
-            if (mounted) {
-              Navigator.of(context).pop();
-            }
+        if (!widget.isAiGenerated) {
+          _apiService.completeExercise(widget.exercise.id).then((_) {
+            Future.delayed(const Duration(milliseconds: 1200), () {
+              if (mounted) Navigator.of(context).pop();
+            });
           });
-        }).catchError((error) {
-          // TODO: Gestionar error
-        });
+        }
       } else {
         _feedback = 'Incorrect. Try again!';
         _feedbackColor = Colors.red;
@@ -137,35 +333,28 @@ class ExerciseDialogState extends State<ExerciseDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(widget.exercise.prompt),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildExercise(widget.exercise),
-            if (_feedback != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Text(
-                  _feedback!,
-                  style: TextStyle(
-                    color: _feedbackColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          widget.exercise.prompt,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 20),
+        _buildExercise(widget.exercise),
+        if (_feedback != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Text(
+              _feedback!,
+              style: TextStyle(
+                color: _feedbackColor,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: const Text('Close'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+            ),
+          ),
       ],
     );
   }
@@ -176,6 +365,10 @@ class ExerciseDialogState extends State<ExerciseDialog> {
         return _buildMultipleChoiceExercise(exercise);
       case 'translation':
         return _buildTranslationExercise(exercise);
+      case 'fill_in_blank':
+        return _buildFillInBlankExercise(exercise);
+      case 'sentence_order':
+        return _buildSentenceOrderExercise(exercise);
       default:
         return Center(
             child: Text('Unsupported exercise type: ${exercise.type}'));
@@ -205,9 +398,7 @@ class ExerciseDialogState extends State<ExerciseDialog> {
             onPressed: _answered
                 ? null
                 : () {
-                    setState(() {
-                      _selectedOption = option;
-                    });
+                    setState(() => _selectedOption = option);
                     _checkAnswer(option == exercise.answer);
                   },
             child: Text(option),
@@ -235,12 +426,93 @@ class ExerciseDialogState extends State<ExerciseDialog> {
           onPressed: _answered
               ? null
               : () {
-                  _checkAnswer(controller.text.trim().toLowerCase() ==
-                      exercise.answer.toLowerCase());
+                  _checkAnswer(
+                    controller.text.trim().toLowerCase() ==
+                        exercise.answer.toLowerCase(),
+                  );
                 },
           child: const Text('Check Answer'),
         ),
       ],
     );
   }
+
+  Widget _buildFillInBlankExercise(Exercise exercise) {
+    final TextEditingController controller = TextEditingController();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(exercise.prompt),
+        const SizedBox(height: 8),
+        TextField(
+          controller: controller,
+          enabled: !_answered,
+          decoration: const InputDecoration(
+            hintText: 'Type the missing word',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: _answered
+              ? null
+              : () {
+                  _checkAnswer(
+                    controller.text.trim().toLowerCase() ==
+                        exercise.answer.toLowerCase(),
+                  );
+                },
+          child: const Text('Check Answer'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSentenceOrderExercise(Exercise exercise) {
+    final List<String> words = List<String>.from(exercise.options)..shuffle();
+
+    return StatefulBuilder(
+      builder: (context, setLocalState) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              exercise.prompt,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 12),
+            ReorderableWrap(
+              spacing: 8,
+              runSpacing: 8,
+              needsLongPressDraggable: false,
+              onReorder: (oldIndex, newIndex) {
+                setLocalState(() {
+                  final word = words.removeAt(oldIndex);
+                  words.insert(newIndex, word);
+                });
+              },
+              children: words.map((word) {
+                return Chip(
+                  key: ValueKey(word),
+                  label: Text(word),
+                  backgroundColor: Colors.blue.shade100,
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _answered
+                  ? null
+                  : () {
+                      final userSentence = words.join(' ').trim();
+                      _checkAnswer(userSentence == exercise.answer);
+                    },
+              child: const Text('Check Sentence'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
