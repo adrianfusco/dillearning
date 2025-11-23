@@ -1,6 +1,11 @@
 import ollama
 import prompts
-from schemas.ai import ExampleRequest, GrammarRequest, TranslateRequest
+from schemas.ai import (
+    ExampleRequest,
+    GenerateExerciseRequest,
+    GrammarRequest,
+    TranslateRequest,
+)
 
 
 class AIService:
@@ -43,6 +48,14 @@ class AIService:
         )
         messages = [
             {"role": "system", "content": prompts.EXAMPLE_PROMPT},
+            {"role": "user", "content": user_content},
+        ]
+        return self._stream_ai_response(messages)
+
+    def generate_exercise(self, request: GenerateExerciseRequest):
+        user_content = f"Genera un ejercicio para el concepto: '{request.concept}'"
+        messages = [
+            {"role": "system", "content": prompts.GENERATE_EXERCISE_PROMPT},
             {"role": "user", "content": user_content},
         ]
         return self._stream_ai_response(messages)
