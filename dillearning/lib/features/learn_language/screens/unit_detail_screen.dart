@@ -4,6 +4,7 @@ import 'package:dillearning/core/services/api_service.dart';
 import 'package:dillearning/features/learn_language/models/exercise.dart';
 import 'dart:convert';
 import 'package:reorderables/reorderables.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 class UnitDetailScreen extends StatefulWidget {
   final int unitId;
@@ -28,7 +29,7 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Unit Details'),
+        title: Text(AppLocalizations.of(context)!.unitDetailsTitle),
       ),
       body: FutureBuilder<Unit>(
         future: _unit,
@@ -36,9 +37,9 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text(AppLocalizations.of(context)!.errorWithMessage(snapshot.error.toString())));
           } else if (!snapshot.hasData) {
-            return const Center(child: Text('No unit data available.'));
+            return Center(child: Text(AppLocalizations.of(context)!.noUnitDataAvailable));
           }
 
           final unit = snapshot.data!;
@@ -57,44 +58,62 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
                       child: Text(concept.explanation),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 4.0),
-                      child: ElevatedButton.icon(
-                        icon: const Icon(Icons.auto_awesome),
-                        label: const Text('Generate AI Examples'),
+                      child: ElevatedButton(
                         onPressed: () {
                           _showAIExamplesDialog(concept.title);
                         },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.auto_awesome),
+                            SizedBox(width: 8),
+                            Text(AppLocalizations.of(context)!.generateAiExamplesButton),
+                          ],
+                        ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 4.0),
-                      child: ElevatedButton.icon(
-                        icon: const Icon(Icons.psychology),
-                        label: const Text('Generate AI Exercise'),
+                      child: ElevatedButton(
                         onPressed: () {
                           _showAIGeneratedExerciseDialog(concept.title);
                         },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.psychology),
+                            SizedBox(width: 8),
+                            Text(AppLocalizations.of(context)!.generateAiExerciseButton),
+                          ],
+                        ),
                       ),
                     ),
                     if (concept.exercises.isNotEmpty)
                       ...concept.exercises.map((exercise) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(
+                          key: UniqueKey(),
+                          padding: EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 4.0),
                           child: ElevatedButton(
+                            key: UniqueKey(),
                             onPressed: () {
                               _showExerciseDialog(exercise);
                             },
-                            child: Text('Exercise: ${exercise.prompt}'),
+                            child: Builder(
+                              builder: (context) {
+                                return Text(AppLocalizations.of(context)!.exercisePrompt(exercise.prompt));
+                              }
+                            ),
                           ),
                         );
                       })
                     else
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.all(16.0),
-                        child: Text('No exercises available for this concept.'),
+                        child: Text(AppLocalizations.of(context)!.noExercisesAvailableForConcept),
                       ),
                   ],
                 ),
@@ -177,25 +196,25 @@ class _AIGeneratedExerciseDialogState extends State<AIGeneratedExerciseDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('AI Generated Exercise for "${widget.concept}"'),
+      title: Text(AppLocalizations.of(context)!.aiGeneratedExerciseForConcept(widget.concept)),
       content: SizedBox(
         width: double.maxFinite,
         child: _loading
             ? const SizedBox(
                 height: 80, child: Center(child: CircularProgressIndicator()))
             : _error.isNotEmpty
-                ? Text('Error: $_error')
+                ? Text(AppLocalizations.of(context)!.errorWithMessage(_error))
                 : _exercise != null
                     ? ExerciseView(
                         exercise: _exercise!,
                         isAiGenerated: true,
                       )
-                    : const Text('No exercise generated.'),
+                    : Text(AppLocalizations.of(context)!.noExerciseGenerated),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
+          child: Text(AppLocalizations.of(context)!.closeButton),
         ),
       ],
     );
@@ -240,18 +259,18 @@ class _AIExamplesDialogState extends State<AIExamplesDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('AI Examples for "${widget.word}"'),
+      title: Text(AppLocalizations.of(context)!.aiExamplesForWord(widget.word)),
       content: SizedBox(
         width: double.maxFinite,
         child: _loading
             ? const SizedBox(
                 height: 80, child: Center(child: CircularProgressIndicator()))
             : _error.isNotEmpty
-                ? Text('Error: $_error')
+                ? Text(AppLocalizations.of(context)!.errorWithMessage(_error))
                 : SingleChildScrollView(
                     child: Text(
                       _examples.trim().isEmpty
-                          ? 'No examples generated.'
+                          ? AppLocalizations.of(context)!.noExamplesGenerated
                           : _examples,
                       style: const TextStyle(fontSize: 16, height: 1.5),
                     ),
@@ -260,7 +279,7 @@ class _AIExamplesDialogState extends State<AIExamplesDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
+          child: Text(AppLocalizations.of(context)!.closeButton),
         ),
       ],
     );
@@ -281,7 +300,7 @@ class ExerciseDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Close'),
+          child: Text(AppLocalizations.of(context)!.closeButton),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -371,7 +390,7 @@ class ExerciseViewState extends State<ExerciseView> {
         return _buildSentenceOrderExercise(exercise);
       default:
         return Center(
-            child: Text('Unsupported exercise type: ${exercise.type}'));
+            child: Text(AppLocalizations.of(context)!.unsupportedExerciseType(exercise.type)));
     }
   }
 
@@ -431,7 +450,7 @@ class ExerciseViewState extends State<ExerciseView> {
                         exercise.answer.toLowerCase(),
                   );
                 },
-          child: const Text('Check Answer'),
+          child: Text(AppLocalizations.of(context)!.checkAnswerButton),
         ),
       ],
     );
@@ -462,7 +481,7 @@ class ExerciseViewState extends State<ExerciseView> {
                         exercise.answer.toLowerCase(),
                   );
                 },
-          child: const Text('Check Answer'),
+          child: Text(AppLocalizations.of(context)!.checkAnswerButton),
         ),
       ],
     );
@@ -507,7 +526,7 @@ class ExerciseViewState extends State<ExerciseView> {
                       final userSentence = words.join(' ').trim();
                       _checkAnswer(userSentence == exercise.answer);
                     },
-              child: const Text('Check Sentence'),
+              child: Text(AppLocalizations.of(context)!.checkSentenceButton),
             ),
           ],
         );

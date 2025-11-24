@@ -2,6 +2,7 @@ import 'package:dillearning/core/services/api_service.dart';
 import 'package:dillearning/features/learn_language/models/course.dart';
 import 'package:dillearning/features/learn_language/screens/course_units_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
   const LanguageSelectionScreen({super.key});
@@ -24,7 +25,7 @@ class LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Choose a language to learn'),
+        title: Text(AppLocalizations.of(context)!.chooseLanguageToLearnTitle),
       ),
       body: FutureBuilder<List<Course>>(
         future: _courses,
@@ -32,9 +33,9 @@ class LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text(AppLocalizations.of(context)!.errorWithMessage(snapshot.error.toString())));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No languages available.'));
+            return Center(child: Text(AppLocalizations.of(context)!.noLanguagesAvailable));
           }
 
           final courses = snapshot.data!;

@@ -17,5 +17,121 @@
   "translationError": "Error translating text",
   "translationResultLabel": "Translation:",
   "translateButton": "Translate",
-  "emptyTextFieldError": "Please enter some text to translate"
+  "emptyTextFieldError": "Please enter some text to translate",
+  "dillearningAiIsThinking": "DilLearning AI is thinking...",
+  "chatWithDillearningAiTitle": "Chat with Dillearning AI. You can talk about any topic to practice your learning",
+  "somethingWentWrong": "Something went wrong. Please try again.",
+  "retryButton": "Retry",
+  "noCoursesAvailable": "No courses available.",
+  "courseDetailsTitle": "Course Details",
+  "errorWithMessage": "Error: {message}",
+  "@errorWithMessage": {
+    "description": "Error message with a placeholder for the actual error",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "noCourseDataAvailable": "No course data available.",
+  "unitOrder": "Unit {order}",
+  "@unitOrder": {
+    "description": "Unit order with a placeholder for the order number",
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCourseTitle": "Select a Course",
+  "chooseLanguageToLearnTitle": "Choose a language to learn",
+  "noLanguagesAvailable": "No languages available.",
+  "unitsTitle": "Units",
+  "noUnitsAvailableForCourse": "No units available for this course.",
+  "unitDetailsTitle": "Unit Details",
+  "noUnitDataAvailable": "No unit data available.",
+  "generateAiExamplesButton": "Generate AI Examples",
+  "generateAiExerciseButton": "Generate AI Exercise",
+  "exercisePrompt": "Exercise: {prompt}",
+  "@exercisePrompt": {
+    "description": "Exercise prompt with a placeholder for the prompt text",
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      }
+    }
+  },
+  "noExercisesAvailableForConcept": "No exercises available for this concept.",
+  "aiGeneratedExerciseForConcept": "AI Generated Exercise for \"{concept}\"",
+  "@aiGeneratedExerciseForConcept": {
+    "description": "AI Generated Exercise title with a placeholder for the concept",
+    "placeholders": {
+      "concept": {
+        "type": "String"
+      }
+    }
+  },
+  "noExerciseGenerated": "No exercise generated.",
+  "closeButton": "Close",
+  "aiExamplesForWord": "AI Examples for \"{word}\"",
+  "@aiExamplesForWord": {
+    "description": "AI Examples title with a placeholder for the word",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "unsupportedExerciseType": "Unsupported exercise type: {type}",
+  "@unsupportedExerciseType": {
+    "description": "Unsupported exercise type message with a placeholder for the type",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "checkAnswerButton": "Check Answer",
+  "checkSentenceButton": "Check Sentence",
+  "registrationSuccessful": "Registration successful",
+  "registrationFailed": "Registration failed: {error}",
+  "@registrationFailed": {
+    "description": "Registration failed message with a placeholder for the error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "registerInDillearningTitle": "Register in dillearning",
+  "registerButton": "Register",
+  "failedToLogin": "Failed to login: {error}",
+  "@failedToLogin": {
+    "description": "Failed to login message with a placeholder for the error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeToDillearningTitle": "Welcome to dillearning",
+  "loginButton": "Login",
+  "englishLanguage": "English",
+  "spanishLanguage": "Español",
+  "noExamplesGenerated": "No examples generated.",
+  "profile": "Profile",
+  "learning": "Learning",
+  "availableCourses": "Available Courses",
+  "withDillearningYouCan": "With dillearning you can",
+  "learnLanguagesTitle": "Learn Languages",
+  "learnLanguagesDescription": "Expand your horizons by learning multiple languages.",
+  "translateTextTitle": "Translate Texts",
+  "translateTextDescription": "Precise translations with advanced AI.",
+  "chatPracticeTitle": "Practice with a Chat",
+  "chatPracticeDescription": "Talk to Dillarning and improve your fluency.",
+  "aiAssistantTitle": "AI Assistant",
+  "aiAssistantDescription": "Learn with the help of our intelligent assistant.",
+  "greetingMorning": "Good Morning",
+  "greetingAfternoon": "Good Afternoon",
+  "greetingEvening": "Good Evening"
 }

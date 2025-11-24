@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:uuid/uuid.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -77,8 +78,6 @@ class _ChatScreenState extends State<ChatScreen> {
     _chatController.insertMessage(message);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +86,7 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           _buildChatBody(),
           if (_isLoading)
-            const Positioned(
+            Positioned(
               left: 0,
               right: 0,
               bottom: 100,
@@ -97,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: [
                     CircularProgressIndicator(),
                     SizedBox(height: 8),
-                    Text('DilLearning IA está pensando...'),
+                    Text(AppLocalizations.of(context)!.dillearningAiIsThinking),
                   ],
                 ),
               ),
@@ -109,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      title: Text('Chat con Dillearning IA. Puedes hablar de cualquier tema para ejercitar tu aprendizaje'),
+      title: Text(AppLocalizations.of(context)!.chatWithDillearningAiTitle),
     );
   }
 

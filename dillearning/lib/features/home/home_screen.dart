@@ -3,6 +3,7 @@ import 'package:dillearning/features/learn_language/language_learning_screen.dar
 import 'package:dillearning/features/learn_language/translator_screen.dart';
 import 'package:dillearning/features/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,10 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.school),
-            label: 'Learn',
+            label: AppLocalizations.of(context)!.learning,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chat),
@@ -45,11 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.translate),
-            label: 'Translator',
+            label: AppLocalizations.of(context)!.translator,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: AppLocalizations.of(context)!.profile,
           ),
         ],
         currentIndex: _selectedIndex,

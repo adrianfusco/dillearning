@@ -17,5 +17,121 @@
   "translationError": "Error traduciendo texto",
   "translationResultLabel": "Traducción:",
   "translateButton": "Traducir",
-  "emptyTextFieldError": "Por favor, introduce texto para traducir"
+  "emptyTextFieldError": "Por favor, introduce algún texto para traducir",
+  "dillearningAiIsThinking": "Dillearning IA está pensando...",
+  "chatWithDillearningAiTitle": "Charla con Dillearning IA. Puedes hablar de cualquier tema para ejercitar tu aprendizaje",
+  "somethingWentWrong": "Algo salió mal. Por favor, inténtalo de nuevo.",
+  "retryButton": "Reintentar",
+  "noCoursesAvailable": "No hay cursos disponibles.",
+  "courseDetailsTitle": "Detalles del Curso",
+  "errorWithMessage": "Error: {message}",
+  "@errorWithMessage": {
+    "description": "Mensaje de error con un marcador de posición para el error real",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "noCourseDataAvailable": "No hay datos de curso disponibles.",
+  "unitOrder": "Unidad {order}",
+  "@unitOrder": {
+    "description": "Orden de la unidad con un marcador de posición para el número de orden",
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCourseTitle": "Selecciona un Curso",
+  "chooseLanguageToLearnTitle": "Elige un idioma para aprender",
+  "noLanguagesAvailable": "No hay idiomas disponibles.",
+  "unitsTitle": "Unidades",
+  "noUnitsAvailableForCourse": "No hay unidades disponibles para este curso.",
+  "unitDetailsTitle": "Detalles de la Unidad",
+  "noUnitDataAvailable": "No hay datos de unidad disponibles.",
+  "generateAiExamplesButton": "Generar Ejemplos de IA",
+  "generateAiExerciseButton": "Generar Ejercicio de IA",
+  "exercisePrompt": "Ejercicio: {prompt}",
+  "@exercisePrompt": {
+    "description": "Mensaje de ejercicio con un marcador de posición para el texto del mensaje",
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      }
+    }
+  },
+  "noExercisesAvailableForConcept": "No hay ejercicios disponibles para este concepto.",
+  "aiGeneratedExerciseForConcept": "Ejercicio Generado por IA para \"{concept}\"",
+  "@aiGeneratedExerciseForConcept": {
+    "description": "Título de Ejercicio Generado por IA con un marcador de posición para el concepto",
+    "placeholders": {
+      "concept": {
+        "type": "String"
+      }
+    }
+  },
+  "noExerciseGenerated": "No se generó ningún ejercicio.",
+  "closeButton": "Cerrar",
+  "aiExamplesForWord": "Ejemplos de IA para \"{word}\"",
+  "@aiExamplesForWord": {
+    "description": "Título de Ejemplos de IA con un marcador de posición para la palabra",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "unsupportedExerciseType": "Tipo de ejercicio no compatible: {type}",
+  "@unsupportedExerciseType": {
+    "description": "Mensaje de tipo de ejercicio no compatible con un marcador de posición para el tipo",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "checkAnswerButton": "Comprobar Respuesta",
+  "checkSentenceButton": "Comprobar Frase",
+  "registrationSuccessful": "Registro exitoso",
+  "registrationFailed": "Registro fallido: {error}",
+  "@registrationFailed": {
+    "description": "Mensaje de registro fallido con un marcador de posición para el error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "registerInDillearningTitle": "Registrarse en dillearning",
+  "registerButton": "Registrarse",
+  "failedToLogin": "Error al iniciar sesión: {error}",
+  "@failedToLogin": {
+    "description": "Mensaje de error al iniciar sesión con un marcador de posición para el error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeToDillearningTitle": "Bienvenido a dillearning",
+  "loginButton": "Iniciar sesión",
+  "englishLanguage": "Inglés",
+  "spanishLanguage": "Español",
+  "noExamplesGenerated": "No se generaron ejemplos.",
+  "profile": "Perfil",
+  "learning": "Aprendizaje",
+  "availableCourses": "Cursos disponibles",
+  "withDillearningYouCan": "Con dillearning puedes",
+  "learnLanguagesTitle": "Aprende Idiomas",
+  "learnLanguagesDescription": "Expande tus horizontes aprendiendo varios idiomas.",
+  "translateTextTitle": "Traduce Textos",
+  "translateTextDescription": "Traducciones precisas con IA avanzada.",
+  "chatPracticeTitle": "Práctica con un Chat",
+  "chatPracticeDescription": "Habla con Dillarning y mejora tu fluidez.",
+  "aiAssistantTitle": "Asistente IA",
+  "aiAssistantDescription": "Aprende con ayuda de nuestro asistente inteligente.",
+  "greetingMorning": "Buenos Días",
+  "greetingAfternoon": "Buenas Tardes",
+  "greetingEvening": "Buenas Noches"
 }
