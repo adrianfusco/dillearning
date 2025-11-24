@@ -5,6 +5,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:dillearning/core/services/api_service.dart';
 import 'package:dillearning/features/learn_language/models/course_with_progress.dart';
 import 'package:dillearning/features/learn_language/screens/course_units_screen.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 class LanguageLearningScreen extends StatefulWidget {
   const LanguageLearningScreen({super.key});
@@ -41,11 +42,16 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen>
     return coursesWithProgress;
   }
 
-  String _getGreeting() {
+  String _getGreeting(BuildContext context) {
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'Good Morning';
-    if (hour < 18) return 'Good Afternoon';
-    return 'Good Evening';
+
+    if (hour < 12) {
+      return AppLocalizations.of(context)!.greetingMorning;
+    }
+    if (hour < 18) {
+      return AppLocalizations.of(context)!.greetingAfternoon;
+    }
+    return AppLocalizations.of(context)!.greetingEvening;
   }
 
   @override
@@ -60,7 +66,7 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen>
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
-          'Welcome to dillearning!',
+          AppLocalizations.of(context)!.welcome,
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -102,14 +108,14 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildGreeting(),
+                      _buildGreeting(context),
                       const SizedBox(height: 8),
                       _buildWelcomeMessage(),
                       const SizedBox(height: 24),
                       _buildAppFeatures(),
                       const SizedBox(height: 32),
                       Text(
-                        'Available Courses',
+                        AppLocalizations.of(context)!.availableCourses,
                         style: GoogleFonts.poppins(
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
@@ -135,17 +141,19 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen>
     );
   }
 
-  Widget _buildGreeting() => Text(
-        _getGreeting(),
-        style: GoogleFonts.poppins(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
-      );
+  Widget _buildGreeting(BuildContext context) {
+    return Text(
+      _getGreeting(context),
+      style: GoogleFonts.poppins(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+      ),
+    );
+  }
 
   Widget _buildWelcomeMessage() => Text(
-        'Con dillearning puedes:',
+        AppLocalizations.of(context)!.withDillearningYouCan,
         style: GoogleFonts.poppins(
           fontSize: 26,
           fontWeight: FontWeight.bold,
@@ -164,22 +172,32 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen>
         physics: const BouncingScrollPhysics(),
         children: [
           _buildFeatureCard(
-              Icons.language,
-              'Aprende Idiomas',
-              'Expande tus horizontes aprendiendo varios idiomas.',
-              Colors.orange),
-          const SizedBox(width: 16),
-          _buildFeatureCard(Icons.translate, 'Traduce Textos',
-              'Traducciones precisas con IA avanzada.', Colors.blue),
-          const SizedBox(width: 16),
-          _buildFeatureCard(Icons.chat_bubble, 'Práctica con un Chat',
-              'Habla con Dillarning y mejora tu fluidez.', Colors.green),
+            Icons.language,
+            AppLocalizations.of(context)!.learnLanguagesTitle,
+            AppLocalizations.of(context)!.learnLanguagesDescription,
+            Colors.orange,
+          ),
           const SizedBox(width: 16),
           _buildFeatureCard(
-              Icons.assistant,
-              'Asistente IA',
-              'Aprende con ayuda de nuestro asistente inteligente.',
-              Colors.purple),
+            Icons.translate,
+            AppLocalizations.of(context)!.translateTextTitle,
+            AppLocalizations.of(context)!.translateTextDescription,
+            Colors.blue,
+          ),
+          const SizedBox(width: 16),
+          _buildFeatureCard(
+            Icons.chat_bubble,
+            AppLocalizations.of(context)!.chatPracticeTitle,
+            AppLocalizations.of(context)!.chatPracticeDescription,
+            Colors.green,
+          ),
+          const SizedBox(width: 16),
+          _buildFeatureCard(
+            Icons.assistant,
+            AppLocalizations.of(context)!.aiAssistantTitle,
+            AppLocalizations.of(context)!.aiAssistantDescription,
+            Colors.purple,
+          ),
         ],
       ),
     );
@@ -290,21 +308,21 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen>
           children: [
             const Icon(Icons.error_outline, size: 50, color: Colors.red),
             const SizedBox(height: 16),
-            const Text('Something went wrong. Please try again.',
+            Text(AppLocalizations.of(context)!.somethingWentWrong,
                 style: TextStyle(fontSize: 18, color: Colors.red)),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => setState(() {
                 _coursesWithProgress = _getCoursesWithProgress();
               }),
-              child: const Text('Retry'),
+              child: Text(AppLocalizations.of(context)!.retryButton),
             ),
           ],
         ),
       );
 
   Widget _buildNoCoursesState() =>
-      const Center(child: Text('No courses available.'));
+      Center(child: Text(AppLocalizations.of(context)!.noCoursesAvailable));
 }
 
 class _AnimatedCourseCard extends StatefulWidget {

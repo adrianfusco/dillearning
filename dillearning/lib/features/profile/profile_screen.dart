@@ -108,14 +108,14 @@ class ProfileScreenState extends State<ProfileScreen> {
                               child: Column(
                                 children: [
                                   ListTile(
-                                    title: const Text('English'),
+                                    title: Text(AppLocalizations.of(context)!.englishLanguage),
                                     onTap: () {
                                       languageNotifier.setLocale(Locale('en'));
                                       Navigator.of(context).pop();
                                     },
                                   ),
                                   ListTile(
-                                    title: const Text('Español'),
+                                    title: Text(AppLocalizations.of(context)!.spanishLanguage),
                                     onTap: () {
                                       languageNotifier.setLocale(Locale('es'));
                                       Navigator.of(context).pop();

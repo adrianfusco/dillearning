@@ -4,6 +4,7 @@ import 'package:dillearning/features/learn_language/models/unit.dart';
 import 'package:dillearning/features/learn_language/screens/unit_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dillearning/core/services/api_service.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 class CourseSelectionScreen extends StatefulWidget {
   const CourseSelectionScreen({super.key});
@@ -27,7 +28,7 @@ class CourseSelectionScreenState extends State<CourseSelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select a Course'),
+        title: Text(AppLocalizations.of(context)!.selectCourseTitle),
       ),
       body: FutureBuilder<List<Course>>(
         future: _courses,
@@ -35,9 +36,9 @@ class CourseSelectionScreenState extends State<CourseSelectionScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text(AppLocalizations.of(context)!.errorWithMessage(snapshot.error.toString())));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No courses available.'));
+            return Center(child: Text(AppLocalizations.of(context)!.noCoursesAvailable));
           }
 
           final courses = snapshot.data!;
@@ -76,7 +77,7 @@ class CourseSelectionScreenState extends State<CourseSelectionScreen> {
       children: course.units.map((Unit unit) {
         return ListTile(
           title: Text(unit.title),
-          subtitle: Text('Unit ${unit.order}'),
+          subtitle: Text(AppLocalizations.of(context)!.unitOrder(unit.order.toString())),
           onTap: () {
             Navigator.push(
               context,

@@ -1,5 +1,6 @@
 import 'package:dillearning/core/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -36,14 +37,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Registration successful')),
+            SnackBar(content: Text(AppLocalizations.of(context)!.registrationSuccessful)),
           );
           Navigator.of(context).pop();
         }
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Registration failed: $e')),
+            SnackBar(content: Text(AppLocalizations.of(context)!.registrationFailed(e.toString()))),
           );
         }
       }
@@ -54,7 +55,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register in dillearning'),
+        title: Text(AppLocalizations.of(context)!.registerInDillearningTitle),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -226,7 +227,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     textStyle: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  child: const Text('Register'),
+                  child: Text(AppLocalizations.of(context)!.registerButton),
                 ),
                 const SizedBox(height: 16),
                 Center(

@@ -4,6 +4,7 @@ import 'package:dillearning/features/auth/models/user.dart';
 import 'package:dillearning/features/auth/registration_screen.dart';
 import 'package:dillearning/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:dillearning/l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -46,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to login: $e')),
+            SnackBar(content: Text(AppLocalizations.of(context)!.failedToLogin(e.toString()))),
           );
         }
       }
@@ -57,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome to dillearning'),
+        title: Text(AppLocalizations.of(context)!.welcomeToDillearningTitle),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
@@ -165,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     textStyle: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  child: const Text('Login'),
+                  child: Text(AppLocalizations.of(context)!.loginButton),
                 ),
                 const SizedBox(height: 16),
                 Center(
