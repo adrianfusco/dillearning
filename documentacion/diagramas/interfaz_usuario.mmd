@@ -1,42 +1,58 @@
 graph TD
-    subgraph "Autenticación"
-        A(Login / Registro)
+    subgraph "Flujo de Entrada"
+        A("fa:fa-rocket Splash Screen")
+        B("fa:fa-sign-in-alt Autenticación (Login / Registro)")
     end
 
-    subgraph "Flujo Principal de la Aplicación"
-        B(Pantalla Principal)
-        C(Selección de Idioma)
-        D(Explicación del Proceso de Aprendizaje)
-        E(Centro de Aprendizaje)
-        F(Configuración de Perfil)
+    subgraph "Aplicación Principal (Navegación)"
+        C{"fa:fa-home Home"}
+        D["fa:fa-language Selección de Idioma"]
+        E["fa:fa-book-open Centro de Aprendizaje"]
+        F["fa:fa-user-cog Perfil de Usuario"]
     end
 
-    subgraph "Herramientas de IA"
-        G[Chat con IA]
-        H[Traducción]
-        I[Explicación Gramatical]
+    subgraph "Centro de Aprendizaje (Detalle)"
+        E1["fa:fa-list-ul Lista de Cursos"]
+        E2["fa:fa-layer-group Unidades del Curso"]
+        E3["fa:fa-puzzle-piece Ejercicios de la Unidad"]
     end
 
-    A -- Login Exitoso --> B
-    B -- Elegir Idioma --> C
-    C -- Continuar --> D
-    D -- Empezar a Aprender --> E
-    B -- Ir a Perfil --> F
-    F -- Guardar Cambios --> B
+    subgraph "Herramientas de IA (Integradas en Ejercicios)"
+        G["fa:fa-comments Chat con IA"]
+        H["fa:fa-exchange-alt Traducción"]
+        I["fa:fa-info-circle Explicación Gramatical"]
+    end
 
-    E -- Iniciar Lección --> E
-    E -- Usar Herramientas de IA --> G
-    E -- Usar Herramientas de IA --> H
-    E -- Usar Herramientas de IA --> I
+    %% Conexiones de Flujo
+    A -- "Carga inicial" --> B
+    B -- "Login Exitoso" --> C
     
-    G --> E
-    H --> E
-    I --> E
+    C -- "Navegación" --> D
+    C -- "Navegación" --> E
+    C -- "Navegación" --> F
+    C -- "Accede a" --> G
+    C -- "Accede a" --> H
 
-    classDef auth fill:#f9f,stroke:#333,stroke-width:2px
+    D -- "Idioma seleccionado" --> E
+
+    E -- "Seleccionar Curso" --> E1
+    E1 -- "Seleccionar Unidad" --> E2
+    E2 -- "Iniciar Ejercicio" --> E3
+    E2 -- "Generar Ejercicios" --> E4("fa:fa-magic Ejercicios con IA")
+    
+    E3 -- "Accede a" --> G
+    E3 -- "Accede a" --> H
+    E3 -- "Accede a" --> I
+
+    F -- "Guardar cambios" --> C
+
+    %% Estilos
+    classDef entry fill:#f9f,stroke:#333,stroke-width:2px
     classDef main fill:#ccf,stroke:#333,stroke-width:2px
+    classDef feature fill:#e6f3ff,stroke:#333,stroke-width:2px
     classDef ai fill:#cfc,stroke:#333,stroke-width:2px
 
-    class A auth
-    class B,C,D,E,F main
+    class A,B entry
+    class C,D,E,F main
+    class E1,E2,E3 feature
     class G,H,I ai

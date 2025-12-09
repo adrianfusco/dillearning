@@ -1,6 +1,7 @@
 erDiagram
     users {
         Integer id PK
+        String name
         String email "Único, Indexado"
         String hashed_password
     }
@@ -8,14 +9,6 @@ erDiagram
     languages {
         Integer id PK
         String name "Único"
-        String code "Único"
-    }
-
-    user_languages {
-        Integer id PK
-        Integer user_id FK
-        Integer language_id FK
-        Integer progress "Porcentaje (0-100)"
     }
 
     courses {
@@ -29,16 +22,15 @@ erDiagram
 
     units {
         Integer id PK
-        Integer course_id FK
         String title
         Integer order
+        Integer course_id FK
     }
 
-    lessons {
+    concepts {
         Integer id PK
         String title
-        String description
-        Integer order
+        String explanation
         Integer unit_id FK
     }
 
@@ -48,7 +40,7 @@ erDiagram
         String prompt
         String answer
         JSON options
-        Integer lesson_id FK
+        Integer concept_id FK
     }
 
     conversations {
@@ -59,18 +51,25 @@ erDiagram
         DateTime created_at
     }
 
-    user_courses {
-        Integer user_id FK
-        Integer course_id FK
+    user_unit_progress {
+        Integer user_id PK, FK
+        Integer unit_id PK, FK
+        Boolean completed
     }
 
-    user_courses ||--o{ users : "está inscrito en"
-    user_courses ||--o{ courses : "contiene"
-    user_languages ||--o{ users : "aprende"
-    user_languages ||--o{ languages : "es aprendido por"
-    courses ||--o{ units : "contiene"
-    units ||--o{ lessons : "contiene"
-    lessons ||--o{ exercises : "tiene"
-    courses ||--o{ user_courses : "es inscrito en"
-    users ||--o{ conversations : "tiene"
-    exercises ||--o{ lessons : "es parte de"
+    user_exercise_progress {
+        Integer user_id PK, FK
+        Integer exercise_id PK, FK
+        Boolean completed
+    }
+
+    courses }o--|| languages : "usa como idioma de origen"
+    courses }o--|| languages : "usa como idioma de aprendizaje"
+    units }o--|| courses : "pertenece a"
+    concepts }o--|| units : "pertenece a"
+    exercises }o--|| concepts : "pertenece a"
+    conversations }o--|| users : "pertenece a"
+    users ||--|{ user_unit_progress : "sigue el progreso en"
+    units ||--|{ user_unit_progress : "es seguido para"
+    users ||--|{ user_exercise_progress : "sigue el progreso en"
+    exercises ||--|{ user_exercise_progress : "es seguido para"

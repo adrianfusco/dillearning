@@ -1,7 +1,3 @@
-# Sobre esta carpeta:
-
 ## `documentacion/img/`
 
-Carpeta para almacenar as imaxes que empregues na elaboración da documentación do teu proxecto.
-
-**IMPORTANTE**: Procura empregar `PNG` como formato de imaxe.
+En esta carpeta se almacenan imágenes y capturas de pantalla utilizadas en la documentación del proyecto, como el manual de usuario.
