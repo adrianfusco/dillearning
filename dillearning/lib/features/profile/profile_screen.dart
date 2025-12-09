@@ -1,3 +1,4 @@
+import 'package:dillearning/core/services/api_service.dart';
 import 'package:dillearning/core/services/language_service.dart';
 import 'package:dillearning/core/services/session_service.dart';
 import 'package:dillearning/core/services/theme_service.dart';
@@ -35,6 +36,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     final languageNotifier = Provider.of<LanguageNotifier>(context);
+    final apiService = ApiService();
 
     return Scaffold(
       appBar: AppBar(
@@ -137,6 +139,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           ElevatedButton.icon(
             onPressed: () async {
               final navigator = Navigator.of(context);
+              await apiService.logout();
               await SessionService().clearSession();
               navigator.pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => const LoginScreen()),

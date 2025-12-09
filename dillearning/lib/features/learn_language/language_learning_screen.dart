@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:dillearning/core/services/exceptions.dart';
+import 'package:dillearning/features/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -32,14 +34,25 @@ class _LanguageLearningScreenState extends State<LanguageLearningScreen>
   }
 
   Future<List<CourseWithProgress>> _getCoursesWithProgress() async {
-    final courses = await _apiService.getAvailableCourses();
-    final coursesWithProgress = <CourseWithProgress>[];
-    for (final course in courses) {
-      final progress = await _apiService.getCourseProgress(course.id);
-      coursesWithProgress
-          .add(CourseWithProgress(course: course, progress: progress));
+    try {
+      final courses = await _apiService.getAvailableCourses();
+      final coursesWithProgress = <CourseWithProgress>[];
+      for (final course in courses) {
+        final progress = await _apiService.getCourseProgress(course.id);
+        coursesWithProgress
+            .add(CourseWithProgress(course: course, progress: progress));
+      }
+      return coursesWithProgress;
+    } on SessionExpiredException {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ),
+        );
+      }
+      return [];
     }
-    return coursesWithProgress;
   }
 
   String _getGreeting(BuildContext context) {

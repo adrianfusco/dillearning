@@ -91,6 +91,15 @@ def can_access_unit_api(
     return unit_crud.can_access_unit(db, current_user.id, unit_id)
 
 
+@router.get("/units/{unit_id}/progress", response_model=List[int])
+def get_unit_progress(
+    unit_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return unit_crud.get_unit_progress(db, current_user.id, unit_id)
+
+
 @router.post("/units/{unit_id}/complete", response_model=dict)
 def complete_unit_api(
     unit_id: int,
