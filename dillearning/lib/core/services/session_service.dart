@@ -24,8 +24,11 @@ class SessionService {
     await prefs.remove(_keyUser);
   }
 
-  Future<bool> isLoggedIn() async {
+  Future<bool> isSessionValid() async {
     final user = await getSession();
-    return user != null;
+    if (user == null) {
+      return false;
+    }
+    return user.expiresAt.isAfter(DateTime.now());
   }
 }

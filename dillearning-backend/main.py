@@ -5,11 +5,11 @@ import models.conversation  # noqa: F401
 import models.course  # noqa: F401
 import models.exercise  # noqa: F401
 import models.language  # noqa: F401
+import models.token  # noqa: F401
 import models.unit  # noqa: F401
 import models.user  # noqa: F401
 import models.user_exercise_progress  # noqa: F401
-import models.user_unit_progress  # noqa: F401
-from apis import ai, courses, health, languages, users
+from apis import ai, auth, courses, health, languages, users
 from database import Base, engine
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -62,3 +62,4 @@ app.include_router(health.router)
 app.include_router(languages.router)
 app.include_router(users.router)
 app.include_router(courses.router)
+app.include_router(auth.router)

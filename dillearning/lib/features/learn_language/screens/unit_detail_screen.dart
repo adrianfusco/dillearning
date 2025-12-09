@@ -16,13 +16,28 @@ class UnitDetailScreen extends StatefulWidget {
 }
 
 class UnitDetailScreenState extends State<UnitDetailScreen> {
-  late Future<Unit> _unit;
+  late Future<Unit> _unitFuture;
+  Set<int> _completedExerciseIds = {};
   final ApiService _apiService = ApiService();
 
   @override
   void initState() {
     super.initState();
-    _unit = _apiService.getUnit(widget.unitId);
+    _loadUnitData();
+  }
+
+  Future<void> _loadUnitData() async {
+    setState(() {
+      _unitFuture = _apiService.getUnit(widget.unitId);
+    });
+    try {
+      final completedIds = await _apiService.getUnitProgress(widget.unitId);
+      setState(() {
+        _completedExerciseIds = completedIds.toSet();
+      });
+    } catch (e) {
+      // Handle or log error
+    }
   }
 
   @override
@@ -32,14 +47,17 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
         title: Text(AppLocalizations.of(context)!.unitDetailsTitle),
       ),
       body: FutureBuilder<Unit>(
-        future: _unit,
+        future: _unitFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text(AppLocalizations.of(context)!.errorWithMessage(snapshot.error.toString())));
+            return Center(
+                child: Text(AppLocalizations.of(context)!
+                    .errorWithMessage(snapshot.error.toString())));
           } else if (!snapshot.hasData) {
-            return Center(child: Text(AppLocalizations.of(context)!.noUnitDataAvailable));
+            return Center(
+                child: Text(AppLocalizations.of(context)!.noUnitDataAvailable));
           }
 
           final unit = snapshot.data!;
@@ -58,62 +76,70 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
                       child: Text(concept.explanation),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 4.0),
                       child: ElevatedButton(
-                        onPressed: () {
-                          _showAIExamplesDialog(concept.title);
-                        },
+                        onPressed: () => _showAIExamplesDialog(concept.title),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.auto_awesome),
-                            SizedBox(width: 8),
-                            Text(AppLocalizations.of(context)!.generateAiExamplesButton),
+                            const Icon(Icons.auto_awesome),
+                            const SizedBox(width: 8),
+                            Text(AppLocalizations.of(context)!
+                                .generateAiExamplesButton),
                           ],
                         ),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 4.0),
                       child: ElevatedButton(
-                        onPressed: () {
-                          _showAIGeneratedExerciseDialog(concept.title);
-                        },
+                        onPressed: () =>
+                            _showAIGeneratedExerciseDialog(concept.title),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.psychology),
-                            SizedBox(width: 8),
-                            Text(AppLocalizations.of(context)!.generateAiExerciseButton),
+                            const Icon(Icons.psychology),
+                            const SizedBox(width: 8),
+                            Text(AppLocalizations.of(context)!
+                                .generateAiExerciseButton),
                           ],
                         ),
                       ),
                     ),
                     if (concept.exercises.isNotEmpty)
                       ...concept.exercises.map((exercise) {
+                        final isCompleted =
+                            _completedExerciseIds.contains(exercise.id);
                         return Padding(
                           key: UniqueKey(),
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 4.0),
                           child: ElevatedButton(
                             key: UniqueKey(),
-                            onPressed: () {
-                              _showExerciseDialog(exercise);
-                            },
-                            child: Builder(
-                              builder: (context) {
-                                return Text(AppLocalizations.of(context)!.exercisePrompt(exercise.prompt));
-                              }
+                            onPressed: () => _showExerciseDialog(exercise),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(AppLocalizations.of(context)!
+                                    .exercisePrompt(exercise.prompt)),
+                                if (isCompleted)
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 8.0),
+                                    child: Icon(Icons.check_circle,
+                                        color: Colors.green),
+                                  ),
+                              ],
                             ),
                           ),
                         );
                       })
                     else
                       Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(AppLocalizations.of(context)!.noExercisesAvailableForConcept),
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(AppLocalizations.of(context)!
+                            .noExercisesAvailableForConcept),
                       ),
                   ],
                 ),
@@ -132,7 +158,7 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
       builder: (BuildContext context) {
         return ExerciseDialog(exercise: exercise);
       },
-    );
+    ).then((_) => _loadUnitData());
   }
 
   void _showAIExamplesDialog(String word) {
@@ -196,7 +222,8 @@ class _AIGeneratedExerciseDialogState extends State<AIGeneratedExerciseDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context)!.aiGeneratedExerciseForConcept(widget.concept)),
+      title: Text(AppLocalizations.of(context)!
+          .aiGeneratedExerciseForConcept(widget.concept)),
       content: SizedBox(
         width: double.maxFinite,
         child: _loading
@@ -209,7 +236,8 @@ class _AIGeneratedExerciseDialogState extends State<AIGeneratedExerciseDialog> {
                         exercise: _exercise!,
                         isAiGenerated: true,
                       )
-                    : Text(AppLocalizations.of(context)!.noExerciseGenerated),
+                    : Text(
+                        AppLocalizations.of(context)!.noExerciseGenerated),
       ),
       actions: [
         TextButton(
@@ -259,7 +287,8 @@ class _AIExamplesDialogState extends State<AIExamplesDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context)!.aiExamplesForWord(widget.word)),
+      title:
+          Text(AppLocalizations.of(context)!.aiExamplesForWord(widget.word)),
       content: SizedBox(
         width: double.maxFinite,
         child: _loading
@@ -390,7 +419,8 @@ class ExerciseViewState extends State<ExerciseView> {
         return _buildSentenceOrderExercise(exercise);
       default:
         return Center(
-            child: Text(AppLocalizations.of(context)!.unsupportedExerciseType(exercise.type)));
+            child: Text(AppLocalizations.of(context)!
+                .unsupportedExerciseType(exercise.type)));
     }
   }
 
@@ -497,7 +527,8 @@ class ExerciseViewState extends State<ExerciseView> {
           children: [
             Text(
               exercise.prompt,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 12),
             ReorderableWrap(

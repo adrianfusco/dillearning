@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:dillearning/core/env_config.dart';
+import 'package:dillearning/core/services/exceptions.dart';
+import 'package:dillearning/core/services/session_service.dart';
 import 'package:dillearning/features/auth/models/user.dart';
 import 'package:dillearning/features/learn_language/models/course.dart';
 import 'package:dillearning/features/learn_language/models/unit.dart';
@@ -9,10 +11,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   static final String _baseUrl = AppConfig.config.apiBaseUrl;
+  final SessionService _sessionService = SessionService();
 
   static const Map<String, String> _endpoints = {
     'register': '/register/',
     'login': '/login/',
+    'logout': '/logout',
     'chat': '/ai/chat',
     'translate': '/ai/translate',
     'explain-grammar': '/ai/explain-grammar',
@@ -21,6 +25,17 @@ class ApiService {
     'courses': '/courses',
     'available-languages': '/available-languages',
   };
+
+  Future<http.Response> _handleResponse(http.Response response) async {
+    if (response.statusCode == 200) {
+      return response;
+    } else if (response.statusCode == 401) {
+      await _sessionService.clearSession();
+      throw SessionExpiredException('Session expired. Please log in again.');
+    } else {
+      throw Exception('Failed to load data: ${response.body}');
+    }
+  }
 
   Stream<String> streamExamples(String word, String language) async* {
     final request = http.Request(
@@ -39,6 +54,9 @@ class ApiService {
       await for (var chunk in response.stream.transform(utf8.decoder)) {
         yield chunk;
       }
+    } else if (response.statusCode == 401) {
+      await _sessionService.clearSession();
+      throw SessionExpiredException('Session expired. Please log in again.');
     } else {
       throw Exception('Failed to stream examples: ${response.reasonPhrase}');
     }
@@ -60,6 +78,9 @@ class ApiService {
       await for (var chunk in response.stream.transform(utf8.decoder)) {
         yield chunk;
       }
+    } else if (response.statusCode == 401) {
+      await _sessionService.clearSession();
+      throw SessionExpiredException('Session expired. Please log in again.');
     } else {
       throw Exception('Failed to stream exercise: ${response.reasonPhrase}');
     }
@@ -80,6 +101,14 @@ class ApiService {
     };
   }
 
+  Future<void> logout() async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl${_endpoints['logout']}'),
+      headers: await _getHeaders(),
+    );
+    await _handleResponse(response);
+  }
+
   Future<Map<String, dynamic>> register(
       String name, String email, String password) async {
     final response = await http.post(
@@ -91,12 +120,8 @@ class ApiService {
         'password': password,
       }),
     );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to register: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    return jsonDecode(handledResponse.body);
   }
 
   Future<Map<String, dynamic>> login(String email, String password) async {
@@ -108,12 +133,8 @@ class ApiService {
         'password': password,
       }),
     );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to login: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    return jsonDecode(handledResponse.body);
   }
 
   Future<String> chat(String question, String userId) async {
@@ -125,12 +146,8 @@ class ApiService {
         'user_id': userId,
       }),
     );
-
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception('Failed: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    return handledResponse.body;
   }
 
   Future<String> translate(
@@ -144,12 +161,8 @@ class ApiService {
         'text': text,
       }),
     );
-
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception('Failed: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    return handledResponse.body;
   }
 
   Future<String> explainGrammar(String sentence) async {
@@ -160,12 +173,8 @@ class ApiService {
         'sentence': sentence,
       }),
     );
-
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception('Failed: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    return handledResponse.body;
   }
 
   Future<String> createExamples(String word, String language) async {
@@ -174,81 +183,52 @@ class ApiService {
       headers: await _getHeaders(),
       body: jsonEncode(<String, String>{'word': word, 'language': language}),
     );
-
-    if (response.statusCode == 200) {
-      return response.body;
-    }
-    else {
-      throw Exception('Failed: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    return handledResponse.body;
   }
 
   Future<List<Course>> getCourses() async {
     final response = await http.get(Uri.parse('$_baseUrl${_endpoints['courses']}'), headers: await _getHeaders());
-
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((course) => Course.fromJson(course)).toList();
-    } else {
-      throw Exception('Failed to load courses: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    List jsonResponse = json.decode(handledResponse.body);
+    return jsonResponse.map((course) => Course.fromJson(course)).toList();
   }
 
   Future<Course> getCourse(int courseId) async {
     final response = await http.get(Uri.parse('$_baseUrl/courses/$courseId'), headers: await _getHeaders());
-
-    if (response.statusCode == 200) {
-      return Course.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load course: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    return Course.fromJson(jsonDecode(handledResponse.body));
   }
 
   Future<List<Unit>> getUnits(int courseId) async {
     final response =
         await http.get(Uri.parse('$_baseUrl/courses/$courseId/units'), headers: await _getHeaders());
-
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((unit) => Unit.fromJson(unit)).toList();
-    } else {
-      throw Exception('Failed to load units');
-    }
+    final handledResponse = await _handleResponse(response);
+    List jsonResponse = json.decode(handledResponse.body);
+    return jsonResponse.map((unit) => Unit.fromJson(unit)).toList();
   }
 
   Future<Unit> getUnit(int unitId) async {
     final response = await http.get(Uri.parse('$_baseUrl/units/$unitId'), headers: await _getHeaders());
-
-    if (response.statusCode == 200) {
-      return Unit.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load unit');
-    }
+    final handledResponse = await _handleResponse(response);
+    return Unit.fromJson(jsonDecode(handledResponse.body));
   }
 
   Future<List<Exercise>> getExercises(int conceptId) async {
     final response =
         await http.get(Uri.parse('$_baseUrl/concepts/$conceptId/exercises'), headers: await _getHeaders());
-
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      return jsonResponse
-          .map((exercise) => Exercise.fromJson(exercise))
-          .toList();
-    } else {
-      throw Exception('Failed to load exercises');
-    }
+    final handledResponse = await _handleResponse(response);
+    List jsonResponse = json.decode(handledResponse.body);
+    return jsonResponse
+        .map((exercise) => Exercise.fromJson(exercise))
+        .toList();
   }
 
   Future<List<Course>> getAvailableCourses() async {
     final response = await http.get(Uri.parse('$_baseUrl${_endpoints['courses']}'), headers: await _getHeaders());
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as List;
-      return data.map((course) => Course.fromJson(course)).toList();
-    } else {
-      throw Exception('Failed to load languages: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    final data = jsonDecode(handledResponse.body) as List;
+    return data.map((course) => Course.fromJson(course)).toList();
   }
 
   Future<double> getCourseProgress(int courseId) async {
@@ -256,12 +236,18 @@ class ApiService {
       Uri.parse('$_baseUrl/courses/$courseId/progress'),
       headers: await _getHeaders(),
     );
+    final handledResponse = await _handleResponse(response);
+    return jsonDecode(handledResponse.body);
+  }
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to load course progress: ${response.body}');
-    }
+  Future<List<int>> getUnitProgress(int unitId) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/units/$unitId/progress'),
+      headers: await _getHeaders(),
+    );
+    final handledResponse = await _handleResponse(response);
+    final List<dynamic> data = jsonDecode(handledResponse.body);
+    return data.cast<int>().toList();
   }
 
   Future<bool> canAccessUnit(int unitId) async {
@@ -269,12 +255,8 @@ class ApiService {
       Uri.parse('$_baseUrl/units/$unitId/access'),
       headers: await _getHeaders(),
     );
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to check unit access: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    return jsonDecode(handledResponse.body);
   }
 
   Future<bool> completeExercise(int exerciseId) async {
@@ -282,12 +264,8 @@ class ApiService {
       Uri.parse('$_baseUrl/exercises/$exerciseId/complete'),
       headers: await _getHeaders(),
     );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return data['unit_completed'] ?? false;
-    } else {
-      throw Exception('Failed to complete exercise: ${response.body}');
-    }
+    final handledResponse = await _handleResponse(response);
+    final data = jsonDecode(handledResponse.body);
+    return data['unit_completed'] ?? false;
   }
 }

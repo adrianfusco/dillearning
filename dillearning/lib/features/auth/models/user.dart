@@ -4,6 +4,7 @@ class User {
   final String email;
   final String accessToken;
   final String tokenType;
+  final DateTime expiresAt;
 
   User({
     required this.id,
@@ -11,6 +12,7 @@ class User {
     required this.email,
     required this.accessToken,
     required this.tokenType,
+    required this.expiresAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,9 @@ class User {
       email: json['email'],
       accessToken: json['access_token'],
       tokenType: json['token_type'],
+      expiresAt: json.containsKey('expires_at')
+          ? DateTime.parse(json['expires_at'])
+          : DateTime.now().add(const Duration(minutes: 30)),
     );
   }
 
@@ -30,6 +35,7 @@ class User {
       'email': email,
       'access_token': accessToken,
       'token_type': tokenType,
+      'expires_at': expiresAt.toIso8601String(),
     };
   }
 }

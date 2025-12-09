@@ -38,10 +38,10 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _checkSessionAndNavigate() async {
     await Future.delayed(const Duration(milliseconds: 2200));
-    final session = await SessionService().getSession();
+    final isSessionValid = await SessionService().isSessionValid();
 
     if (mounted) {
-      if (session != null) {
+      if (isSessionValid) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => const HomeScreen(),

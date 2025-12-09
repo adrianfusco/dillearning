@@ -1,5 +1,7 @@
 from models.concept import Concept
+from models.exercise import Exercise
 from models.unit import Unit
+from models.user_exercise_progress import UserExerciseProgress
 from models.user_unit_progress import UserUnitProgress
 from schemas.unit import UnitCreate
 from sqlalchemy.orm import Session, joinedload
@@ -71,3 +73,28 @@ def complete_unit(db, user_id: int, unit_id: int):
 
     db.commit()
     return progress
+
+
+def get_unit_progress(db: Session, user_id: int, unit_id: int) -> list[int]:
+    """
+    Get the completed exercise IDs for a user in a specific unit.
+    """
+    unit = get_unit(db, unit_id)
+    if not unit:
+        return []
+
+    concept_ids = [concept.id for concept in unit.concepts]
+    exercise_ids = (
+        db.query(Exercise.id).filter(Exercise.concept_id.in_(concept_ids)).subquery()
+    )
+
+    completed_exercises = (
+        db.query(UserExerciseProgress.exercise_id)
+        .filter(
+            UserExerciseProgress.user_id == user_id,
+            UserExerciseProgress.exercise_id.in_(exercise_ids),
+        )
+        .all()
+    )
+
+    return [exercise_id for exercise_id, in completed_exercises]
