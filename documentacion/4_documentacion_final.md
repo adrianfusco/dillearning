@@ -12,6 +12,12 @@ Toda la documentación técnica está bien especificada en:
 - [README.md dillearning backend - API](../dillearning-backend/README.md)
 - [README.md dillearning frontend - Flutter](../dillearning/README.md)
 
+Además, los diagramas clave del proyecto se encuentran en la carpeta `documentacion/diagramas/`:
+
+- [Diagrama de Arquitectura del Sistema](./diagramas/arquitectura_sistema.png)
+- [Diagrama de Persistencia de Datos](./diagramas/persistencia_datos_esquema_bd.png)
+- [Diagrama de Interfaz de Usuario](./diagramas/interfaz_usuario.png)
+
 # Manual de Usuario
 
 He implementado el manual de usuario usando [revealjs](https://revealjs.com/) que ofrece la manera de construir una web con forma de diapositivas de forma muy sencilla y permite exportarlo a PDF. De esta manera tenemos ambas versiones.

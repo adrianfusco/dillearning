@@ -22,8 +22,15 @@
 
         p,
         li {
-            font-size: 1rem;
+            font-size: 1.1rem;
             line-height: 1.6;
+        }
+
+        .screenshot {
+            width: 70%;
+            border: 1px solid #ddd;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -31,55 +38,129 @@
 <body>
     <div class="reveal">
         <div class="slides">
+            <!-- Diapositiva de Título -->
             <section>
-                <div class="logo">
-                    <img src="../dillearning/assets/images/dillearning_logo_256.png" alt="Logo de Dillearning">
-                </div>
+                <img src="../dillearning/assets/images/dillearning_logo_256.png" alt="Logo de Dillearning"
+                    style="border: none; box-shadow: none; width: 200px;">
                 <h4>Bienvenido al Manual de Usuario de Dillearning</h4>
+                <p>Tu guía para aprender un nuevo idioma de forma interactiva y con la ayuda de la IA.</p>
+            </section>
+
+            <!-- Introducción -->
+            <section>
+                <h4>¿Qué es Dillearning?</h4>
                 <p>
-                    Aprende cómo registrarte, iniciar sesión y descubrir las funcionalidades de nuestra aplicación para
-                    aprender idiomas.
+                    Dillearning (del turco "dil", que significa idioma) es una aplicación de código abierto diseñada
+                    para que el aprendizaje de idiomas sea accesible, pedagógico y centrado en un uso realista del
+                    lenguaje.
                 </p>
-
-                <div class="toc">
-                    <ul>
-                        <li><a href="#introduccion">Introducción</a></li>
-                        <li><a href="#como-usar">¿Cómo usar la aplicación?</a></li>
-                        <li><a href="#caracteristicas">Características de la aplicación</a></li>
-                        <li><a href="#consejos">Consejos y ayuda</a></li>
-                    </ul>
-                </div>
             </section>
 
-            <section id="introduccion">
-                <h4>Introducción</h4>
-                <p>
-                    Dillearning (dil del turco para "idioma") es una aplicación de aprendizaje de idiomas que ofrece una
-                    experiencia amigable, enriquecedora y sin fines de lucro, enfocándose en un aprendizaje más realista
-                    y pedagógico del lenguaje.
-                </p>
-
-            </section>
-
-            <section id="como-usar">
-                <h4>¿Cómo usar la aplicación?</h4>
-                <p>Puedes acceder a la app de las siguientes maneras:</p>
-                <ol>
-                    <li>Vía web en <a href="https://dillearning.com" target="_blank">dillearning.com</a>.</li>
-                    <li>Descargando la aplicación desde la Play Store.</li>
-                    <li>En Linux, si usas distribuciones como Ubuntu o Debian.</li>
-                </ol>
-            </section>
-
-            <section id="caracteristicas">
-                <h4>Características de la aplicación</h4>
+            <!-- Cómo Usar -->
+            <section>
+                <h4>Primeros Pasos</h4>
+                <p>Puedes acceder a la aplicación de varias maneras:</p>
                 <ul>
-                    <li>Aprendizaje de idiomas con lecciones interactivas.</li>
-                    <li>Seguimiento de tu progreso y estadísticas de aprendizaje.</li>
-                    <li>IA incorporada: chatea, genera ejemplos, traduce y resuelve dudas con nuestra inteligencia
-                        artificial.</li>
+                    <li><b>Web:</b> <a href="https://dillearning.com" target="_blank">dillearning.com</a></li>
+                    <li><b>Android:</b> Descargando desde la Play Store (próximamente).</li>
+                    <li><b>Linux:</b> Instalando el paquete .deb en distribuciones como Ubuntu o Debian.</li>
                 </ul>
             </section>
+
+            <!-- Inicio de Sesión -->
+            <section>
+                <h4>Paso 1: Iniciar Sesión</h4>
+                <p>Al abrir la aplicación, verás la pantalla de inicio de sesión. Si ya tienes una cuenta, introduce tus
+                    credenciales aquí.</p>
+                <img class="screenshot" src="img/01_login_screen.png" alt="Pantalla de inicio de sesión">
+            </section>
+
+            <!-- Registro -->
+            <section>
+                <h4>Paso 2: Crear una Cuenta</h4>
+                <p>Si eres un usuario nuevo, pulsa en "Regístrate" para crear tu cuenta. Solo necesitas un nombre, un
+                    correo electrónico y una contraseña.</p>
+                <img class="screenshot" src="img/02_register_screen.png" alt="Pantalla de registro">
+            </section>
+
+            <!-- Pantalla Principal -->
+            <section>
+                <h4>Paso 3: Pantalla Principal</h4>
+                <p>Tras iniciar sesión, llegarás al menú principal. Desde aquí puedes explorar los cursos, acceder a las
+                    herramientas de IA o configurar tu perfil.</p>
+                <img class="screenshot" src="img/03_main_screen.png" alt="Pantalla Principal">
+            </section>
+
+            <!-- Herramientas de IA: Chat -->
+            <section>
+                <h4>Herramienta IA: Chat</h4>
+                <p>Haz preguntas sobre gramática, vocabulario o simplemente practica tu conversación en el idioma que
+                    estás aprendiendo.</p>
+                <img class="screenshot" src="img/04_chat_question_screen.png" alt="Pantalla de pregunta al chat">
+            </section>
+
+            <section>
+                <h4>Ejemplo de Conversación con IA</h4>
+                <p>La IA te responderá y corregirá tus errores, ayudándote a mejorar tu fluidez y precisión.</p>
+                <img class="screenshot" src="img/05_chat_conversation.png" alt="Conversación con el chat">
+            </section>
+
+            <!-- Herramientas de IA: Traductor -->
+            <section>
+                <h4>Herramienta IA: Traductor</h4>
+                <p>¿No estás seguro de una palabra o frase? Utiliza el traductor para obtener una respuesta rápida y
+                    precisa.</p>
+                <img class="screenshot" src="img/06_translator_screen.png" alt="Pantalla del traductor">
+            </section>
+
+            <!-- Perfil de Usuario -->
+            <section>
+                <h4>Tu Perfil</h4>
+                <p>Accede a tu perfil para cambiar el idioma de la interfaz o seleccionar tu tema preferido (claro u
+                    oscuro).</p>
+                <img class="screenshot" src="img/07_profile_screen.png" alt="Pantalla de perfil">
+            </section>
+
+            <section>
+                <h4>Tema Oscuro</h4>
+                <p>Dillearning también está disponible en modo oscuro para una experiencia visual más cómoda en
+                    condiciones de poca luz.</p>
+                <img class="screenshot" src="img/08_dark_theme_profile_screen.png"
+                    alt="Pantalla de perfil con tema oscuro">
+            </section>
+
+            <section>
+                <h4>Cambio de Idioma</h4>
+                <p>Puedes cambiar el idioma de la interfaz de la aplicación en cualquier momento desde tu perfil.</p>
+                <img class="screenshot" src="img/09_change_language_screen.png" alt="Pantalla de cambio de idioma">
+            </section>
+
+            <!-- Lecciones y Ejercicios -->
+            <section>
+                <h4>Aprendizaje: Unidades del Curso</h4>
+                <p>Cada curso se divide en unidades temáticas. Completa las unidades en orden para construir tu
+                    conocimiento de forma progresiva.</p>
+                <img class="screenshot" src="img/10_units_screen.png" alt="Pantalla de unidades del curso">
+            </section>
+
+            <section>
+                <h4>Aprendizaje: Lecciones</h4>
+                <p>Dentro de cada unidad, encontrarás lecciones que te introducen a nuevos conceptos y vocabulario.</p>
+                <img class="screenshot" src="img/11_unit_details_screen.png" alt="Detalles de una unidad">
+            </section>
+
+            <section>
+                <h4>Aprendizaje: Ejercicios</h4>
+                <p>Pon a prueba lo que has aprendido con ejercicios interactivos al final de cada lección.</p>
+                <img class="screenshot" src="img/12_exercise_example_screen.png" alt="Ejemplo de ejercicio">
+            </section>
+
+            <!-- Diapositiva Final -->
+            <section>
+                <h4>¡Listo para Aprender!</h4>
+                <p>Ya conoces las funcionalidades principales de Dillearning. ¡Disfruta de tu viaje de aprendizaje!</p>
+            </section>
+
         </div>
     </div>
 

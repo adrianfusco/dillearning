@@ -1,22 +1,28 @@
 graph TD
-    subgraph "Aplicación Multiplataforma"
+    subgraph "Aplicación Multiplataforma - Frontend"
         A[Aplicación Flutter]
+    end
+
+    subgraph "Plataformas de Despliegue"
+        M[Web - genera HTML, JS, y todo lo necesario para ejecutarse detrás de un servidor web, en este caso Nginx]
+        N[Android - Hace un build y genera un .apk]
+        O[Desktop Linux - Genera un .deb que puede ser instalado en distribuciones Ubuntu y Debian]
     end
 
     subgraph "Backend"
         B[FastAPI]
         C[SQLAlchemy ORM]
         D[SQLite Database]
-        E[Lógica de Autenticación]
-        B -- Gestiona Datos vía --> C
-        C -- Accede a --> D
-        B -- Implementa --> E
+        E["API (Gestión de datos, Lógica de negocio, Autenticación)"]
+        B -- "Gestiona Datos vía" --> C
+        C -- "Accede a" --> D
+        B -- "Implementa" --> E
     end
 
     subgraph "Servicio de IA"
         F[Ollama]
-        G[Modelo LLM]
-        F -- Sirve --> G
+        G["Modelo LLM (granite4:micro-h)"]
+        F -- "Sirve" --> G
     end
 
     subgraph "CI / CD"
@@ -26,13 +32,16 @@ graph TD
         K["Build y contenerizar"]
         L["Desplegar"]
         H --> I
-        I -- Trigger --> J
-        J -- Si SUCCESS --> K
-        K -- Si SUCCESS --> L
+        I -- "Trigger" --> J
+        J -- "Si SUCCESS" --> K
+        K -- "Si SUCCESS" --> L
     end
 
     A -- "Llamadas API Autenticadas" --> B
     B -- "Consulta al LLM" --> F
+    A -- "Se despliega como" --> M
+    A -- "Se despliega como" --> N
+    A -- "Se despliega como" --> O
     L -- "Despliega Backend en Servidor" --> B
     L -- "Crea artifacts de la App" --> A
     I -- "Actúa sobre el código de" --> H
@@ -41,8 +50,10 @@ graph TD
     classDef backend fill:#ccf,stroke:#333,stroke-width:2px
     classDef ai fill:#cfc,stroke:#333,stroke-width:2px
     classDef devops fill:#fcf,stroke:#333,stroke-width:2px
+    classDef deployment fill:#f9c,stroke:#333,stroke-width:2px
 
     class A frontend
     class B,C,D,E backend
     class F,G ai
     class H,I,J,K,L devops
+    class M,N,O deployment
