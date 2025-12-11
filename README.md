@@ -49,11 +49,61 @@ El backend está desarrollado en Python usando FastAPI y se comunica con un serv
 
 Para instrucciones detalladas sobre el backend debemos consultar [README.md dillearning-backend](./dillearning-backend/README.md).
 
+## CI/CD
+
+El proyecto cuenta con un pipeline de CI/CD configurado en el fichero [.gitlab-ci.yml](./.gitlab-ci.yml) que se encarga de:
+
+- **linters**: Ejecutar linters para el código de frontend y backend.
+- **build**: Crear los artefactos de la aplicación para las distintas plataformas (web, Android, Linux).
+- **publish**: Publicar las imágenes de backend y frontend en un registro de contenedores.
+- **deploy**: En este caso y solo para probar nuestra aplicación en producción usando un método que no tiene porque con high availability, he usado docker compose para correr las aplicaciones y hacer uso de las imágenes que publicamos en el registry. Así, cada vez que se haga un cambio en el código y se mergee, se genera una nueva tag en el registry haciendo uso del commit que hemos hecho.
+
+Para hacer publicar nuestra imagen y hacer el deploy necesitamos las siguientes variables configuradas en GitLab en el proyecto:
+
+![gitlab-variables](./documentacion/img/14_gitlab_ci_cd_variables.png).
+
+El build de nuestras imágenes que se hizo con los Dockerfile tanto del frontend como del backend se verá similar a:
+
+![docker-registry](./documentacion/img/15_dillearning_docker_images_pushed.png).
+
+
+## Scripts
+
+El proyecto cuenta con una serie de scripts en la carpeta [scripts](./scripts) que facilitan algunas tareas:
+
+- [create_frontend_deb_package.sh](./scripts/create_frontend_deb_package.sh): Crea un paquete `.deb` para la aplicación frontend en Linux.
+
+En este caso podemos probar el paquete en un contenedor:
+
+```
+$ podman run -it --rm \
+  --env DISPLAY=$DISPLAY \
+  --volume /tmp/.X11-unix:/tmp/.X11-unix \
+  --volume $(echo $XAUTHORITY):/root/.Xauthority \
+  -v $(pwd)/dillearning/build/linux/x64/release/bundle/dillearning-1.0.0-amd64.deb:/tmp/dillearning.deb \
+  ubuntu:24.04 bash -c "
+    apt update &&
+    apt install -y mesa-utils libgl1 libglvnd0 libglu1-mesa &&
+    dpkg -i /tmp/dillearning.deb &&
+    apt-get -f install -y &&
+    dillearning
+  "
+```
+
+Pero en este caso hacer el build necesitaremos pasarle la URL correcta de la API para que pueda comunicarse desde la aplicación de desktop. Este paso no está cubierto y es a prueba de como hacer el build para Linux y usar la aplicación.
+
 ## Otra documentación
 
-- [Propuesta de proyecto](./documentacion/1_proposta.md)
-- [Anteproyecto, justificación, finalidades, diseños y diagramas](./documentacion/2_anteproxecto.md)
-- [Prototipos, seguimiento, problemas encontrados y soluciones adoptadas](./documentacion/3_prototipos.md)
+*   [1. Propuesta de Proyecto](documentacion/1_proposta.md)
+*   [2. Anteproyecto](documentacion/2_anteproxecto.md)
+*   [3. Prototipos y Seguimiento](documentacion/3_prototipos.md)
+*   [4. Documentación Final](documentacion/4_documentacion_final.md)
+    *   [Manual de Usuario (HTML)](documentacion/4_manual_usuario.html)
+    *   [Manual de Usuario (PDF)](documentacion/manual_usuario.pdf)
+*   [5. Defensa del Proyecto](documentacion/5_defensa.md)
+*   [README de Diagramas](documentacion/diagramas/README.md)
+*   [README de Imágenes](documentacion/img/README.md)
+
 
 ## Code
 

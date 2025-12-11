@@ -33,6 +33,21 @@ Cuando estaba implementando el cambio de tema de dark / light tuve problemas ya 
 
 El código no fue mucho al final pero me costó un poco entenderlo al principio [MR - Habilitar modo claro oscuro](https://gitlab.iessanclemente.net/damd/a23adrianfa1/-/merge_requests/25).
 
+### Push de imágenes al registry de docker usando GitLab CI/CD
+
+En este caso no tengo acceso a los runners del GitLab por lo que hacer build de imágenes es complicado al no tener privilegios. En este caso he optado por usar [GoogleContainerTools/kaniko](https://github.com/GoogleContainerTools/kaniko) que es rootless y no tuve más problemas para hacer el build, tag y push al registry de docker.
+
+### Modelos que requieren de más memoria
+
+En este caso he contratado un VPS que tiene 1GB de RAM. Estaba usando el modelo `granite4:micro-h` para hacer pruebas y me daba el siguiente error:
+```
+  File "/usr/local/lib/python3.12/site-packages/ollama/_client.py", line 179, in inner
+    raise ResponseError(e.response.text, e.response.status_code) from None
+ollama._types.ResponseError: model requires more system memory (1.9 GiB) than is available (794.6 MiB) (status code: 500)
+```
+
+Esto es algo a tener en cuenta. En este caso en producción para hacer pruebas lo he sustituido con `qwen2.5:0.5b` que tiene muy pocos parámetros al ser 0.5b por lo que las respuestas serán más deficientes y maneja menos datos pero para probar como sería la aplicación desplegada nos viene bien.
+
 # Cambios durante el desarrollo
 
 Esto es importante ya que, como en la mayoría de proyectos que requieren tantas tecnologías, modulos y adaptación en los despliegues, siempre hay cambios durante el desarrollo por lo que siempre va a diferir del anteproyecto.

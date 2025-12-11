@@ -1,12 +1,17 @@
 stages:
-  - linters
-  - build
+#   - linters
+#   - build
+#   - publish
+  - deploy
+
+variables:
+  IMAGE_REPOSITORY: adrianfusco/dillearning
 
 cache:
   paths:
     - $CI_PROJECT_DIR/.pub-cache/
 
-flutter_linters:
+.flutter_linters:
   stage: linters
   image: ghcr.io/cirruslabs/flutter:latest
   script:
@@ -16,7 +21,7 @@ flutter_linters:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
-backend_linters:
+.backend_linters:
   stage: linters
   image: python:3.12
   before_script:
@@ -26,20 +31,20 @@ backend_linters:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
-build_deb:
+.build_deb:
   stage: build
   image: ghcr.io/cirruslabs/flutter:latest
   script:
     - scripts/create_frontend_deb_package.sh
   artifacts:
     paths:
-      - dillearning/build/linux/x64/release/bundle/*.deb
+      - dillearning/build/linux/x66/release/bundle/*.deb
     expire_in: 1 week
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push"'
 
-build_apk:
+.build_apk:
   stage: build
   image: ghcr.io/cirruslabs/flutter:latest
   script:
@@ -53,7 +58,7 @@ build_apk:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
 
-build_web:
+.build_web:
   stage: build
   image: ghcr.io/cirruslabs/flutter:latest
   script:
@@ -67,3 +72,50 @@ build_web:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push"'
+
+.build_and_push_frontend:
+  stage: publish
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$REGISTRY\":{\"auth\":\"$(printf "%s:%s" "$REGISTRY_USER" "$REGISTRY_PASSWORD" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR/dillearning --dockerfile $CI_PROJECT_DIR/dillearning/Dockerfile --destination $IMAGE_REPOSITORY:frontend-$CI_COMMIT_SHORT_SHA --destination $IMAGE_REPOSITORY:frontend-latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "test-ci-pipeline" && $CI_PIPELINE_SOURCE == "push"'
+
+.build_and_push_backend:
+  stage: publish
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$REGISTRY\":{\"auth\":\"$(printf "%s:%s" "$REGISTRY_USER" "$REGISTRY_PASSWORD" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR/dillearning-backend --dockerfile $CI_PROJECT_DIR/dillearning-backend/Dockerfile --destination $IMAGE_REPOSITORY:backend-$CI_COMMIT_SHORT_SHA --destination $IMAGE_REPOSITORY:backend-latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "test-ci-pipeline" && $CI_PIPELINE_SOURCE == "push"'
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $DEPLOY_SERVER_IP >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - ssh ${SSH_USER}@${DEPLOY_SERVER_IP} "mkdir -p /opt/dillearning"
+    - scp $CI_PROJECT_DIR/docker-compose.prod.yml ${SSH_USER}@${DEPLOY_SERVER_IP}:/opt/dillearning/docker-compose.prod.yml
+    - >
+      ssh ${SSH_USER}@${DEPLOY_SERVER_IP}
+      "cd /opt/dillearning &&
+      docker login -u ${REGISTRY_USER} -p ${REGISTRY_PASSWORD} &&
+      docker compose -f docker-compose.prod.yml pull &&
+      docker compose -f docker-compose.prod.yml up -d"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "test-ci-pipeline" && $CI_PIPELINE_SOURCE == "push"'

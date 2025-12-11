@@ -23,7 +23,7 @@ class AppConfig {
   static EnvironmentConfig _getConfigForEnvironment(String env) {
     switch (env) {
       case 'prod':
-        return EnvironmentConfig(apiBaseUrl: 'https://dillearning.com/api');
+        return EnvironmentConfig(apiBaseUrl: 'http://213.165.93.228:8080/api/');
       case 'docker':
         return EnvironmentConfig(apiBaseUrl: '/api');
       case 'dev':

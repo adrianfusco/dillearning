@@ -1,0 +1,38 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: dillearning_ollama
+    entrypoint:
+      - /bin/bash
+      - -c
+      - ollama serve & sleep 5 && ollama pull granite3.3:2b && wait
+    environment:
+      - OLLAMA_KEEP_ALIVE="24h"
+    volumes:
+      - ollama-storage:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+
+  backend:
+    image: adrianfusco/dillearning:backend-latest
+    container_name: dillearning_backend
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  frontend:
+    image: adrianfusco/dillearning:frontend-latest
+    container_name: dillearning_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  ollama-storage:

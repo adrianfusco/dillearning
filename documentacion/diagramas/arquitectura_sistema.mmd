@@ -21,20 +21,21 @@ graph TD
 
     subgraph "Servicio de IA"
         F[Ollama]
-        G["Modelo LLM (granite4:micro-h)"]
+        G["Modelo LLM (granite3.3:2b)"]
         F -- "Sirve" --> G
     end
 
     subgraph "CI / CD"
         H["Repositorio en GitLab"]
         I[GitLab CI/CD]
-        J["Tests y linters"]
-        K["Build y contenerizar"]
-        L["Desplegar"]
-        H --> I
-        I -- "Trigger" --> J
-        J -- "Si SUCCESS" --> K
-        K -- "Si SUCCESS" --> L
+        J["Tests, Build & Push <br> (stages no activas)"]
+        CR["Container Registry (Docker Hub)"]
+        L["Desplegar aplicación <br> (stage activa)"]
+        H -- "on push" --> I
+        I -- "triggers" --> J
+        J -- "hace push a" --> CR
+        I -- "triggers" --> L
+        L -- "hace pull desde" --> CR
     end
 
     A -- "Llamadas API Autenticadas" --> B
@@ -42,9 +43,9 @@ graph TD
     A -- "Se despliega como" --> M
     A -- "Se despliega como" --> N
     A -- "Se despliega como" --> O
-    L -- "Despliega Backend en Servidor" --> B
-    L -- "Crea artifacts de la App" --> A
-    I -- "Actúa sobre el código de" --> H
+    L -- "Despliega Frontend" --> A
+    L -- "Despliega Backend" --> B
+    L -- "Despliega y configura" --> F
 
     classDef frontend fill:#f9f,stroke:#333,stroke-width:2px
     classDef backend fill:#ccf,stroke:#333,stroke-width:2px
@@ -55,5 +56,5 @@ graph TD
     class A frontend
     class B,C,D,E backend
     class F,G ai
-    class H,I,J,K,L devops
+    class H,I,J,L,CR devops
     class M,N,O deployment
