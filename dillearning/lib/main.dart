@@ -10,6 +10,7 @@ import 'package:dillearning/l10n/app_localizations.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AppConfig.initialize();
+  print('Current API Base URL: ${AppConfig.config.apiBaseUrl}');
   runApp(
     MultiProvider(
       providers: [

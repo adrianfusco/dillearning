@@ -9,7 +9,7 @@ from schemas.ai import (
 
 
 class AIService:
-    def __init__(self, model: str = "granite4:micro-h"):
+    def __init__(self, model: str = "granite3.3:2b"):
         self.model = model
 
     async def _stream_ai_response(self, messages: list):
