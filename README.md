@@ -66,6 +66,9 @@ El build de nuestras imágenes que se hizo con los Dockerfile tanto del frontend
 
 ![docker-registry](./documentacion/img/15_dillearning_docker_images_pushed.png).
 
+Y podemos ver en Build -> Pipelines los jobs que se han ejecutado:
+
+![gitlab-pipeline](./documentacion/img/18_ci_cd_pipelines.png).
 
 ## Scripts
 
