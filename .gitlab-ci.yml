@@ -1,7 +1,7 @@
 stages:
-#   - linters
-#   - build
-#   - publish
+  - linters
+  - build
+  - publish
   - deploy
 
 variables:
@@ -11,7 +11,7 @@ cache:
   paths:
     - $CI_PROJECT_DIR/.pub-cache/
 
-.flutter_linters:
+flutter_linters:
   stage: linters
   image: ghcr.io/cirruslabs/flutter:latest
   script:
@@ -21,7 +21,7 @@ cache:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
-.backend_linters:
+backend_linters:
   stage: linters
   image: python:3.12
   before_script:
@@ -31,7 +31,7 @@ cache:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
-.build_deb:
+build_deb:
   stage: build
   image: ghcr.io/cirruslabs/flutter:latest
   script:
@@ -44,7 +44,7 @@ cache:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push"'
 
-.build_apk:
+build_apk:
   stage: build
   image: ghcr.io/cirruslabs/flutter:latest
   script:
@@ -58,7 +58,7 @@ cache:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push"'
 
-.build_web:
+build_web:
   stage: build
   image: ghcr.io/cirruslabs/flutter:latest
   script:
@@ -73,7 +73,7 @@ cache:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push"'
 
-.build_and_push_frontend:
+build_and_push_frontend:
   stage: publish
   image:
     name: gcr.io/kaniko-project/executor:debug
@@ -83,9 +83,9 @@ cache:
     - echo "{\"auths\":{\"$REGISTRY\":{\"auth\":\"$(printf "%s:%s" "$REGISTRY_USER" "$REGISTRY_PASSWORD" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR/dillearning --dockerfile $CI_PROJECT_DIR/dillearning/Dockerfile --destination $IMAGE_REPOSITORY:frontend-$CI_COMMIT_SHORT_SHA --destination $IMAGE_REPOSITORY:frontend-latest
   rules:
-    - if: '$CI_COMMIT_BRANCH == "test-ci-pipeline" && $CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"'
 
-.build_and_push_backend:
+build_and_push_backend:
   stage: publish
   image:
     name: gcr.io/kaniko-project/executor:debug
@@ -95,7 +95,7 @@ cache:
     - echo "{\"auths\":{\"$REGISTRY\":{\"auth\":\"$(printf "%s:%s" "$REGISTRY_USER" "$REGISTRY_PASSWORD" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR/dillearning-backend --dockerfile $CI_PROJECT_DIR/dillearning-backend/Dockerfile --destination $IMAGE_REPOSITORY:backend-$CI_COMMIT_SHORT_SHA --destination $IMAGE_REPOSITORY:backend-latest
   rules:
-    - if: '$CI_COMMIT_BRANCH == "test-ci-pipeline" && $CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"'
 
 deploy:
   stage: deploy
@@ -118,4 +118,4 @@ deploy:
       docker compose -f docker-compose.prod.yml pull &&
       docker compose -f docker-compose.prod.yml up -d"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "test-ci-pipeline" && $CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"'
