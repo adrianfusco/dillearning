@@ -14,3 +14,6 @@ class Exercise(Base):
     concept_id = Column(Integer, ForeignKey("concepts.id"))
     concept = relationship("Concept", back_populates="exercises")
     user_progress = relationship("UserExerciseProgress", back_populates="exercise")
+
+    def __str__(self) -> str:
+        return self.prompt

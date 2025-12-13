@@ -9,6 +9,7 @@ import models.token  # noqa: F401
 import models.unit  # noqa: F401
 import models.user  # noqa: F401
 import models.user_exercise_progress  # noqa: F401
+from admin_panel import setup_admin
 from apis import ai, auth, courses, health, languages, users
 from database import Base, engine
 from dotenv import load_dotenv
@@ -26,6 +27,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+setup_admin(app, engine)
+
 
 # Configuramos CORS ya que nuestra aplicación backend estará separada del frontend
 if os.getenv("ENVIRONMENT") == "dev":

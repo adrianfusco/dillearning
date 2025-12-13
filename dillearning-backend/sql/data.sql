@@ -6,6 +6,15 @@ DROP TABLE IF EXISTS concepts;
 DROP TABLE IF EXISTS units;
 DROP TABLE IF EXISTS courses;
 DROP TABLE IF EXISTS languages;
+DROP TABLE IF EXISTS conversations;
+DROP TABLE IF EXISTS token_blocklist;
+DROP TABLE IF EXISTS user_exercise_progress;
+DROP TABLE IF EXISTS user_unit_progress;
+DROP TABLE IF EXISTS exercises;
+DROP TABLE IF EXISTS concepts;
+DROP TABLE IF EXISTS units;
+DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS languages;
 DROP TABLE IF EXISTS users;
 
 -- Create languages table
@@ -58,6 +67,22 @@ CREATE TABLE users (
     hashed_password TEXT NOT NULL
 );
 
+-- Create conversations table
+CREATE TABLE conversations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    role TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create token_blocklist table
+CREATE TABLE token_blocklist (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    jti TEXT UNIQUE NOT NULL,
+    created_at DATETIME NOT NULL
+);
+
 -- Create user_unit_progress table
 CREATE TABLE user_unit_progress (
     user_id INTEGER REFERENCES users(id),
@@ -75,17 +100,17 @@ CREATE TABLE user_exercise_progress (
 );
 
 -- Insert sample data
-INSERT INTO languages (name) VALUES ('English'), ('Spanish');
+INSERT INTO languages (name) VALUES ('English'), ('Spanish'), ('Italiano');
 
 INSERT INTO courses (code, from_language_id, learning_language_id, title, description) VALUES
 ('en-es', 1, 2, 'Spanish from English', 'Learn Spanish from English'),
-('es-en', 2, 1, 'English from Spanish', 'Aprende Inglés desde Español');
+('es-en', 2, 1, 'English from Spanish', 'Aprende Inglés desde Español'),
+('es-it', 2, 3, 'Italiano desde Español', 'Aprende Italiano desde Español');
 
+-- Spanish from English course (en-es, course_id 1)
 INSERT INTO units (title, "order", course_id) VALUES
 ('Unit 1: The Basics', 1, 1),
-('Unit 2: Common Phrases', 2, 1),
-('Unidad 1: Lo Básico', 1, 2),
-('Unidad 2: Frases Comunes', 2, 2);
+('Unit 2: Common Phrases', 2, 1);
 
 INSERT INTO concepts (title, explanation, unit_id) VALUES
 ('Basic Greetings', 'In Spanish, you can say "Hola" to greet someone. To say goodbye, you can say "Adiós".', 1),
@@ -97,8 +122,39 @@ INSERT INTO exercises (type, prompt, answer, options, concept_id) VALUES
 ('multiple_choice', 'How do you say "Hello" in Spanish?', 'Hola', '["Hola", "Adiós", "Gracias", "Por favor"]', 1),
 ('multiple_choice', 'How do you say "Good evening" in Spanish?', 'Buenas noches', '["Buenos días", "Buenas tardes", "Buenas noches", "Hola"]', 1),
 ('translation', 'Translate "Good morning" to Spanish.', 'Buenos días', NULL, 2),
-('translation', 'Translate "Please" to Spanish.', 'Por favor', NULL, 2),
-('multiple_choice', 'How do you say "five" in Spanish?', 'cinco', '["uno", "dos", "tres", "cinco"]', 3),
-('translation', 'Translate "eight" to Spanish.', 'ocho', NULL, 3),
-('multiple_choice', '¿Cómo se dice "Goodbye" en Inglés?', 'Goodbye', '["Hello", "Goodbye", "Thank you", "Please"]', 4),
-('translation', 'Traduce "Buenas noches" al Inglés.', 'Good night', NULL, 4);
+('translation', 'Translate "Please" to Spanish.', 'Por favor', NULL, 2);
+
+-- English from Spanish course (es-en, course_id 2)
+INSERT INTO units (title, "order", course_id) VALUES
+('Unidad 1: Lo Básico', 1, 2),
+('Unidad 2: Frases Comunes', 2, 2);
+
+INSERT INTO concepts (title, explanation, unit_id) VALUES
+('Saludos Básicos', 'En Inglés, puedes decir "Hello" para saludar a alguien. Para despedirse, puedes decir "Goodbye".', 3),
+('Saludos Formales e Informales', 'En Inglés, "Hello" es un saludo general. Para situaciones formales, puedes usar "Good morning", "Good afternoon", o "Good evening". Para situaciones informales, se puede usar "Hi" o "Hey".', 3),
+('Frases Esenciales', 'Algunas frases esenciales en Inglés son "Please", "Thank you", y "You''re welcome".', 4),
+('Pidiendo Direcciones', 'Para pedir direcciones, puedes decir "Where is...?" (¿Dónde está...?). Por ejemplo, "Where is the bathroom?".', 4);
+
+INSERT INTO exercises (type, prompt, answer, options, concept_id) VALUES
+('multiple_choice', '¿Cómo se dice "Hello" en Inglés?', 'Hello', '["Hello", "Goodbye", "Thank you", "Please"]', 5),
+('translation', 'Traduce "Good night" al Inglés.', 'Good night', NULL, 5),
+('multiple_choice', '¿Cómo se dice "Goodbye" en Inglés?', 'Goodbye', '["Hello", "Goodbye", "Thank you", "Please"]', 6),
+('translation', 'Traduce "Buenas noches" al Inglés.', 'Good night', NULL, 6);
+
+
+-- Italiano from Spanish course (es-it, course_id 3)
+INSERT INTO units (title, "order", course_id) VALUES
+('Unidad 1: Lo Básico (Italiano)', 1, 3),
+('Unidad 2: Frases Comunes (Italiano)', 2, 3);
+
+INSERT INTO concepts (title, explanation, unit_id) VALUES
+('Saludos Básicos', 'En Italiano, puedes decir "Ciao" para saludar a alguien. Para despedirse, puedes decir "Addio".', 5),
+('Saludos Formales e Informales', 'En Italiano, "Ciao" es un saludo general. Para situaciones formales, puedes usar "Buongiorno" (buenos días) o "Buonasera" (buenas tardes). Para situaciones informales, se puede usar "Come stai?" (¿Cómo estás?).', 5),
+('Frases Esenciales', 'Algunas frases esenciales en Italiano son "Per favore" (Por favor), "Grazie" (Gracias), y "Prego" (De nada).', 6),
+('Pidiendo Direcciones', 'Para pedir direcciones, puedes decir "Dove si trova...?" (¿Dónde está...?). Por ejemplo, "Dove si trova il bagno?" (¿Dónde está el baño?).', 6);
+
+INSERT INTO exercises (type, prompt, answer, options, concept_id) VALUES
+('multiple_choice', 'How do you say "Hello" in Italian?', 'Ciao', '["Ciao", "Addio", "Grazie", "Per favore"]', 9),
+('multiple_choice', 'How do you say "Good evening" in Italian?', 'Buonasera', '["Buongiorno", "Buonasera", "Ciao", "Grazie"]', 9),
+('translation', 'Translate "Good morning" to Italian.', 'Buongiorno', NULL, 10),
+('translation', 'Translate "Please" to Italian.', 'Per favore', NULL, 10);

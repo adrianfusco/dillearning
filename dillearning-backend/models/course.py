@@ -13,3 +13,6 @@ class Course(Base):
     description = Column(String)
 
     units = relationship("Unit", back_populates="course")
+
+    def __str__(self) -> str:
+        return self.title

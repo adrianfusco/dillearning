@@ -4,9 +4,15 @@
 
 # Cambios entre el proyecto final y el anteproyecto
 
+- Kaniko:
+
 Al final he expandido más el proyecto añadiendo un despliegue a un servidor VPS contratado. En este caso es solamente para demostrar como funcionaría el CI/CD por lo que no con tiene las mejores prácticas en cuanto a alta disponibilidad.
 En este caso estoy usando kaniko para hacer un build de las imágenes del frontend y el backend, hacemos un tag usando el commit más reciente de la MR donde hacemos el cambio en el código y hacemos un push.
 Luego en producción lo que hacemos es un rebuild del docker compose para usar la imagen más reciente. De nuevo, esto es para tener en producción la aplicación y demostrar un ejemplo del ciclo completo de CI/CD incluyendo un despliegue. No está pensado para high availability.
+
+- sqladmin:
+
+Al final he añadido en la aplicación [sqladmin](https://github.com/aminalaee/sqladmin) con el que podemos acceder a los datos de la base de datos. En este caso a través de [admin_panel.py](./admin_panel.py). Esto permitirá al usuario administrador gestionar los cursos de una manera más sencilla. Así podemos añadir, editar o eliminar idiomas, cursos, conceptos y ejercicios.
 
 # Manual Técnico
 
