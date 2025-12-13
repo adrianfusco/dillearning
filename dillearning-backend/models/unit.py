@@ -14,3 +14,6 @@ class Unit(Base):
     course = relationship("Course", back_populates="units")
     concepts = relationship("Concept", back_populates="unit")
     user_progress = relationship("UserUnitProgress", back_populates="unit")
+
+    def __str__(self) -> str:
+        return self.title

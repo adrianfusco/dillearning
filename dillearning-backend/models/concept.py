@@ -13,3 +13,6 @@ class Concept(Base):
 
     unit = relationship("Unit", back_populates="concepts")
     exercises = relationship("Exercise", back_populates="concept")
+
+    def __str__(self) -> str:
+        return self.title

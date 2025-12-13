@@ -1,6 +1,6 @@
 graph TD
-    subgraph "Aplicación Multiplataforma - Frontend"
-        A[Aplicación Flutter]
+    subgraph "Frontend Multiplataforma"
+        A[Flutter]
     end
 
     subgraph "Plataformas de Despliegue"
@@ -14,9 +14,11 @@ graph TD
         C[SQLAlchemy ORM]
         D[SQLite Database]
         E["API (Gestión de datos, Lógica de negocio, Autenticación)"]
+        Z["sqladmin (UI para modificación de datos en nuestra base de datos)"]
         B -- "Gestiona Datos vía" --> C
         C -- "Accede a" --> D
         B -- "Implementa" --> E
+        B -- "Incorpora" --> Z
     end
 
     subgraph "Servicio de IA"

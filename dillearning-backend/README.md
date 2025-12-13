@@ -42,3 +42,7 @@ FastAPI genera automáticamente la documentación de la API usando Swagger y ReD
 
 - **Swagger UI**: http://127.0.0.1:8000/docs
 - **ReDoc**: http://127.0.0.1:8000/redoc
+
+## [sqladmin](https://github.com/aminalaee/sqladmin)
+
+Se ha añadido en la aplicación [sqladmin](https://github.com/aminalaee/sqladmin) con el que podemos acceder a los datos de la base de datos. En este caso a través de [admin_panel.py](./admin_panel.py). Esto permitirá al usuario administrador gestionar los cursos de una manera más sencilla. Así podemos añadir, editar o eliminar idiomas, cursos, conceptos y ejercicios.
