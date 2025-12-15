@@ -5,6 +5,7 @@ import 'package:dillearning/features/learn_language/models/exercise.dart';
 import 'dart:convert';
 import 'package:reorderables/reorderables.dart';
 import 'package:dillearning/l10n/app_localizations.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class UnitDetailScreen extends StatefulWidget {
   final int unitId;
@@ -73,7 +74,7 @@ class UnitDetailScreenState extends State<UnitDetailScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Text(concept.explanation),
+                      child: MarkdownBody(data: concept.explanation),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -297,13 +298,15 @@ class _AIExamplesDialogState extends State<AIExamplesDialog> {
             : _error.isNotEmpty
                 ? Text(AppLocalizations.of(context)!.errorWithMessage(_error))
                 : SingleChildScrollView(
-                    child: Text(
-                      _examples.trim().isEmpty
-                          ? AppLocalizations.of(context)!.noExamplesGenerated
-                          : _examples,
-                      style: const TextStyle(fontSize: 16, height: 1.5),
-                    ),
-                  ),
+                    child: _examples.trim().isEmpty
+                        ? Text(AppLocalizations.of(context)!.noExamplesGenerated)
+                        : MarkdownBody(
+                            data: _examples,
+                            styleSheet: MarkdownStyleSheet(
+                              p: const TextStyle(fontSize: 16, height: 1.5),
+                            ),
+                          ),
+                  )
       ),
       actions: [
         TextButton(
