@@ -35,4 +35,5 @@ flutter:
   assets:
     - assets/images/
     - assets/images/flags/
+    - assets/images/concepts/
     - assets/images/dillearning_logo_1280.png
