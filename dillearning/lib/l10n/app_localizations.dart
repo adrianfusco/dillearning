@@ -7,6 +7,12 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
+import 'app_localizations_gl.dart';
+import 'app_localizations_it.dart';
+import 'app_localizations_pt.dart';
+import 'app_localizations_ru.dart';
+import 'app_localizations_tr.dart';
 
 // ignore_for_file: type=lint
 
@@ -95,7 +101,13 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('es')
+    Locale('es'),
+    Locale('fr'),
+    Locale('gl'),
+    Locale('it'),
+    Locale('pt'),
+    Locale('ru'),
+    Locale('tr')
   ];
 
   /// No description provided for @appTitle.
@@ -517,6 +529,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Good Evening'**
   String get greetingEvening;
+
+  /// No description provided for @italianLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Italiano'**
+  String get italianLanguage;
+
+  /// No description provided for @galicianLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Galego'**
+  String get galicianLanguage;
+
+  /// No description provided for @portugueseLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Português'**
+  String get portugueseLanguage;
+
+  /// No description provided for @turkishLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Türkçe'**
+  String get turkishLanguage;
+
+  /// No description provided for @russianLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Русский'**
+  String get russianLanguage;
+
+  /// No description provided for @frenchLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Français'**
+  String get frenchLanguage;
 }
 
 class _AppLocalizationsDelegate
@@ -529,8 +577,16 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+        'en',
+        'es',
+        'fr',
+        'gl',
+        'it',
+        'pt',
+        'ru',
+        'tr'
+      ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -543,6 +599,18 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEn();
     case 'es':
       return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
+    case 'gl':
+      return AppLocalizationsGl();
+    case 'it':
+      return AppLocalizationsIt();
+    case 'pt':
+      return AppLocalizationsPt();
+    case 'ru':
+      return AppLocalizationsRu();
+    case 'tr':
+      return AppLocalizationsTr();
   }
 
   throw FlutterError(

@@ -1,0 +1,143 @@
+{
+  "@@locale": "pt",
+  "appTitle": "Dillearning - Aprendizagem de Idiomas",
+  "welcome": "Bem-vindo ao Dillearning!",
+  "theme": "Tema",
+  "language": "Idioma",
+  "selectLanguage": "Selecionar Idioma",
+  "logout": "Sair",
+  "startLearningLanguage": "Comece a Aprender Idioma",
+  "chatWithAI": "Converse com a IA para praticar",
+  "translator": "Tradutor",
+  "translatorTitle": "Tradutor",
+  "fromLabel": "De",
+  "toLabel": "Para",
+  "textToTranslateLabel": "Insira o texto para traduzir",
+  "sameLanguageError": "As línguas de origem e destino não podem ser as mesmas",
+  "translationError": "Erro ao traduzir o texto",
+  "translationResultLabel": "Tradução:",
+  "translateButton": "Traduzir",
+  "emptyTextFieldError": "Por favor, insira um texto para traduzir",
+  "dillearningAiIsThinking": "A IA do DilLearning está pensando...",
+  "chatWithDillearningAiTitle": "Converse com a IA do Dillearning. Você pode falar sobre qualquer assunto para praticar",
+  "somethingWentWrong": "Algo deu errado. Tente novamente.",
+  "retryButton": "Tentar Novamente",
+  "noCoursesAvailable": "Nenhum curso disponível.",
+  "courseDetailsTitle": "Detalhes do Curso",
+  "errorWithMessage": "Erro: {message}",
+  "@errorWithMessage": {
+    "description": "Mensagem de erro com um espaço reservado para o erro real",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "noCourseDataAvailable": "Nenhum dado de curso disponível.",
+  "unitOrder": "Unidade {order}",
+  "@unitOrder": {
+    "description": "Ordem da unidade com um espaço reservado para o número da ordem",
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCourseTitle": "Selecione um Curso",
+  "chooseLanguageToLearnTitle": "Escolha um idioma para aprender",
+  "noLanguagesAvailable": "Nenhum idioma disponível.",
+  "unitsTitle": "Unidades",
+  "noUnitsAvailableForCourse": "Nenhuma unidade disponível para este curso.",
+  "unitDetailsTitle": "Detalhes da Unidade",
+  "noUnitDataAvailable": "Nenhum dado de unidade disponível.",
+  "generateAiExamplesButton": "Gerar Exemplos de IA",
+  "generateAiExerciseButton": "Gerar Exercício de IA",
+  "exercisePrompt": "Exercício: {prompt}",
+  "@exercisePrompt": {
+    "description": "Prompt do exercício com um espaço reservado para o texto do prompt",
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      }
+    }
+  },
+  "noExercisesAvailableForConcept": "Nenhum exercício disponível para este conceito.",
+  "aiGeneratedExerciseForConcept": "Exercício Gerado pela IA para \"{concept}\"",
+  "@aiGeneratedExerciseForConcept": {
+    "description": "Título do exercício gerado pela IA com um espaço reservado para o conceito",
+    "placeholders": {
+      "concept": {
+        "type": "String"
+      }
+    }
+  },
+  "noExerciseGenerated": "Nenhum exercício gerado.",
+  "closeButton": "Fechar",
+  "aiExamplesForWord": "Exemplos de IA para \"{word}\"",
+  "@aiExamplesForWord": {
+    "description": "Título dos exemplos de IA com um espaço reservado para a palavra",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "unsupportedExerciseType": "Tipo de exercício não suportado: {type}",
+  "@unsupportedExerciseType": {
+    "description": "Mensagem de tipo de exercício não suportado com um espaço reservado para o tipo",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "checkAnswerButton": "Verificar Resposta",
+  "checkSentenceButton": "Verificar Frase",
+  "registrationSuccessful": "Registro bem-sucedido",
+  "registrationFailed": "Falha no registro: {error}",
+  "@registrationFailed": {
+    "description": "Mensagem de falha no registro com um espaço reservado para o erro",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "registerInDillearningTitle": "Registrar-se no Dillearning",
+  "registerButton": "Registrar",
+  "failedToLogin": "Falha ao fazer login: {error}",
+  "@failedToLogin": {
+    "description": "Mensagem de falha no login com um espaço reservado para o erro",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeToDillearningTitle": "Bem-vindo ao Dillearning",
+  "loginButton": "Entrar",
+  "englishLanguage": "Inglês",
+  "spanishLanguage": "Espanhol",
+  "noExamplesGenerated": "Nenhum exemplo gerado.",
+  "profile": "Perfil",
+  "learning": "Aprendizado",
+  "availableCourses": "Cursos Disponíveis",
+  "withDillearningYouCan": "Com Dillearning você pode",
+  "learnLanguagesTitle": "Aprender Idiomas",
+  "learnLanguagesDescription": "Expanda seus horizontes aprendendo múltiplos idiomas.",
+  "translateTextTitle": "Traduzir Textos",
+  "translateTextDescription": "Traduções precisas com IA avançada.",
+  "chatPracticeTitle": "Praticar com uma Conversa",
+  "chatPracticeDescription": "Converse com Dillearning e melhore sua fluência.",
+  "aiAssistantTitle": "Assistente de IA",
+  "aiAssistantDescription": "Aprenda com a ajuda do nosso assistente inteligente.",
+  "greetingMorning": "Bom Dia",
+  "greetingAfternoon": "Boa Tarde",
+  "greetingEvening": "Boa Noite",
+  "italianLanguage": "Italiano",
+  "galicianLanguage": "Galego",
+  "portugueseLanguage": "Português",
+  "turkishLanguage": "Türkçe",
+  "russianLanguage": "Русский",
+  "frenchLanguage": "Français"
+}

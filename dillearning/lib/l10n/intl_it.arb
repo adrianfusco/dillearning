@@ -1,0 +1,143 @@
+{
+  "@@locale": "it",
+  "appTitle": "Dillearning - Imparare le Lingue",
+  "welcome": "Benvenuto su Dillearning!",
+  "theme": "Tema",
+  "language": "Lingua",
+  "selectLanguage": "Seleziona Lingua",
+  "logout": "Esci",
+  "startLearningLanguage": "Inizia a Imparare la Lingua",
+  "chatWithAI": "Chatta con l'AI per esercitarti",
+  "translator": "Traduttore",
+  "translatorTitle": "Traduttore",
+  "fromLabel": "Da",
+  "toLabel": "A",
+  "textToTranslateLabel": "Inserisci il testo da tradurre",
+  "sameLanguageError": "Le lingue di origine e destinazione non possono essere le stesse",
+  "translationError": "Errore nella traduzione del testo",
+  "translationResultLabel": "Traduzione:",
+  "translateButton": "Traduci",
+  "emptyTextFieldError": "Per favore, inserisci del testo da tradurre",
+  "dillearningAiIsThinking": "L'AI di DilLearning sta pensando...",
+  "chatWithDillearningAiTitle": "Chatta con l'AI di Dillearning. Puoi parlare di qualsiasi argomento per esercitarti",
+  "somethingWentWrong": "Qualcosa è andato storto. Riprova.",
+  "retryButton": "Riprova",
+  "noCoursesAvailable": "Nessun corso disponibile.",
+  "courseDetailsTitle": "Dettagli Corso",
+  "errorWithMessage": "Errore: {message}",
+  "@errorWithMessage": {
+    "description": "Messaggio di errore con un segnaposto per l'effettivo errore",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "noCourseDataAvailable": "Nessun dato corso disponibile.",
+  "unitOrder": "Unità {order}",
+  "@unitOrder": {
+    "description": "Ordine dell'unità con un segnaposto per il numero dell'ordine",
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCourseTitle": "Seleziona un Corso",
+  "chooseLanguageToLearnTitle": "Scegli una lingua da imparare",
+  "noLanguagesAvailable": "Nessuna lingua disponibile.",
+  "unitsTitle": "Unità",
+  "noUnitsAvailableForCourse": "Nessuna unità disponibile per questo corso.",
+  "unitDetailsTitle": "Dettagli Unità",
+  "noUnitDataAvailable": "Nessun dato unità disponibile.",
+  "generateAiExamplesButton": "Genera Esempi AI",
+  "generateAiExerciseButton": "Genera Esercizio AI",
+  "exercisePrompt": "Esercizio: {prompt}",
+  "@exercisePrompt": {
+    "description": "Prompt dell'esercizio con un segnaposto per il testo del prompt",
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      }
+    }
+  },
+  "noExercisesAvailableForConcept": "Nessun esercizio disponibile per questo concetto.",
+  "aiGeneratedExerciseForConcept": "Esercizio Generato da AI per \"{concept}\"",
+  "@aiGeneratedExerciseForConcept": {
+    "description": "Titolo dell'esercizio generato da AI con un segnaposto per il concetto",
+    "placeholders": {
+      "concept": {
+        "type": "String"
+      }
+    }
+  },
+  "noExerciseGenerated": "Nessun esercizio generato.",
+  "closeButton": "Chiudi",
+  "aiExamplesForWord": "Esempi AI per \"{word}\"",
+  "@aiExamplesForWord": {
+    "description": "Titolo degli esempi AI con un segnaposto per la parola",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "unsupportedExerciseType": "Tipo di esercizio non supportato: {type}",
+  "@unsupportedExerciseType": {
+    "description": "Messaggio di tipo di esercizio non supportato con un segnaposto per il tipo",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "checkAnswerButton": "Verifica Risposta",
+  "checkSentenceButton": "Verifica Frase",
+  "registrationSuccessful": "Registrazione riuscita",
+  "registrationFailed": "Registrazione fallita: {error}",
+  "@registrationFailed": {
+    "description": "Messaggio di registrazione fallita con un segnaposto per l'errore",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "registerInDillearningTitle": "Registrati in Dillearning",
+  "registerButton": "Registrati",
+  "failedToLogin": "Impossibile accedere: {error}",
+  "@failedToLogin": {
+    "description": "Messaggio di errore di login con un segnaposto per l'errore",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeToDillearningTitle": "Benvenuto su Dillearning",
+  "loginButton": "Accedi",
+  "englishLanguage": "Inglese",
+  "spanishLanguage": "Spagnolo",
+  "noExamplesGenerated": "Nessun esempio generato.",
+  "profile": "Profilo",
+  "learning": "Apprendimento",
+  "availableCourses": "Corsi Disponibili",
+  "withDillearningYouCan": "Con Dillearning puoi",
+  "learnLanguagesTitle": "Impara le Lingue",
+  "learnLanguagesDescription": "Espandi i tuoi orizzonti imparando più lingue.",
+  "translateTextTitle": "Traduci Testi",
+  "translateTextDescription": "Traduzioni precise con intelligenza artificiale avanzata.",
+  "chatPracticeTitle": "Esercitati con una Chat",
+  "chatPracticeDescription": "Parla con Dillearning e migliora la tua fluidità.",
+  "aiAssistantTitle": "Assistente AI",
+  "aiAssistantDescription": "Impara con l'aiuto del nostro assistente intelligente.",
+  "greetingMorning": "Buongiorno",
+  "greetingAfternoon": "Buon pomeriggio",
+  "greetingEvening": "Buona sera",
+  "italianLanguage": "Italiano",
+  "galicianLanguage": "Galego",
+  "portugueseLanguage": "Português",
+  "turkishLanguage": "Türkçe",
+  "russianLanguage": "Русский",
+  "frenchLanguage": "Français"
+}

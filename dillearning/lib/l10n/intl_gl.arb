@@ -1,0 +1,143 @@
+{
+  "@@locale": "gl",
+  "appTitle": "Dillearning - Aprendizaxe de Idiomas",
+  "welcome": "Benvido a Dillearning!",
+  "theme": "Tema",
+  "language": "Idioma",
+  "selectLanguage": "Seleccionar idioma",
+  "logout": "Pechar sesión",
+  "startLearningLanguage": "Comeza a aprender un idioma",
+  "chatWithAI": "Charlar co AI para practicar",
+  "translator": "Tradutor",
+  "translatorTitle": "Tradutor",
+  "fromLabel": "De",
+  "toLabel": "A",
+  "textToTranslateLabel": "Introduce o texto a traducir",
+  "sameLanguageError": "As linguas de orixe e destino non poden ser as mesmas",
+  "translationError": "Erro ao traducir o texto",
+  "translationResultLabel": "Traducción:",
+  "translateButton": "Traducir",
+  "emptyTextFieldError": "Por favor, introduce algún texto para traducir",
+  "dillearningAiIsThinking": "A IA de DilLearning está pensando...",
+  "chatWithDillearningAiTitle": "Charla coa IA de Dillearning. Podes falar de calquera tema para practicar o teu aprendizaxe",
+  "somethingWentWrong": "Algo fixo mal. Por favor, inténtao de novo.",
+  "retryButton": "Reintentar",
+  "noCoursesAvailable": "Non hai cursos dispoñibles.",
+  "courseDetailsTitle": "Detalles do curso",
+  "errorWithMessage": "Erro: {message}",
+  "@errorWithMessage": {
+    "description": "Mensaxe de erro cun marcador de posición para o erro real",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "noCourseDataAvailable": "Non hai datos de cursos dispoñibles.",
+  "unitOrder": "Unidade {order}",
+  "@unitOrder": {
+    "description": "Orde da unidade cun marcador de posición para o número de orde",
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCourseTitle": "Selecciona un curso",
+  "chooseLanguageToLearnTitle": "Elixe un idioma para aprender",
+  "noLanguagesAvailable": "Non hai idiomas dispoñibles.",
+  "unitsTitle": "Unidades",
+  "noUnitsAvailableForCourse": "Non hai unidades dispoñibles para este curso.",
+  "unitDetailsTitle": "Detalles da unidade",
+  "noUnitDataAvailable": "Non hai datos da unidade dispoñibles.",
+  "generateAiExamplesButton": "Xerar exemplos AI",
+  "generateAiExerciseButton": "Xerar exercicio AI",
+  "exercisePrompt": "Exercicio: {prompt}",
+  "@exercisePrompt": {
+    "description": "Prompt de exercicio cun marcador de posición para o texto do prompt",
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      }
+    }
+  },
+  "noExercisesAvailableForConcept": "Non hai exercicios dispoñibles para este concepto.",
+  "aiGeneratedExerciseForConcept": "Exercicio Xerado por AI para \"{concept}\"",
+  "@aiGeneratedExerciseForConcept": {
+    "description": "Título do exercicio xerado por AI cun marcador de posición para o concepto",
+    "placeholders": {
+      "concept": {
+        "type": "String"
+      }
+    }
+  },
+  "noExerciseGenerated": "Non se xerou ningún exercicio.",
+  "closeButton": "Pechar",
+  "aiExamplesForWord": "Exemplos AI para \"{word}\"",
+  "@aiExamplesForWord": {
+    "description": "Título dos exemplos AI cun marcador de posición para a palabra",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "unsupportedExerciseType": "Tipo de exercicio non soportado: {type}",
+  "@unsupportedExerciseType": {
+    "description": "Mensaxe de tipo de exercicio non soportado cun marcador de posición para o tipo",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "checkAnswerButton": "Verificar resposta",
+  "checkSentenceButton": "Verificar frase",
+  "registrationSuccessful": "Rexistro exitoso",
+  "registrationFailed": "Rexistro fallido: {error}",
+  "@registrationFailed": {
+    "description": "Mensaxe de rexistro fallido cun marcador de posición para o erro",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "registerInDillearningTitle": "Rexístrate en Dillearning",
+  "registerButton": "Rexístrate",
+  "failedToLogin": "Non se puido iniciar sesión: {error}",
+  "@failedToLogin": {
+    "description": "Mensaxe de erro de inicio de sesión cun marcador de posición para o erro",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeToDillearningTitle": "Benvido a Dillearning",
+  "loginButton": "Iniciar sesión",
+  "englishLanguage": "Inglés",
+  "spanishLanguage": "Español",
+  "noExamplesGenerated": "Non se xeraron exemplos.",
+  "profile": "Perfil",
+  "learning": "Aprendizaxe",
+  "availableCourses": "Cursos dispoñibles",
+  "withDillearningYouCan": "Con Dillearning podes",
+  "learnLanguagesTitle": "Aprender idiomas",
+  "learnLanguagesDescription": "Expande os teus horizontes aprendendo múltiples idiomas.",
+  "translateTextTitle": "Traducir textos",
+  "translateTextDescription": "Traducción precisa con IA avanzada.",
+  "chatPracticeTitle": "Practicar cunha charla",
+  "chatPracticeDescription": "Fala con Dillearning e mellora a túa fluidez.",
+  "aiAssistantTitle": "Asistente IA",
+  "aiAssistantDescription": "Aprende coa axuda do noso asistente intelixente.",
+  "greetingMorning": "Bos días",
+  "greetingAfternoon": "Boas tardes",
+  "greetingEvening": "Boa noite",
+  "italianLanguage": "Italiano",
+  "galicianLanguage": "Galego",
+  "portugueseLanguage": "Português",
+  "turkishLanguage": "Türkçe",
+  "russianLanguage": "Русский",
+  "frenchLanguage": "Français"
+}

@@ -240,4 +240,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get greetingEvening => 'Good Evening';
+
+  @override
+  String get italianLanguage => 'Italiano';
+
+  @override
+  String get galicianLanguage => 'Galego';
+
+  @override
+  String get portugueseLanguage => 'Português';
+
+  @override
+  String get turkishLanguage => 'Türkçe';
+
+  @override
+  String get russianLanguage => 'Русский';
+
+  @override
+  String get frenchLanguage => 'Français';
 }
