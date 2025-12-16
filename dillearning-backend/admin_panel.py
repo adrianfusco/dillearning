@@ -13,6 +13,8 @@ from wtforms import TextAreaField
 
 
 class BaseAdmin(ModelView):
+    page_size = 50
+    page_size_options = [50, 100, 250, 500]
     column_searchable_list = []
 
     def __init__(self, *args, **kwargs):
@@ -46,20 +48,23 @@ class UnitAdmin(BaseAdmin, model=Unit):
 
 class ConceptAdmin(BaseAdmin, model=Concept):
     column_list = [
-        Concept.id,
         Concept.title,
-        Concept.explanation,
         "unit.title",
+        "unit.id",
         "unit.course.title",
+        Concept.explanation,
     ]
+
     column_details_list = [
-        Concept.id,
         Concept.title,
         Concept.explanation,
         "unit.title",
+        "unit.order",
+        "unit.id",
         "unit.course.title",
         Concept.exercises,
     ]
+
     column_searchable_list = [Concept.title, "unit.title"]
 
     form_overrides = {"explanation": TextAreaField}
@@ -71,6 +76,21 @@ class ConceptAdmin(BaseAdmin, model=Concept):
             "class_": "form-control",
         }
     }
+
+    def sort_query(self, stmt, request):
+        from models.concept import Concept
+        from models.course import Course
+        from models.unit import Unit
+
+        return (
+            stmt.join(Concept.unit)
+            .join(Unit.course)
+            .order_by(
+                Course.title.asc(),
+                Unit.order.asc(),
+                Concept.id.asc(),
+            )
+        )
 
 
 class ExerciseAdmin(BaseAdmin, model=Exercise):
