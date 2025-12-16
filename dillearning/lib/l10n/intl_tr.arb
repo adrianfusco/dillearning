@@ -1,0 +1,143 @@
+{
+  "@@locale": "tr",
+  "appTitle": "Dillearning - Diller Öğrenme",
+  "welcome": "Dillearning'e Hoş Geldiniz!",
+  "theme": "Tema",
+  "language": "Dil",
+  "selectLanguage": "Dil Seçin",
+  "logout": "Çıkış Yap",
+  "startLearningLanguage": "Dil Öğrenmeye Başla",
+  "chatWithAI": "Pratik Yapmak İçin AI ile Sohbet Et",
+  "translator": "Çevirmen",
+  "translatorTitle": "Çevirmen",
+  "fromLabel": "From",
+  "toLabel": "To",
+  "textToTranslateLabel": "Çevrilecek metni girin",
+  "sameLanguageError": "Kaynak ve hedef diller aynı olamaz",
+  "translationError": "Metin çevirisi hatası",
+  "translationResultLabel": "Çeviri:",
+  "translateButton": "Çevir",
+  "emptyTextFieldError": "Lütfen çevrilecek bir metin girin",
+  "dillearningAiIsThinking": "Dillearning AI düşünüyor...",
+  "chatWithDillearningAiTitle": "Dillearning AI ile sohbet edin. Pratik yapmak için herhangi bir konu hakkında konuşabilirsiniz",
+  "somethingWentWrong": "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.",
+  "retryButton": "Tekrar Dene",
+  "noCoursesAvailable": "Mevcut kurs yok.",
+  "courseDetailsTitle": "Kurs Detayları",
+  "errorWithMessage": "Hata: {message}",
+  "@errorWithMessage": {
+    "description": "Gerçek hata için yer tutucu içeren hata mesajı",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "noCourseDataAvailable": "Kurs verisi mevcut değil.",
+  "unitOrder": "Birim {order}",
+  "@unitOrder": {
+    "description": "Birim sırası, sırasıyla numara için yer tutucu içerir",
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCourseTitle": "Bir Kurs Seçin",
+  "chooseLanguageToLearnTitle": "Öğreneceğiniz dili seçin",
+  "noLanguagesAvailable": "Mevcut dil yok.",
+  "unitsTitle": "Birimler",
+  "noUnitsAvailableForCourse": "Bu kurs için birim bulunmuyor.",
+  "unitDetailsTitle": "Birim Detayları",
+  "noUnitDataAvailable": "Birim verisi mevcut değil.",
+  "generateAiExamplesButton": "AI Örnekleri Oluştur",
+  "generateAiExerciseButton": "AI Egzersizi Oluştur",
+  "exercisePrompt": "Egzersiz: {prompt}",
+  "@exercisePrompt": {
+    "description": "Egzersiz için prompt, prompt metni için yer tutucu içerir",
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      }
+    }
+  },
+  "noExercisesAvailableForConcept": "Bu kavram için egzersiz mevcut değil.",
+  "aiGeneratedExerciseForConcept": "\"{concept}\" için AI tarafından oluşturulan egzersiz",
+  "@aiGeneratedExerciseForConcept": {
+    "description": "AI tarafından oluşturulan egzersiz başlığı, kavram için yer tutucu içerir",
+    "placeholders": {
+      "concept": {
+        "type": "String"
+      }
+    }
+  },
+  "noExerciseGenerated": "Oluşturulmuş egzersiz yok.",
+  "closeButton": "Kapat",
+  "aiExamplesForWord": "\"{word}\" için AI Örnekleri",
+  "@aiExamplesForWord": {
+    "description": "Kelime için AI örneklerinin başlığı, kelime için yer tutucu içerir",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "unsupportedExerciseType": "Desteklenmeyen egzersiz türü: {type}",
+  "@unsupportedExerciseType": {
+    "description": "Desteklenmeyen egzersiz türü mesajı, tür için yer tutucu içerir",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "checkAnswerButton": "Cevabı Kontrol Et",
+  "checkSentenceButton": "Cümleyi Kontrol Et",
+  "registrationSuccessful": "Kayıt Başarılı",
+  "registrationFailed": "Kayıt Başarısız: {error}",
+  "@registrationFailed": {
+    "description": "Kayıt başarısız mesajı, hata için yer tutucu içerir",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "registerInDillearningTitle": "Dillearning'e Kaydol",
+  "registerButton": "Kaydol",
+  "failedToLogin": "Giriş yapılamadı: {error}",
+  "@failedToLogin": {
+    "description": "Giriş hatası mesajı, hata için yer tutucu içerir",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeToDillearningTitle": "Dillearning'e Hoş Geldiniz",
+  "loginButton": "Giriş Yap",
+  "englishLanguage": "İngilizce",
+  "spanishLanguage": "İspanyolca",
+  "noExamplesGenerated": "Hiç örnek oluşturulmadı.",
+  "profile": "Profil",
+  "learning": "Öğrenme",
+  "availableCourses": "Mevcut Kurslar",
+  "withDillearningYouCan": "Dillearning ile şunları yapabilirsiniz",
+  "learnLanguagesTitle": "Diller Öğren",
+  "learnLanguagesDescription": "Daha fazla dil öğrenerek ufkunuzu genişletin.",
+  "translateTextTitle": "Metin Çevirisi",
+  "translateTextDescription": "Gelişmiş yapay zeka ile doğru çeviriler.",
+  "chatPracticeTitle": "Sohbetle Pratik Yap",
+  "chatPracticeDescription": "Dillearning ile konuşarak akıcılığınızı artırın.",
+  "aiAssistantTitle": "Yapay Zeka Asistanı",
+  "aiAssistantDescription": "Yapay zeka asistanımızla öğrenin.",
+  "greetingMorning": "Günaydın",
+  "greetingAfternoon": "İyi Günler",
+  "greetingEvening": "İyi Akşamlar",
+  "italianLanguage": "İtalyanca",
+  "galicianLanguage": "Galiçyaca",
+  "portugueseLanguage": "Portekizce",
+  "turkishLanguage": "Türkçe",
+  "russianLanguage": "Русский",
+  "frenchLanguage": "Français"
+}

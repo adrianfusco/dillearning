@@ -133,5 +133,11 @@
   "aiAssistantDescription": "Learn with the help of our intelligent assistant.",
   "greetingMorning": "Good Morning",
   "greetingAfternoon": "Good Afternoon",
-  "greetingEvening": "Good Evening"
+  "greetingEvening": "Good Evening",
+  "italianLanguage": "Italiano",
+  "galicianLanguage": "Galego",
+  "portugueseLanguage": "Português",
+  "turkishLanguage": "Türkçe",
+  "russianLanguage": "Русский",
+  "frenchLanguage": "Français"
 }

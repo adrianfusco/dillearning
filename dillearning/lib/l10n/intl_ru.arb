@@ -1,0 +1,143 @@
+{
+  "@@locale": "ru",
+  "appTitle": "Dillearning - Изучение языков",
+  "welcome": "Добро пожаловать в Dillearning!",
+  "theme": "Тема",
+  "language": "Язык",
+  "selectLanguage": "Выберите язык",
+  "logout": "Выйти",
+  "startLearningLanguage": "Начать изучать язык",
+  "chatWithAI": "Чат с ИИ для практики",
+  "translator": "Переводчик",
+  "translatorTitle": "Переводчик",
+  "fromLabel": "Из",
+  "toLabel": "В",
+  "textToTranslateLabel": "Введите текст для перевода",
+  "sameLanguageError": "Языки исходный и целевой не могут быть одинаковыми",
+  "translationError": "Ошибка при переводе текста",
+  "translationResultLabel": "Перевод:",
+  "translateButton": "Перевести",
+  "emptyTextFieldError": "Пожалуйста, введите текст для перевода",
+  "dillearningAiIsThinking": "ИИ Dillearning обрабатывает...",
+  "chatWithDillearningAiTitle": "Чат с ИИ Dillearning. Вы можете говорить на любую тему для практики.",
+  "somethingWentWrong": "Что-то пошло не так. Пожалуйста, попробуйте снова.",
+  "retryButton": "Попробовать снова",
+  "noCoursesAvailable": "Нет доступных курсов.",
+  "courseDetailsTitle": "Детали курса",
+  "errorWithMessage": "Ошибка: {message}",
+  "@errorWithMessage": {
+    "description": "Сообщение об ошибке с заполнителем для фактической ошибки",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "noCourseDataAvailable": "Нет данных о курсе.",
+  "unitOrder": "Единица {order}",
+  "@unitOrder": {
+    "description": "Порядок единицы с заполнителем для номера порядка",
+    "placeholders": {
+      "order": {
+        "type": "String"
+      }
+    }
+  },
+  "selectCourseTitle": "Выберите курс",
+  "chooseLanguageToLearnTitle": "Выберите язык для изучения",
+  "noLanguagesAvailable": "Нет доступных языков.",
+  "unitsTitle": "Единицы",
+  "noUnitsAvailableForCourse": "Для этого курса нет доступных единиц.",
+  "unitDetailsTitle": "Детали единицы",
+  "noUnitDataAvailable": "Нет данных о единице.",
+  "generateAiExamplesButton": "Создать примеры ИИ",
+  "generateAiExerciseButton": "Создать упражнение ИИ",
+  "exercisePrompt": "Упражнение: {prompt}",
+  "@exercisePrompt": {
+    "description": "Запрос упражнения с заполнителем для текста запроса",
+    "placeholders": {
+      "prompt": {
+        "type": "String"
+      }
+    }
+  },
+  "noExercisesAvailableForConcept": "Нет упражнений для этой концепции.",
+  "aiGeneratedExerciseForConcept": "Упражнение, созданное ИИ для \"{concept}\"",
+  "@aiGeneratedExerciseForConcept": {
+    "description": "Заголовок упражнения, созданного ИИ, с заполнителем для концепции",
+    "placeholders": {
+      "concept": {
+        "type": "String"
+      }
+    }
+  },
+  "noExerciseGenerated": "Упражнение не создано.",
+  "closeButton": "Закрыть",
+  "aiExamplesForWord": "Примеры ИИ для \"{word}\"",
+  "@aiExamplesForWord": {
+    "description": "Заголовок примеров ИИ с заполнителем для слова",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "unsupportedExerciseType": "Неподдерживаемый тип упражнения: {type}",
+  "@unsupportedExerciseType": {
+    "description": "Сообщение о неподдерживаемом типе упражнения с заполнителем для типа",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "checkAnswerButton": "Проверить ответ",
+  "checkSentenceButton": "Проверить предложение",
+  "registrationSuccessful": "Регистрация успешна",
+  "registrationFailed": "Не удалось зарегистрироваться: {error}",
+  "@registrationFailed": {
+    "description": "Сообщение об ошибке регистрации с заполнителем для ошибки",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "registerInDillearningTitle": "Зарегистрироваться в Dillearning",
+  "registerButton": "Зарегистрироваться",
+  "failedToLogin": "Не удалось войти: {error}",
+  "@failedToLogin": {
+    "description": "Сообщение о неудачной попытке входа с заполнителем для ошибки",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "welcomeToDillearningTitle": "Добро пожаловать в Dillearning",
+  "loginButton": "Войти",
+  "englishLanguage": "English",
+  "spanishLanguage": "Español",
+  "noExamplesGenerated": "Примеры не сгенерированы.",
+  "profile": "Профиль",
+  "learning": "Обучение",
+  "availableCourses": "Доступные курсы",
+  "withDillearningYouCan": "С Dillearning вы можете",
+  "learnLanguagesTitle": "Изучать языки",
+  "learnLanguagesDescription": "Расширьте свои горизонты, изучая несколько языков.",
+  "translateTextTitle": "Переводить тексты",
+  "translateTextDescription": "Точные переводы с использованием продвинутого ИИ.",
+  "chatPracticeTitle": "Практика через чат",
+  "chatPracticeDescription": "Говорите с Dillearning и улучшайте свою беглость.",
+  "aiAssistantTitle": "Ассистент ИИ",
+  "aiAssistantDescription": "Учитесь с помощью нашего интеллектуального ассистента.",
+  "greetingMorning": "Доброе утро",
+  "greetingAfternoon": "Добрый день",
+  "greetingEvening": "Добрый вечер",
+  "italianLanguage": "Italiano",
+  "galicianLanguage": "Galego",
+  "portugueseLanguage": "Português",
+  "turkishLanguage": "Türkçe",
+  "russianLanguage": "Русский",
+  "frenchLanguage": "Français"
+}

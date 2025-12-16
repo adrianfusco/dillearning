@@ -105,24 +105,64 @@ class ProfileScreenState extends State<ProfileScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text(AppLocalizations.of(context)!.selectLanguage),
+                            title: Text(
+                                AppLocalizations.of(context)!.selectLanguage),
                             content: SingleChildScrollView(
                               child: Column(
                                 children: [
-                                  ListTile(
-                                    title: Text(AppLocalizations.of(context)!.englishLanguage),
-                                    onTap: () {
-                                      languageNotifier.setLocale(Locale('en'));
-                                      Navigator.of(context).pop();
+                                  for (var language in [
+                                    {
+                                      'label': AppLocalizations.of(context)!
+                                          .englishLanguage,
+                                      'locale': Locale('en')
                                     },
-                                  ),
-                                  ListTile(
-                                    title: Text(AppLocalizations.of(context)!.spanishLanguage),
-                                    onTap: () {
-                                      languageNotifier.setLocale(Locale('es'));
-                                      Navigator.of(context).pop();
+                                    {
+                                      'label': AppLocalizations.of(context)!
+                                          .spanishLanguage,
+                                      'locale': Locale('es')
                                     },
-                                  ),
+                                    {
+                                      'label': AppLocalizations.of(context)!
+                                          .italianLanguage,
+                                      'locale': Locale('it')
+                                    },
+                                    {
+                                      'label': AppLocalizations.of(context)!
+                                          .galicianLanguage,
+                                      'locale': Locale('gl')
+                                    },
+                                    {
+                                      'label': AppLocalizations.of(context)!
+                                          .portugueseLanguage,
+                                      'locale': Locale('pt')
+                                    },
+                                    {
+                                      'label': AppLocalizations.of(context)!
+                                          .turkishLanguage,
+                                      'locale': Locale('tr')
+                                    },
+                                    {
+                                      'label': AppLocalizations.of(context)!
+                                          .russianLanguage,
+                                      'locale': Locale('ru')
+                                    },
+                                    {
+                                      'label': AppLocalizations.of(context)!
+                                          .frenchLanguage,
+                                      'locale': Locale('fr')
+                                    }
+                                  ])
+                                    ListTile(
+                                      title: Text(language['label']
+                                          as String),
+                                      onTap: () {
+                                        languageNotifier.setLocale(language[
+                                                'locale']
+                                            as Locale);
+                                        Navigator.of(context)
+                                            .pop();
+                                      },
+                                    ),
                                 ],
                               ),
                             ),
